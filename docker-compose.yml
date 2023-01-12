@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  db:
+    container_name: dnd-db
+    image: arm64v8/mysql:8.0.28-oracle
+    ports:
+      - "3307:3306"
+    env_file:
+      - ./.env
+    environment:
+      TZ: Asiz/Seoul
+      MYSQL_DATABASE: $DB_NAME
+      MYSQL_ROOT_PASSWORD: $DB_PASSWORD
+    command:
+      - --character-set-server=utf8mb4
