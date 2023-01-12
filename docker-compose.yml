@@ -3,7 +3,7 @@ version: "3.8"
 services:
   db:
     container_name: dnd-db
-    image: arm64v8/mysql:8.0.28-oracle
+    image: mysql/mysql-server:8.0.31
     ports:
       - "3307:3306"
     env_file:
