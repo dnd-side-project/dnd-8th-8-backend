@@ -11,6 +11,7 @@ services:
     environment:
       TZ: Asiz/Seoul
       MYSQL_DATABASE: $DB_NAME
+      MYSQL_ROOT_HOST: '%'
       MYSQL_ROOT_PASSWORD: $DB_PASSWORD
     command:
       - --character-set-server=utf8mb4
