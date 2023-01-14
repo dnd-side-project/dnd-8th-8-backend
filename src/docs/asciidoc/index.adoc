@@ -1,0 +1,6 @@
+= DND 8th-8 Application API Document
+:doctype: book
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:seclinks:
