@@ -61,3 +61,6 @@ bin/
 ### env ###
 env.properties
 .env
+
+### API docs ###
+src/main/resources/static/docs
