@@ -9,7 +9,7 @@ services:
     env_file:
       - ./.env
     environment:
-      TZ: Asiz/Seoul
+      TZ: Asia/Seoul
       MYSQL_DATABASE: $DB_NAME
       MYSQL_ROOT_HOST: '%'
       MYSQL_ROOT_PASSWORD: $DB_PASSWORD
