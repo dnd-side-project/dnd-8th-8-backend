@@ -32,12 +32,12 @@ jobs:
           java-version: 17
           distribution: 'zulu'
           cache: 'gradle'
-      - name: Build
-        run: ./gradlew build
+      - name: Build Asciidoc
+        run: ./gradlew asciidoctor
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: './src/main/resources/static/docs'
+          path: './build/docs/asciidoc'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
