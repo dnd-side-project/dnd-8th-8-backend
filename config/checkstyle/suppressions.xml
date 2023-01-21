@@ -6,4 +6,5 @@
 
 <suppressions>
   <suppress message="Missing a Javadoc comment"/>
+  <suppress files=".*OAuth.*\.java" checks="AbbreviationAsWordInName"/>
 </suppressions>
