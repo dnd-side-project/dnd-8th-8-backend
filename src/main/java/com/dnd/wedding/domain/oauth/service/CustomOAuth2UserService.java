@@ -1,13 +1,13 @@
-package com.dnd.wedding.oauth.service;
+package com.dnd.wedding.domain.oauth.service;
 
 import com.dnd.wedding.domain.member.Member;
 import com.dnd.wedding.domain.member.MemberRepository;
 import com.dnd.wedding.domain.member.Role;
 import com.dnd.wedding.domain.oauth.OAuth2Provider;
 import com.dnd.wedding.domain.oauth.CustomUserDetails;
-import com.dnd.wedding.oauth.exception.OAuthProcessingException;
-import com.dnd.wedding.oauth.info.OAuth2UserInfo;
-import com.dnd.wedding.oauth.info.OAuth2UserInfoFactory;
+import com.dnd.wedding.domain.oauth.exception.OAuthProcessingException;
+import com.dnd.wedding.domain.oauth.info.OAuth2UserInfo;
+import com.dnd.wedding.domain.oauth.info.OAuth2UserInfoFactory;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;

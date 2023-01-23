@@ -1,4 +1,4 @@
-package com.dnd.wedding.oauth.exception;
+package com.dnd.wedding.domain.oauth.exception;
 
 public class OAuthProcessingException extends RuntimeException {
 

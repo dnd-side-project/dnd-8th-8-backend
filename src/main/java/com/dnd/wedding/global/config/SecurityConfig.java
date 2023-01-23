@@ -1,6 +1,6 @@
-package com.dnd.wedding.config.security;
+package com.dnd.wedding.global.config;
 
-import com.dnd.wedding.oauth.service.CustomOAuth2UserService;
+import com.dnd.wedding.domain.oauth.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

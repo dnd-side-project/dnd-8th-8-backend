@@ -1,4 +1,4 @@
-package com.dnd.wedding.oauth.info;
+package com.dnd.wedding.domain.oauth.info;
 
 import java.util.Map;
 

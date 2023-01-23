@@ -1,6 +1,6 @@
-package com.dnd.wedding.oauth.info.impl;
+package com.dnd.wedding.domain.oauth.info.impl;
 
-import com.dnd.wedding.oauth.info.OAuth2UserInfo;
+import com.dnd.wedding.domain.oauth.info.OAuth2UserInfo;
 import java.util.Map;
 
 public class GoogleOAuth2UserInfo extends OAuth2UserInfo {

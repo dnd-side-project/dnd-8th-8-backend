@@ -1,4 +1,4 @@
-package com.dnd.wedding.config;
+package com.dnd.wedding.global.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
