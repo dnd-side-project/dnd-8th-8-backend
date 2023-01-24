@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenProvider {
 
-  private final String COOKIE_REFRESH_TOKEN_KEY;
+  private final String cookieRefreshTokenKey;
   private static final Long ACCESS_TOKEN_EXPIRE_LENGTH = 1000L * 60 * 60;    // 1hour
   private static final Long REFRESH_TOKEN_EXPIRE_LENGTH = 1000L * 60 * 60 * 24 * 7;  // 1week
   private static final String AUTHORITIES_KEY = "role";
@@ -39,7 +39,7 @@ public class JwtTokenProvider {
   public JwtTokenProvider(@Value("${app.auth.token.secret-key}") String secret,
       @Value("${app.auth.token.refresh-cookie-key}") String cookieKey) {
     this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-    this.COOKIE_REFRESH_TOKEN_KEY = cookieKey;
+    this.cookieRefreshTokenKey = cookieKey;
   }
 
   public String createAccessToken(Authentication authentication) {
@@ -76,7 +76,7 @@ public class JwtTokenProvider {
 
     saveRefreshToken(authentication, refreshToken);
 
-    ResponseCookie cookie = ResponseCookie.from(COOKIE_REFRESH_TOKEN_KEY, refreshToken)
+    ResponseCookie cookie = ResponseCookie.from(cookieRefreshTokenKey, refreshToken)
         .httpOnly(true)
         .secure(true)
         .sameSite("dnd")

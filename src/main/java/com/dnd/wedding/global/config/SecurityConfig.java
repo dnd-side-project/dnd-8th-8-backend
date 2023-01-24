@@ -23,8 +23,8 @@ public class SecurityConfig {
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
   private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
   private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-  private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-  private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+  private final OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
+  private final OAuth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -47,8 +47,8 @@ public class SecurityConfig {
         .userInfoEndpoint()
         .userService(customOauth2UserService)
         .and()
-        .successHandler(oAuth2AuthenticationSuccessHandler)
-        .failureHandler(oAuth2AuthenticationFailureHandler);
+        .successHandler(oauth2AuthenticationSuccessHandler)
+        .failureHandler(oauth2AuthenticationFailureHandler);
 
     http.exceptionHandling()
         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
