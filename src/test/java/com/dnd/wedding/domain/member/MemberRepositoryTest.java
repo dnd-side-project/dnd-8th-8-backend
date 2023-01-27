@@ -16,9 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(
-    type = FilterType.ASSIGNABLE_TYPE,
-    classes = JpaConfig.class
-))
+    type = FilterType.ASSIGNABLE_TYPE, classes = JpaConfig.class))
 class MemberRepositoryTest {
 
   @Autowired
@@ -26,21 +24,11 @@ class MemberRepositoryTest {
 
   @BeforeEach
   void save() {
-    Member member1 = Member.builder()
-        .name("test1")
-        .email("test1@example.com")
-        .profileImage("test1.png")
-        .role(Role.USER)
-        .oauth2Provider(OAuth2Provider.GOOGLE)
-        .build();
+    Member member1 = Member.builder().name("test1").email("test1@example.com")
+        .profileImage("test1.png").role(Role.USER).oauth2Provider(OAuth2Provider.GOOGLE).build();
 
-    Member member2 = Member.builder()
-        .name("test2")
-        .email("test2@example.com")
-        .profileImage("test2.png")
-        .role(Role.USER)
-        .oauth2Provider(OAuth2Provider.GOOGLE)
-        .build();
+    Member member2 = Member.builder().name("test2").email("test2@example.com")
+        .profileImage("test2.png").role(Role.USER).oauth2Provider(OAuth2Provider.GOOGLE).build();
 
     memberRepository.save(member1);
     memberRepository.save(member2);
@@ -82,8 +70,7 @@ class MemberRepositoryTest {
     assertTrue(member.isPresent());
     assertEquals(member.get().getCreatedAt(), member.get().getModifiedAt());
 
-    memberRepository.save(member.get()
-        .update("new name", "new image.png"));
+    memberRepository.save(member.get().update("new name", "new image.png"));
 
     Optional<Member> updatedMember = memberRepository.findByEmail(email);
     assertTrue(updatedMember.isPresent());
