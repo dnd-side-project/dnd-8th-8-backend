@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.dnd.wedding.domain.oauth.OAuth2Provider;
+import com.dnd.wedding.global.config.JpaConfig;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,8 +12,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 
-@DataJpaTest
+@DataJpaTest(includeFilters = @ComponentScan.Filter(
+    type = FilterType.ASSIGNABLE_TYPE,
+    classes = JpaConfig.class
+))
 class MemberRepositoryTest {
 
   @Autowired
@@ -64,5 +70,23 @@ class MemberRepositoryTest {
     // then
     assertTrue(member.isPresent());
     assertEquals(name, member.get().getName());
+  }
+
+  @Test
+  @DisplayName("타임스탬프가 업데이트 되는지 확인")
+  void checkTimeStamp() {
+    String email = "test1@example.com";
+
+    Optional<Member> member = memberRepository.findByEmail(email);
+
+    assertTrue(member.isPresent());
+    assertEquals(member.get().getCreatedAt(), member.get().getModifiedAt());
+
+    memberRepository.save(member.get()
+        .update("new name", "new image.png"));
+
+    Optional<Member> updatedMember = memberRepository.findByEmail(email);
+    assertTrue(updatedMember.isPresent());
+    assertTrue(updatedMember.get().getCreatedAt().isBefore(updatedMember.get().getModifiedAt()));
   }
 }
