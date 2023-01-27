@@ -30,7 +30,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     OAuth2User oauth2User = super.loadUser(userRequest);
 
     try {
-      return processoOAuth2User(userRequest, oauth2User);
+      return processOAuth2User(userRequest, oauth2User);
     } catch (AuthenticationException e) {
       throw e;
     } catch (Exception e) {
@@ -38,7 +38,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
   }
 
-  private OAuth2User processoOAuth2User(OAuth2UserRequest userRequest, OAuth2User oauth2User) {
+  private OAuth2User processOAuth2User(OAuth2UserRequest userRequest, OAuth2User oauth2User) {
     OAuth2Provider oauth2Provider = OAuth2Provider.valueOf(
         userRequest.getClientRegistration().getRegistrationId().toUpperCase());
     OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2Userinfo(oauth2Provider,
