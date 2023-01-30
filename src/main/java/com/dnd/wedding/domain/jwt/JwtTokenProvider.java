@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.stream.Collectors;
 import javax.crypto.SecretKey;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,11 +32,12 @@ public class JwtTokenProvider {
   private static final Long REFRESH_TOKEN_EXPIRE_LENGTH = 1000L * 60 * 60 * 24 * 7;  // 1week
   private static final String AUTHORITIES_KEY = "role";
   private final SecretKey secretKey;
-  @Autowired
-  private RefreshTokenRedisRepository refreshTokenRedisRepository;
+  private final RefreshTokenRedisRepository refreshTokenRedisRepository;
 
   public JwtTokenProvider(@Value("${app.auth.token.secret-key}") String secret,
-      @Value("${app.auth.token.refresh-cookie-key}") String cookieKey) {
+      @Value("${app.auth.token.refresh-cookie-key}") String cookieKey,
+      RefreshTokenRedisRepository refreshTokenRedisRepository) {
+    this.refreshTokenRedisRepository = refreshTokenRedisRepository;
     this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     this.cookieRefreshTokenKey = cookieKey;
   }
