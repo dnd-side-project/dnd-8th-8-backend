@@ -63,16 +63,20 @@ public class JwtTokenProvider {
         .compact();
   }
 
-  public void createRefreshToken(Authentication authentication, HttpServletResponse response) {
+  public String createRefreshToken() {
     Date now = new Date();
     Date validity = new Date(now.getTime() + REFRESH_TOKEN_EXPIRE_LENGTH);
 
-    String refreshToken = Jwts.builder()
+    return Jwts.builder()
         .signWith(secretKey)
         .setIssuer("dnd")
         .setIssuedAt(now)
         .setExpiration(validity)
         .compact();
+  }
+
+  public void addRefreshToken(Authentication authentication, HttpServletResponse response) {
+    String refreshToken = createRefreshToken();
 
     saveRefreshToken(authentication, refreshToken);
 

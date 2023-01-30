@@ -46,7 +46,7 @@ class OAuth2AuthenticationSuccessHandlerTest {
     oauth2AuthenticationSuccessHandler.onAuthenticationSuccess(request, response, authentication);
 
     verify(tokenProvider).createAccessToken(authentication);
-    verify(tokenProvider).createRefreshToken(authentication, response);
+    verify(tokenProvider).addRefreshToken(authentication, response);
     verify(response).isCommitted();
     verify(authorizationRequestRepository).removeAuthorizationRequestCookies(request, response);
   }
@@ -60,7 +60,7 @@ class OAuth2AuthenticationSuccessHandlerTest {
     oauth2AuthenticationSuccessHandler.onAuthenticationSuccess(request, response, authentication);
 
     verify(tokenProvider).createAccessToken(authentication);
-    verify(tokenProvider).createRefreshToken(authentication, response);
+    verify(tokenProvider).addRefreshToken(authentication, response);
     verify(response).isCommitted();
   }
 }

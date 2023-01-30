@@ -59,7 +59,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     // jwt
     String accessToken = tokenProvider.createAccessToken(authentication);
-    tokenProvider.createRefreshToken(authentication, response);
+    tokenProvider.addRefreshToken(authentication, response);
 
     return UriComponentsBuilder.fromUriString(targetUrl)
         .queryParam("accessToken", accessToken)
