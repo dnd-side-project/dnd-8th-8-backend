@@ -5,6 +5,7 @@ import com.dnd.wedding.domain.oauth.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletResponse;
@@ -122,8 +123,10 @@ public class JwtTokenProvider {
       log.info("Expired JWT token.");
     } catch (UnsupportedJwtException e) {
       log.info("Unsupported JWT token.");
-    } catch (IllegalArgumentException e) {
-      log.info("JWT token compact of handler are invalid.");
+    } catch (MalformedJwtException e) {
+      log.info("Malformed Jwt token.");
+    } catch (Exception e) {
+      log.info(e.getMessage());
     }
     return false;
   }
