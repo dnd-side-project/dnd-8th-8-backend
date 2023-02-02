@@ -2,6 +2,7 @@ package com.dnd.wedding.domain.oauth.info;
 
 import com.dnd.wedding.domain.oauth.OAuth2Provider;
 import com.dnd.wedding.domain.oauth.info.impl.GoogleOAuth2UserInfo;
+import com.dnd.wedding.domain.oauth.info.impl.KakaoOAuth2UserInfo;
 import java.util.Map;
 
 public class OAuth2UserInfoFactory {
@@ -15,6 +16,9 @@ public class OAuth2UserInfoFactory {
 
     if (oauth2Provider == OAuth2Provider.GOOGLE) {
       return new GoogleOAuth2UserInfo(attributes);
+    }
+    if (oauth2Provider == OAuth2Provider.KAKAO) {
+      return new KakaoOAuth2UserInfo(attributes);
     }
     throw new IllegalArgumentException("Invalid AuthProvider Type.");
   }
