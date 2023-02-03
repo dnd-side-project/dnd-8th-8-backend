@@ -13,6 +13,24 @@ import org.junit.jupiter.api.Test;
 class OAuth2UserInfoFactoryTest {
 
   @Test
+  void getGoogleUserinfo() {
+    // given
+    OAuth2Provider google = OAuth2Provider.GOOGLE;
+
+    Map<String, Object> attributes = Map.of(
+        "sub", anyInt(),
+        "name", anyString(),
+        "email", anyString(),
+        "picture", anyString());
+
+    // when
+    OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2Userinfo(google, attributes);
+
+    // then
+    assertEquals(GoogleOAuth2UserInfo.class, userInfo.getClass());
+  }
+
+  @Test
   void getKakaoUserinfo() {
     // given
     OAuth2Provider kakao = OAuth2Provider.KAKAO;
