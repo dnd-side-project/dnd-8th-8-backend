@@ -31,8 +31,9 @@ public class JwtService {
     String oldRefreshToken = CookieUtil.getCookie(request, cookieKey)
         .map(Cookie::getValue).orElseThrow(() -> new RuntimeException("No Refresh Token Cookie"));
 
-    if (!tokenProvider.validateToken(oldRefreshToken)) {
+    if (Boolean.FALSE.equals(tokenProvider.validateToken(oldRefreshToken))) {
       log.info("Not Validated Refresh Token.");
+      return null;
     }
 
     Authentication authentication = tokenProvider.getAuthentication(oldAccessToken);
@@ -43,12 +44,14 @@ public class JwtService {
 
     if (savedToken.isEmpty()) {
       log.info("Not Existed Refresh Token.");
+      return null;
     } else {
       if (!(savedToken.get().getToken().equals(oldRefreshToken))) {
         log.info("Not Validated Refresh Token.");
+        return null;
       }
     }
-    
+
     String accessToken = tokenProvider.createAccessToken(authentication);
     tokenProvider.addRefreshToken(authentication, response);
 
