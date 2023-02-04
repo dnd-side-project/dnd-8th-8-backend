@@ -19,8 +19,9 @@ public class JwtController {
   private final JwtService jwtService;
 
   @GetMapping("/refresh")
-  public ResponseEntity refreshToken(HttpServletRequest request, HttpServletResponse response,
-      @Param("accessToken") String accessToken) {
+  public ResponseEntity<String> refreshToken(HttpServletRequest request,
+      HttpServletResponse response, @Param("accessToken") String accessToken) {
+
     String newToken = jwtService.refreshToken(request, response, accessToken);
 
     if (newToken != null) {
