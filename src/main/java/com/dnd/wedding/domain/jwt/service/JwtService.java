@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 public class JwtService {
 
   @Value("${app.auth.token.refresh-cookie-key}")
-  private String cookieKey;
+  private final String cookieKey;
 
   private final RefreshTokenRedisRepository refreshTokenRedisRepository;
   private final JwtTokenProvider tokenProvider;
