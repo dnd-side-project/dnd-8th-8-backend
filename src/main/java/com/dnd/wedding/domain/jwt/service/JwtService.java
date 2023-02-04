@@ -9,7 +9,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Optional;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 @Log4j2
 @Service
-@RequiredArgsConstructor
 public class JwtService {
 
   @Value("${app.auth.token.refresh-cookie-key}")
@@ -25,6 +23,13 @@ public class JwtService {
 
   private final RefreshTokenRedisRepository refreshTokenRedisRepository;
   private final JwtTokenProvider tokenProvider;
+
+  public JwtService(@Value("${app.auth.token.refresh-cookie-key}") String cookieKey,
+      RefreshTokenRedisRepository refreshTokenRedisRepository, JwtTokenProvider tokenProvider) {
+    this.cookieKey = cookieKey;
+    this.refreshTokenRedisRepository = refreshTokenRedisRepository;
+    this.tokenProvider = tokenProvider;
+  }
 
   public String refreshToken(HttpServletRequest request, HttpServletResponse response,
       String oldAccessToken) {
