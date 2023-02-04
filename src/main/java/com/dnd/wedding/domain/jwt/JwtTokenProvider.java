@@ -96,7 +96,7 @@ public class JwtTokenProvider {
     CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
 
     refreshTokenRedisRepository.save(RefreshToken.builder()
-        .email(user.getEmail())
+        .id(user.getId())
         .token(refreshToken)
         .expiredTime(REFRESH_TOKEN_EXPIRE_LENGTH)
         .build());
