@@ -41,4 +41,17 @@ class JwtControllerTest {
     assertEquals("token", responseEntity.getBody());
     assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
   }
+
+  @Test
+  @DisplayName("access token 갱신 실패 시 401 코드가 전달된다.")
+  void failRenewAccessToken() {
+    // given
+    given(jwtService.refreshToken(request, response, "accessToken")).willReturn(null);
+
+    // when
+    ResponseEntity responseEntity = jwtController.refreshToken(request, response, "accessToken");
+
+    // then
+    assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
+  }
 }
