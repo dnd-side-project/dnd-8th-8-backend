@@ -38,7 +38,8 @@ class JwtTokenProviderTest {
 
   private final RefreshTokenRedisRepository refreshTokenRedisRepository = mock(
       RefreshTokenRedisRepository.class);
-  private final CustomUserDetails customUserDetailsObject = new CustomUserDetails(1L, "test@test.com",
+  private final CustomUserDetails customUserDetailsObject = new CustomUserDetails(1L,
+      "test@test.com",
       OAuth2Provider.GOOGLE, Role.USER, authority);
 
   private JwtTokenProvider jwtTokenProvider;

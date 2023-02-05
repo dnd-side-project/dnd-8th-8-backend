@@ -43,7 +43,7 @@ class CookieUtilTest {
     Cookie cookie = new Cookie("testName", "testValue");
     request.setCookies(cookie);
 
-    CookieUtil.getCookie(request, "testName").ifPresent(c-> {
+    CookieUtil.getCookie(request, "testName").ifPresent(c -> {
       assertEquals("testName", c.getName());
       assertEquals("testValue", c.getValue());
     });

@@ -25,7 +25,8 @@ class CustomUserDetailsTest {
   private static final Collection<? extends GrantedAuthority> authority = Collections.singletonList(
       new SimpleGrantedAuthority("ROLE_USER"));
 
-  private static final CustomUserDetails customUserDetailsObject = new CustomUserDetails(1L, "test@test.com",
+  private static final CustomUserDetails customUserDetailsObject = new CustomUserDetails(1L,
+      "test@test.com",
       OAuth2Provider.GOOGLE, Role.USER, authority);
 
   private static MockedStatic<CustomUserDetails> customUserDetails;
