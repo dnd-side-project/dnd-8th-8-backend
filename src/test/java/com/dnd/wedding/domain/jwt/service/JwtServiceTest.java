@@ -19,7 +19,6 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -34,14 +33,15 @@ class JwtServiceTest {
   private final String cookieKey = "testCookieKey";
   private final String oldRefreshToken = "testRefreshToken";
   private final String oldAccessToken = "testAccessToken";
-  private CustomUserDetails customUserDetails = new CustomUserDetails(1L, "test@test.com",
+  private final CustomUserDetails customUserDetails = new CustomUserDetails(1L, "test@test.com",
       OAuth2Provider.GOOGLE, Role.USER, authority);
+
   private RefreshTokenRedisRepository refreshTokenRedisRepository;
   private JwtTokenProvider tokenProvider;
   private JwtService jwtService;
-  MockHttpServletResponse response;
-  MockHttpServletRequest request;
-  Authentication authentication;
+  private MockHttpServletResponse response;
+  private MockHttpServletRequest request;
+  private Authentication authentication;
 
   @BeforeEach
   void init() {

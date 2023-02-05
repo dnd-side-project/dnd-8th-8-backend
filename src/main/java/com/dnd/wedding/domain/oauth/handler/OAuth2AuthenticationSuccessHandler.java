@@ -15,7 +15,6 @@ import java.net.URI;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -29,7 +28,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
   @Value("${app.oauth2.authorizedRedirectUri}")
   private String redirectUri;
-  @Autowired
+
   private final JwtTokenProvider tokenProvider;
   private final CookieAuthorizationRequestRepository authorizationRequestRepository;
 

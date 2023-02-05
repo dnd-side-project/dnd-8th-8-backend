@@ -17,5 +17,5 @@ services:
     container_name: dnd-redis
     image: redis:7.0.8
     ports:
-      - 6379:6379
+      - "6379:6379"
     command: redis-server --requirepass ${REDIS_PASSWORD} --port 6379
