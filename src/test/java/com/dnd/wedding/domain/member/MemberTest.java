@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 class MemberTest {
 
-  Member member = Member.builder()
+  private final Member member = Member.builder()
       .name("test")
       .email("test@example.com")
       .profileImage("test.png")

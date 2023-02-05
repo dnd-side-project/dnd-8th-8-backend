@@ -35,10 +35,12 @@ class JwtTokenProviderTest {
       "testSecretKeytestSecretKeytestSecretKeytestSecretKeytestSecretKeytestSecretKeytestSecretKey";
   private static final Collection<? extends GrantedAuthority> authority = Collections.singletonList(
       new SimpleGrantedAuthority("ROLE_USER"));
+
   private final RefreshTokenRedisRepository refreshTokenRedisRepository = mock(
       RefreshTokenRedisRepository.class);
-  CustomUserDetails customUserDetailsObject = new CustomUserDetails(1L, "test@test.com",
+  private final CustomUserDetails customUserDetailsObject = new CustomUserDetails(1L, "test@test.com",
       OAuth2Provider.GOOGLE, Role.USER, authority);
+
   private JwtTokenProvider jwtTokenProvider;
   private SecretKey secretKey;
   private Authentication authentication;
