@@ -43,6 +43,10 @@ public class Member extends BaseTimeEntity {
   @Enumerated(value = EnumType.STRING)
   private OAuth2Provider oauth2Provider;
 
+  @Column(length = 10)
+  @Enumerated(value = EnumType.STRING)
+  private Gender gender;
+
   @Builder
   public Member(
       String name,
