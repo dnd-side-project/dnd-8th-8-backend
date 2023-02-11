@@ -1,6 +1,5 @@
 package com.dnd.wedding.global.exception;
 
-import com.dnd.wedding.domain.oauth.exception.BadRequestException;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
