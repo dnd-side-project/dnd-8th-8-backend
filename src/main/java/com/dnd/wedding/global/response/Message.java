@@ -1,8 +1,9 @@
 package com.dnd.wedding.global.response;
 
 import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class Message {
 
   private Status status;
