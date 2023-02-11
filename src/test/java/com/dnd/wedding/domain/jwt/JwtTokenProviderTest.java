@@ -91,7 +91,7 @@ class JwtTokenProviderTest {
     given(authentication.getPrincipal()).willReturn(customUserDetailsObject);
     given(refreshTokenRedisRepository.save(new RefreshToken())).willReturn(new RefreshToken());
 
-    ResponseCookie cookie = ResponseCookie.from("cookie", refreshToken2)
+    ResponseCookie cookie1 = ResponseCookie.from("cookie", refreshToken2)
         .httpOnly(true)
         .secure(true)
         .sameSite("dnd")
@@ -101,7 +101,7 @@ class JwtTokenProviderTest {
 
     jwtTokenProvider.addRefreshToken(authentication, response);
 
-    verify(response).addHeader("Set-Cookie", cookie.toString());
+    verify(response).addHeader("Set-Cookie", cookie1.toString());
   }
 
   @Test
