@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -22,11 +21,13 @@ class ControllerExceptionHandlerTest {
   @Test
   @DisplayName("NotFoundException 발생 테스트")
   void notFoundExceptionTest() {
-    NotFoundException ex = new NotFoundException();
+    String message = "Not Found";
+    NotFoundException ex = new NotFoundException(message);
     ResponseEntity<ErrorMessage> error = controllerExceptionHandler.notFoundException(ex);
 
     assertNotNull(error);
     assertEquals(HttpStatus.NOT_FOUND, error.getStatusCode());
+    assertEquals(message, error.getBody().getMessage());
   }
 
   @Test
