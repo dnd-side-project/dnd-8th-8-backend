@@ -14,7 +14,6 @@ public class ControllerExceptionHandler {
   public ResponseEntity<ErrorMessage> notFoundException(NotFoundException ex) {
     ErrorMessage message = new ErrorMessage(
         HttpStatus.NOT_FOUND.value(),
-        new Date(),
         ex.getMessage());
 
     return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
