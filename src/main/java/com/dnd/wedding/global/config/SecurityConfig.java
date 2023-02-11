@@ -3,6 +3,7 @@ package com.dnd.wedding.global.config;
 import com.dnd.wedding.domain.jwt.JwtAuthenticationEntryPoint;
 import com.dnd.wedding.domain.jwt.JwtAuthenticationFilter;
 import com.dnd.wedding.domain.jwt.handler.JwtAccessDeniedHandler;
+import com.dnd.wedding.domain.jwt.repository.CookieAuthorizationRequestRepository;
 import com.dnd.wedding.domain.oauth.handler.OAuth2AuthenticationFailureHandler;
 import com.dnd.wedding.domain.oauth.handler.OAuth2AuthenticationSuccessHandler;
 import com.dnd.wedding.domain.oauth.service.CustomOAuth2UserService;
@@ -25,6 +26,7 @@ public class SecurityConfig {
   private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
   private final OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
   private final OAuth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler;
+  private final CookieAuthorizationRequestRepository cookieAuthorizationRequestRepository;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -44,6 +46,7 @@ public class SecurityConfig {
         .oauth2Login()
         .authorizationEndpoint()
         .baseUri("/oauth2/authorization")
+        .authorizationRequestRepository(cookieAuthorizationRequestRepository)
         .and()
         .userInfoEndpoint()
         .userService(customOauth2UserService)
