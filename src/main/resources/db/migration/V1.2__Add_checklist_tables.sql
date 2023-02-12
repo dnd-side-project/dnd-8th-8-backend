@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `checklist_sub_item` (
     `created_at` datetime(6),
     `modified_at` datetime(6),
     `contents` varchar(64) NOT NULL,
-    `is_checked` bit NOT NULL DEFAULT false,
+    `is_checked` tinyint(1) DEFAULT 0,
     `checklist_item_id` bigint NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`checklist_item_id`) REFERENCES checklist_item (id))

@@ -13,7 +13,9 @@ import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 
+@DynamicInsert
 @Getter
 @RequiredArgsConstructor
 @Entity
