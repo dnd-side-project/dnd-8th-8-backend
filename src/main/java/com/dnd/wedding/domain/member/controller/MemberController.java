@@ -26,7 +26,7 @@ public class MemberController {
       @AuthenticationPrincipal CustomUserDetails user) {
     Gender gender = memberService.getGender(user.getId())
         .orElseThrow(() -> new NotFoundException("성별 정보가 존재하지 않습니다."));
-    return ResponseEntity.ok(new SuccessResponse(gender));
+    return ResponseEntity.ok(SuccessResponse.builder().data(gender).build());
   }
 
   @GetMapping("/profile")
@@ -34,6 +34,6 @@ public class MemberController {
       @AuthenticationPrincipal CustomUserDetails user) {
     String profileImage = memberService.getProfileImage(user.getId())
         .orElseThrow(() -> new NotFoundException("프로필 이미지가 존재하지 않습니다."));
-    return ResponseEntity.ok(new SuccessResponse(profileImage));
+    return ResponseEntity.ok(SuccessResponse.builder().data(profileImage).build());
   }
 }
