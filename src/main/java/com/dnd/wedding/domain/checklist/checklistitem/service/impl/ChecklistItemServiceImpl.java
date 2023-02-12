@@ -106,4 +106,15 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
     }
     return checklistSubItem.get().update(checklistSubItemDto);
   }
+
+  @Transactional
+  @Override
+  public boolean withdrawChecklistItem(Long id) {
+    return checklistItemRepository.findById(id)
+        .map(checklistItem -> {
+          checklistItemRepository.delete(checklistItem);
+          return true;
+        })
+        .orElse(false);
+  }
 }

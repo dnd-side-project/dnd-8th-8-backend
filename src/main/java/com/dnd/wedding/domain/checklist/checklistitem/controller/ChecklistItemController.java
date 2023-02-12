@@ -18,6 +18,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -75,5 +76,16 @@ public class ChecklistItemController {
     ChecklistItemResponseDto modifiedChecklistItem =
         checklistItemService.modifyChecklistItem(checklistItem.getId(), requestDto);
     return ResponseEntity.ok().body(SuccessResponse.builder().data(modifiedChecklistItem).build());
+  }
+
+  @DeleteMapping("{item-id}")
+  public ResponseEntity<SuccessResponse> withdrawChecklistItem(
+      @PathVariable("item-id") Long checklistItemId,
+      @AuthenticationPrincipal CustomUserDetails user) {
+    boolean result = checklistItemService.withdrawChecklistItem(checklistItemId);
+    if (!result) {
+      throw new NotFoundException("존재하지 않는 체크리스트입니다.");
+    }
+    return ResponseEntity.ok(SuccessResponse.builder().message("체크리스트 삭제 성공").build());
   }
 }

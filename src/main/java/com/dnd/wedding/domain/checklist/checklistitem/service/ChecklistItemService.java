@@ -31,4 +31,6 @@ public interface ChecklistItemService {
   List<ChecklistSubItem> updateChecklistSubItems(List<ChecklistSubItemDto> checklistSubItemDtoList);
 
   ChecklistSubItem updateChecklistSubItem(ChecklistSubItemDto checklistSubItemDto);
+
+  boolean withdrawChecklistItem(Long id);
 }
