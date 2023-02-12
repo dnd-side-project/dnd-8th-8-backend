@@ -11,4 +11,6 @@ public interface ChecklistSubItemService {
 
   ChecklistSubItem saveChecklistSubItem(ChecklistSubItemDto checklistSubItemDto,
       ChecklistItem checklistItem);
+
+  boolean withdrawChecklistSubItem(Long subItemId, Long itemId);
 }
