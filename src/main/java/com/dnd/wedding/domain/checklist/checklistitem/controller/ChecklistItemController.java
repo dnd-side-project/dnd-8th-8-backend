@@ -11,6 +11,7 @@ import com.dnd.wedding.domain.checklist.checklistsubitem.service.ChecklistSubIte
 import com.dnd.wedding.domain.member.Member;
 import com.dnd.wedding.domain.member.MemberRepository;
 import com.dnd.wedding.domain.oauth.CustomUserDetails;
+import com.dnd.wedding.global.exception.InternalServerErrorException;
 import com.dnd.wedding.global.exception.NotFoundException;
 import com.dnd.wedding.global.response.SuccessResponse;
 import jakarta.validation.Valid;
@@ -62,6 +63,9 @@ public class ChecklistItemController {
     ChecklistItemResponseDto savedChecklistItem = checklistItemService.createChecklistItem(
         requestDto, member);
 
+    if (savedChecklistItem == null) {
+      throw new InternalServerErrorException("체크리스트 아이템 등록에 실패하였습니다.");
+    }
     return ResponseEntity.ok().body(SuccessResponse.builder().data(savedChecklistItem).build());
   }
 
@@ -71,7 +75,7 @@ public class ChecklistItemController {
       @Valid @RequestBody ChecklistItemRequestDto requestDto,
       @AuthenticationPrincipal CustomUserDetails user) {
     ChecklistItem checklistItem = checklistItemService.findChecklistItemById(checklistItemId)
-        .orElseThrow(() -> new NotFoundException("not found checklist item"));
+        .orElseThrow(() -> new NotFoundException("존재하지 않는 체크리스트입니다."));
 
     ChecklistItemResponseDto modifiedChecklistItem =
         checklistItemService.modifyChecklistItem(checklistItem.getId(), requestDto);
