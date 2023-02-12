@@ -15,9 +15,17 @@ class SuccessResponseTest {
   }
 
   @Test
+  @DisplayName("메시지 확인")
+  void checkMessage() {
+    SuccessResponse successResponse = SuccessResponse.builder().message("message").build();
+    assertEquals(successResponse.getStatus(), 200);
+    assertEquals(successResponse.getMessage(), "message");
+  }
+
+  @Test
   @DisplayName("데이터 확인")
   void checkData() {
-    SuccessResponse successResponse = new SuccessResponse("test");
+    SuccessResponse successResponse = SuccessResponse.builder().data("test").build();
     assertEquals(successResponse.getStatus(), 200);
     assertEquals(successResponse.getData(), "test");
   }
