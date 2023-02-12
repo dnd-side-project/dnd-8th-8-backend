@@ -18,4 +18,9 @@ public class MemberServiceImpl implements MemberService {
   public Optional<Gender> getGender(Long id) {
     return memberRepository.findById(id).map(Member::getGender);
   }
+
+  @Override
+  public Optional<String> getProfileImage(Long id) {
+    return memberRepository.findById(id).map(Member::getProfileImage);
+  }
 }

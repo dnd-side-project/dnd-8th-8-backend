@@ -6,4 +6,6 @@ import java.util.Optional;
 public interface MemberService {
 
   Optional<Gender> getGender(Long id);
+
+  Optional<String> getProfileImage(Long id);
 }
