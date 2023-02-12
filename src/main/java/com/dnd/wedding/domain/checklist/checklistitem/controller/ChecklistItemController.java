@@ -82,7 +82,7 @@ public class ChecklistItemController {
     return ResponseEntity.ok().body(SuccessResponse.builder().data(modifiedChecklistItem).build());
   }
 
-  @DeleteMapping("{item-id}")
+  @DeleteMapping("/{item-id}")
   public ResponseEntity<SuccessResponse> withdrawChecklistItem(
       @PathVariable("item-id") Long checklistItemId,
       @AuthenticationPrincipal CustomUserDetails user) {
