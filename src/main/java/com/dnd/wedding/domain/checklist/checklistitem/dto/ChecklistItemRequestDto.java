@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateChecklistItemDto {
+public class ChecklistItemRequestDto {
 
   private ChecklistItemDto checklistItem;
   private List<ChecklistSubItemDto> checklistSubItems;

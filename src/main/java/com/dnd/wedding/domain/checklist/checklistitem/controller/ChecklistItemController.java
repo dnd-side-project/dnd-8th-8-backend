@@ -2,8 +2,8 @@ package com.dnd.wedding.domain.checklist.checklistitem.controller;
 
 import com.dnd.wedding.domain.checklist.checklistitem.ChecklistItem;
 import com.dnd.wedding.domain.checklist.checklistitem.dto.ChecklistItemDto;
+import com.dnd.wedding.domain.checklist.checklistitem.dto.ChecklistItemRequestDto;
 import com.dnd.wedding.domain.checklist.checklistitem.dto.ChecklistItemResponseDto;
-import com.dnd.wedding.domain.checklist.checklistitem.dto.CreateChecklistItemDto;
 import com.dnd.wedding.domain.checklist.checklistitem.service.ChecklistItemService;
 import com.dnd.wedding.domain.checklist.checklistsubitem.ChecklistSubItem;
 import com.dnd.wedding.domain.checklist.checklistsubitem.dto.ChecklistSubItemDto;
@@ -21,6 +21,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,7 +54,7 @@ public class ChecklistItemController {
 
   @PostMapping()
   public ResponseEntity<SuccessResponse> createChecklistItem(
-      @Valid @RequestBody CreateChecklistItemDto requestDto,
+      @Valid @RequestBody ChecklistItemRequestDto requestDto,
       @AuthenticationPrincipal CustomUserDetails user) {
     Member member = memberRepository.findById(user.getId())
         .orElseThrow(() -> new NotFoundException("not found user"));
@@ -61,5 +62,18 @@ public class ChecklistItemController {
         requestDto, member);
 
     return ResponseEntity.ok().body(SuccessResponse.builder().data(savedChecklistItem).build());
+  }
+
+  @PutMapping("/{item-id}")
+  public ResponseEntity<SuccessResponse> modifyChecklistItem(
+      @PathVariable("item-id") Long checklistItemId,
+      @Valid @RequestBody ChecklistItemRequestDto requestDto,
+      @AuthenticationPrincipal CustomUserDetails user) {
+    ChecklistItem checklistItem = checklistItemService.findChecklistItemById(checklistItemId)
+        .orElseThrow(() -> new NotFoundException("not found checklist item"));
+
+    ChecklistItemResponseDto modifiedChecklistItem =
+        checklistItemService.modifyChecklistItem(checklistItem.getId(), requestDto);
+    return ResponseEntity.ok().body(SuccessResponse.builder().data(modifiedChecklistItem).build());
   }
 }

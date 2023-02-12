@@ -1,5 +1,6 @@
 package com.dnd.wedding.domain.checklist.checklistitem;
 
+import com.dnd.wedding.domain.checklist.checklistitem.dto.ChecklistItemDto;
 import com.dnd.wedding.domain.common.BaseTimeEntity;
 import com.dnd.wedding.domain.member.Member;
 import jakarta.persistence.Column;
@@ -48,5 +49,15 @@ public class ChecklistItem extends BaseTimeEntity {
     this.place = place;
     this.memo = memo;
     this.member = member;
+  }
+
+  public ChecklistItem update(ChecklistItemDto checklistItemDto) {
+    this.title = checklistItemDto.getTitle();
+    this.checkDate = checklistItemDto.getCheckDate();
+    this.time = checklistItemDto.getTime();
+    this.place = checklistItemDto.getPlace();
+    this.memo = checklistItemDto.getMemo();
+
+    return this;
   }
 }
