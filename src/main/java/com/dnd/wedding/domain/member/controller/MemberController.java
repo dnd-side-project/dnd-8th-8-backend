@@ -36,4 +36,14 @@ public class MemberController {
         .orElseThrow(() -> new NotFoundException("프로필 이미지가 존재하지 않습니다."));
     return ResponseEntity.ok(SuccessResponse.builder().data(profileImage).build());
   }
+
+  @DeleteMapping
+  public ResponseEntity<SuccessResponse> withdraw(
+      @AuthenticationPrincipal CustomUserDetails user) {
+    boolean result = memberService.withdraw(user.getId());
+    if (!result) {
+      throw new NotFoundException("회원 정보가 존재하지 않습니다.");
+    }
+    return ResponseEntity.ok(SuccessResponse.builder().message("회원 탈퇴 성공").build());
+  }
 }

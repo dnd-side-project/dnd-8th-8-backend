@@ -23,4 +23,14 @@ public class MemberServiceImpl implements MemberService {
   public Optional<String> getProfileImage(Long id) {
     return memberRepository.findById(id).map(Member::getProfileImage);
   }
+
+  @Override
+  public boolean withdraw(Long id) {
+    return memberRepository.findById(id)
+        .map(member -> {
+          memberRepository.delete(member);
+          return true;
+        })
+        .orElse(false);
+  }
 }

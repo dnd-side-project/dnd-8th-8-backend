@@ -8,4 +8,6 @@ public interface MemberService {
   Optional<Gender> getGender(Long id);
 
   Optional<String> getProfileImage(Long id);
+
+  boolean withdraw(Long id);
 }
