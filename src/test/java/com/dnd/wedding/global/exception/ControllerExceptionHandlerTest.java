@@ -3,7 +3,7 @@ package com.dnd.wedding.global.exception;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.dnd.wedding.global.response.ErrorMessage;
+import com.dnd.wedding.global.response.ErrorResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ class ControllerExceptionHandlerTest {
   void notFoundExceptionTest() {
     String message = "Not Found";
     NotFoundException ex = new NotFoundException(message);
-    ResponseEntity<ErrorMessage> error = controllerExceptionHandler.notFoundException(ex);
+    ResponseEntity<ErrorResponse> error = controllerExceptionHandler.notFoundException(ex);
 
     assertNotNull(error);
     assertEquals(HttpStatus.NOT_FOUND, error.getStatusCode());
@@ -36,7 +36,7 @@ class ControllerExceptionHandlerTest {
   void badRequestExceptionTest() {
     String message = "Bad request";
     BadRequestException ex = new BadRequestException(message);
-    ResponseEntity<ErrorMessage> error = controllerExceptionHandler.badRequestException(ex);
+    ResponseEntity<ErrorResponse> error = controllerExceptionHandler.badRequestException(ex);
 
     assertNotNull(error);
     assertEquals(HttpStatus.BAD_REQUEST, error.getStatusCode());
@@ -48,7 +48,7 @@ class ControllerExceptionHandlerTest {
   void unauthorizedUserExceptionTest() {
     String message = "Unauthorized user";
     UnauthorizedException ex = new UnauthorizedException(message);
-    ResponseEntity<ErrorMessage> error = controllerExceptionHandler.unauthorizedUserException(ex);
+    ResponseEntity<ErrorResponse> error = controllerExceptionHandler.unauthorizedUserException(ex);
 
     assertNotNull(error);
     assertEquals(HttpStatus.UNAUTHORIZED, error.getStatusCode());
@@ -60,7 +60,7 @@ class ControllerExceptionHandlerTest {
   void forbiddenRequestExceptionTest() {
     String message = "Forbidden";
     ForbiddenException ex = new ForbiddenException(message);
-    ResponseEntity<ErrorMessage> error = controllerExceptionHandler.forbiddenRequestException(ex);
+    ResponseEntity<ErrorResponse> error = controllerExceptionHandler.forbiddenRequestException(ex);
 
     assertNotNull(error);
     assertEquals(HttpStatus.FORBIDDEN, error.getStatusCode());
@@ -72,7 +72,7 @@ class ControllerExceptionHandlerTest {
   void internalServerErrorExceptionTest() {
     String message = "Internal Server Error";
     InternalServerErrorException ex = new InternalServerErrorException(message);
-    ResponseEntity<ErrorMessage> error = controllerExceptionHandler.internalServerErrorException(
+    ResponseEntity<ErrorResponse> error = controllerExceptionHandler.internalServerErrorException(
         ex);
 
     assertNotNull(error);

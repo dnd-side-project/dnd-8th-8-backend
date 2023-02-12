@@ -1,6 +1,6 @@
 package com.dnd.wedding.global.exception;
 
-import com.dnd.wedding.global.response.ErrorMessage;
+import com.dnd.wedding.global.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ControllerExceptionHandler {
 
   @ExceptionHandler(NotFoundException.class)
-  public ResponseEntity<ErrorMessage> notFoundException(NotFoundException ex) {
-    ErrorMessage message = new ErrorMessage(
+  public ResponseEntity<ErrorResponse> notFoundException(NotFoundException ex) {
+    ErrorResponse message = new ErrorResponse(
         HttpStatus.NOT_FOUND.value(),
         ex.getMessage());
 
@@ -19,8 +19,8 @@ public class ControllerExceptionHandler {
   }
 
   @ExceptionHandler(BadRequestException.class)
-  public ResponseEntity<ErrorMessage> badRequestException(BadRequestException ex) {
-    ErrorMessage message = new ErrorMessage(
+  public ResponseEntity<ErrorResponse> badRequestException(BadRequestException ex) {
+    ErrorResponse message = new ErrorResponse(
         HttpStatus.BAD_REQUEST.value(),
         ex.getMessage());
 
@@ -28,8 +28,8 @@ public class ControllerExceptionHandler {
   }
 
   @ExceptionHandler(UnauthorizedException.class)
-  public ResponseEntity<ErrorMessage> unauthorizedUserException(UnauthorizedException ex) {
-    ErrorMessage message = new ErrorMessage(
+  public ResponseEntity<ErrorResponse> unauthorizedUserException(UnauthorizedException ex) {
+    ErrorResponse message = new ErrorResponse(
         HttpStatus.UNAUTHORIZED.value(),
         ex.getMessage());
 
@@ -37,8 +37,8 @@ public class ControllerExceptionHandler {
   }
 
   @ExceptionHandler(ForbiddenException.class)
-  public ResponseEntity<ErrorMessage> forbiddenRequestException(ForbiddenException ex) {
-    ErrorMessage message = new ErrorMessage(
+  public ResponseEntity<ErrorResponse> forbiddenRequestException(ForbiddenException ex) {
+    ErrorResponse message = new ErrorResponse(
         HttpStatus.FORBIDDEN.value(),
         ex.getMessage());
 
@@ -46,9 +46,9 @@ public class ControllerExceptionHandler {
   }
 
   @ExceptionHandler(InternalServerErrorException.class)
-  public ResponseEntity<ErrorMessage> internalServerErrorException(
+  public ResponseEntity<ErrorResponse> internalServerErrorException(
       InternalServerErrorException ex) {
-    ErrorMessage message = new ErrorMessage(
+    ErrorResponse message = new ErrorResponse(
         HttpStatus.INTERNAL_SERVER_ERROR.value(),
         ex.getMessage());
 
