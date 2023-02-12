@@ -1,4 +1,4 @@
-package com.dnd.wedding.global.exception;
+package com.dnd.wedding.global.response;
 
 import lombok.Getter;
 
