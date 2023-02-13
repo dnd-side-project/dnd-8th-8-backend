@@ -35,6 +35,16 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
+  public void putProfileImage(Long id, String url) {
+    Optional<Member> member = memberRepository.findById(id);
+
+    member.ifPresent(m -> {
+      m.setProfileImage(url);
+      memberRepository.save(m);
+    });
+  }
+
+  @Override
   public boolean withdraw(Long id) {
     return memberRepository.findById(id)
         .map(member -> {

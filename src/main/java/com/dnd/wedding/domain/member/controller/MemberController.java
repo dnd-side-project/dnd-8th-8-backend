@@ -2,6 +2,7 @@ package com.dnd.wedding.domain.member.controller;
 
 import com.dnd.wedding.domain.member.Gender;
 import com.dnd.wedding.domain.member.dto.GenderDto;
+import com.dnd.wedding.domain.member.dto.ProfileImageDto;
 import com.dnd.wedding.domain.member.service.MemberService;
 import com.dnd.wedding.domain.oauth.CustomUserDetails;
 import com.dnd.wedding.global.exception.NotFoundException;
@@ -12,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,6 +47,13 @@ public class MemberController {
     String profileImage = memberService.getProfileImage(user.getId())
         .orElseThrow(() -> new NotFoundException("프로필 이미지가 존재하지 않습니다."));
     return ResponseEntity.ok(SuccessResponse.builder().data(profileImage).build());
+  }
+
+  @PutMapping("/profile")
+  public ResponseEntity<SuccessResponse> putProfileImage(
+      @AuthenticationPrincipal CustomUserDetails user, @RequestBody ProfileImageDto dto) {
+    memberService.putProfileImage(user.getId(), dto.getUrl());
+    return ResponseEntity.ok(SuccessResponse.builder().message("프로필 이미지 등록 성공").build());
   }
 
   @DeleteMapping

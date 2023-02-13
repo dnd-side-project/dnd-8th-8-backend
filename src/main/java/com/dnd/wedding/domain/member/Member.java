@@ -66,6 +66,10 @@ public class Member extends BaseTimeEntity {
     this.gender = gender;
   }
 
+  public void setProfileImage(String profileImage) {
+    this.profileImage = profileImage;
+  }
+
   public Member update(String name, String profileImage) {
     this.name = name;
     this.profileImage = profileImage;

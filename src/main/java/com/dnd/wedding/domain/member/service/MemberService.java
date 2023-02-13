@@ -11,5 +11,7 @@ public interface MemberService {
 
   Optional<String> getProfileImage(Long id);
 
+  void putProfileImage(Long id, String url);
+
   boolean withdraw(Long id);
 }
