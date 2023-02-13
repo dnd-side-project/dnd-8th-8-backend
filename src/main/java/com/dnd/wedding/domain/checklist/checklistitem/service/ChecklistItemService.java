@@ -1,9 +1,8 @@
 package com.dnd.wedding.domain.checklist.checklistitem.service;
 
 import com.dnd.wedding.domain.checklist.checklistitem.ChecklistItem;
+import com.dnd.wedding.domain.checklist.checklistitem.dto.ChecklistItemApiDto;
 import com.dnd.wedding.domain.checklist.checklistitem.dto.ChecklistItemDto;
-import com.dnd.wedding.domain.checklist.checklistitem.dto.ChecklistItemRequestDto;
-import com.dnd.wedding.domain.checklist.checklistitem.dto.ChecklistItemResponseDto;
 import com.dnd.wedding.domain.checklist.checklistsubitem.ChecklistSubItem;
 import com.dnd.wedding.domain.checklist.checklistsubitem.dto.ChecklistSubItemDto;
 import com.dnd.wedding.domain.member.Member;
@@ -15,7 +14,7 @@ public interface ChecklistItemService {
 
   Optional<ChecklistItem> findChecklistItemById(Long id);
 
-  ChecklistItemResponseDto createChecklistItem(ChecklistItemRequestDto dto, Member member);
+  ChecklistItemApiDto createChecklistItem(ChecklistItemApiDto dto, Member member);
 
   ChecklistItem saveChecklistItem(ChecklistItemDto checklistItemDto, Member member);
 
@@ -23,7 +22,7 @@ public interface ChecklistItemService {
       List<ChecklistSubItemDto> checklistSubItemDtoList,
       ChecklistItem checklistItem);
 
-  ChecklistItemResponseDto modifyChecklistItem(Long checklistItemId, ChecklistItemRequestDto dto);
+  ChecklistItemApiDto modifyChecklistItem(Long checklistItemId, ChecklistItemApiDto dto);
 
   ChecklistItem updateChecklistItem(Long checklistItemId, ChecklistItemDto checklistItemDto);
 

@@ -1,9 +1,8 @@
 package com.dnd.wedding.domain.checklist.checklistitem.controller;
 
 import com.dnd.wedding.domain.checklist.checklistitem.ChecklistItem;
+import com.dnd.wedding.domain.checklist.checklistitem.dto.ChecklistItemApiDto;
 import com.dnd.wedding.domain.checklist.checklistitem.dto.ChecklistItemDto;
-import com.dnd.wedding.domain.checklist.checklistitem.dto.ChecklistItemRequestDto;
-import com.dnd.wedding.domain.checklist.checklistitem.dto.ChecklistItemResponseDto;
 import com.dnd.wedding.domain.checklist.checklistitem.service.ChecklistItemService;
 import com.dnd.wedding.domain.checklist.checklistsubitem.ChecklistSubItem;
 import com.dnd.wedding.domain.checklist.checklistsubitem.dto.ChecklistSubItemDto;
@@ -48,7 +47,7 @@ public class ChecklistItemController {
         checklistItem.getId());
     List<ChecklistSubItemDto> checklistSubItemDtoList = checklistSubItems.stream()
         .map(ChecklistSubItemDto::new).toList();
-    ChecklistItemResponseDto responseData = new ChecklistItemResponseDto(
+    ChecklistItemApiDto responseData = new ChecklistItemApiDto(
         new ChecklistItemDto(checklistItem), checklistSubItemDtoList);
 
     return ResponseEntity.ok().body(SuccessResponse.builder().data(responseData).build());
@@ -56,11 +55,11 @@ public class ChecklistItemController {
 
   @PostMapping()
   public ResponseEntity<SuccessResponse> createChecklistItem(
-      @Valid @RequestBody ChecklistItemRequestDto requestDto,
+      @Valid @RequestBody ChecklistItemApiDto requestDto,
       @AuthenticationPrincipal CustomUserDetails user) {
     Member member = memberRepository.findById(user.getId())
         .orElseThrow(() -> new NotFoundException("not found user"));
-    ChecklistItemResponseDto savedChecklistItem = checklistItemService.createChecklistItem(
+    ChecklistItemApiDto savedChecklistItem = checklistItemService.createChecklistItem(
         requestDto, member);
 
     if (savedChecklistItem == null) {
@@ -72,12 +71,12 @@ public class ChecklistItemController {
   @PutMapping("/{item-id}")
   public ResponseEntity<SuccessResponse> modifyChecklistItem(
       @PathVariable("item-id") Long checklistItemId,
-      @Valid @RequestBody ChecklistItemRequestDto requestDto,
+      @Valid @RequestBody ChecklistItemApiDto requestDto,
       @AuthenticationPrincipal CustomUserDetails user) {
     ChecklistItem checklistItem = checklistItemService.findChecklistItemById(checklistItemId)
         .orElseThrow(() -> new NotFoundException("존재하지 않는 체크리스트입니다."));
 
-    ChecklistItemResponseDto modifiedChecklistItem =
+    ChecklistItemApiDto modifiedChecklistItem =
         checklistItemService.modifyChecklistItem(checklistItem.getId(), requestDto);
     return ResponseEntity.ok().body(SuccessResponse.builder().data(modifiedChecklistItem).build());
   }

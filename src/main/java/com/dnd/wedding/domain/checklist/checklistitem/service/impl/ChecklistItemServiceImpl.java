@@ -1,9 +1,8 @@
 package com.dnd.wedding.domain.checklist.checklistitem.service.impl;
 
 import com.dnd.wedding.domain.checklist.checklistitem.ChecklistItem;
+import com.dnd.wedding.domain.checklist.checklistitem.dto.ChecklistItemApiDto;
 import com.dnd.wedding.domain.checklist.checklistitem.dto.ChecklistItemDto;
-import com.dnd.wedding.domain.checklist.checklistitem.dto.ChecklistItemRequestDto;
-import com.dnd.wedding.domain.checklist.checklistitem.dto.ChecklistItemResponseDto;
 import com.dnd.wedding.domain.checklist.checklistitem.repository.ChecklistItemRepository;
 import com.dnd.wedding.domain.checklist.checklistitem.service.ChecklistItemService;
 import com.dnd.wedding.domain.checklist.checklistsubitem.ChecklistSubItem;
@@ -31,7 +30,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
 
   @Transactional
   @Override
-  public ChecklistItemResponseDto createChecklistItem(ChecklistItemRequestDto dto, Member member) {
+  public ChecklistItemApiDto createChecklistItem(ChecklistItemApiDto dto, Member member) {
     ChecklistItem savedChecklistItem = saveChecklistItem(dto.getChecklistItem(), member);
     List<ChecklistSubItem> savedChecklistSubItems = saveChecklistSubItems(
         dto.getChecklistSubItems(), savedChecklistItem);
@@ -39,7 +38,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
     List<ChecklistSubItemDto> checklistSubItemDtoList = savedChecklistSubItems.stream()
         .map(ChecklistSubItemDto::new).toList();
 
-    return new ChecklistItemResponseDto(
+    return new ChecklistItemApiDto(
         new ChecklistItemDto(savedChecklistItem), checklistSubItemDtoList);
   }
 
@@ -61,8 +60,8 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
 
   @Transactional
   @Override
-  public ChecklistItemResponseDto modifyChecklistItem(Long checklistItemId,
-      ChecklistItemRequestDto dto) {
+  public ChecklistItemApiDto modifyChecklistItem(Long checklistItemId,
+      ChecklistItemApiDto dto) {
     ChecklistItem modifiedChecklistItem = updateChecklistItem(
         checklistItemId, dto.getChecklistItem());
     List<ChecklistSubItem> modifiedChecklistSubItems = updateChecklistSubItems(
@@ -71,7 +70,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
     List<ChecklistSubItemDto> checklistSubItemDtoList = modifiedChecklistSubItems.stream()
         .map(ChecklistSubItemDto::new).toList();
 
-    return new ChecklistItemResponseDto(
+    return new ChecklistItemApiDto(
         new ChecklistItemDto(modifiedChecklistItem), checklistSubItemDtoList);
   }
 
