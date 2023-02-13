@@ -10,7 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +17,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "MEMBER")
 public class Member extends BaseTimeEntity {
 
@@ -49,12 +47,14 @@ public class Member extends BaseTimeEntity {
 
   @Builder
   public Member(
+      Long id,
       String name,
       String email,
       String profileImage,
       Role role,
       OAuth2Provider oauth2Provider
   ) {
+    this.id = id;
     this.name = name;
     this.email = email;
     this.profileImage = profileImage;
