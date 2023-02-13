@@ -12,6 +12,7 @@ import com.dnd.wedding.global.exception.BadRequestException;
 import com.dnd.wedding.global.exception.InternalServerErrorException;
 import com.dnd.wedding.global.exception.NotFoundException;
 import com.dnd.wedding.global.response.SuccessResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,7 +36,7 @@ public class ChecklistSubItemController {
   @PostMapping()
   public ResponseEntity<SuccessResponse> createChecklistSubItem(
       @PathVariable("item-id") Long checklistItemId,
-      @RequestBody ChecklistSubItemDto checklistSubItemDto,
+      @Valid @RequestBody ChecklistSubItemDto checklistSubItemDto,
       @AuthenticationPrincipal CustomUserDetails user) {
     ChecklistItem checklistItem = checklistItemService.findChecklistItemById(checklistItemId)
         .orElseThrow(() -> new NotFoundException(NOT_FOUND_CHECKLIST_MESSAGE));
@@ -69,7 +70,7 @@ public class ChecklistSubItemController {
   public ResponseEntity<SuccessResponse> modifyChecklistSubItem(
       @PathVariable("item-id") Long checklistItemId,
       @PathVariable("sub-item-id") Long checklistSubItemId,
-      @RequestBody UpdateChecklistSubItemDto checklistSubItemDto,
+      @Valid @RequestBody UpdateChecklistSubItemDto checklistSubItemDto,
       @AuthenticationPrincipal CustomUserDetails user
   ) {
     ChecklistItem checklistItem = checklistItemService.findChecklistItemById(checklistItemId)
