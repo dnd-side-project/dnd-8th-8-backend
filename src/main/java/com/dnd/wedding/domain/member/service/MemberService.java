@@ -7,6 +7,8 @@ public interface MemberService {
 
   Optional<Gender> getGender(Long id);
 
+  void postGender(Long id, Gender gender);
+
   Optional<String> getProfileImage(Long id);
 
   boolean withdraw(Long id);

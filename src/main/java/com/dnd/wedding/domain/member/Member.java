@@ -62,6 +62,10 @@ public class Member extends BaseTimeEntity {
     this.oauth2Provider = oauth2Provider;
   }
 
+  public void setGender(Gender gender) {
+    this.gender = gender;
+  }
+
   public Member update(String name, String profileImage) {
     this.name = name;
     this.profileImage = profileImage;

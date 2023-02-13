@@ -20,6 +20,16 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
+  public void postGender(Long id, Gender gender) {
+    Optional<Member> member = memberRepository.findById(id);
+
+    member.ifPresent(m -> {
+      m.setGender(gender);
+      memberRepository.save(m);
+    });
+  }
+
+  @Override
   public Optional<String> getProfileImage(Long id) {
     return memberRepository.findById(id).map(Member::getProfileImage);
   }
