@@ -17,7 +17,7 @@ public class WithMockOAuth2UserSecurityContextFactory implements
     SecurityContext context = SecurityContextHolder.createEmptyContext();
 
     CustomUserDetails principal =
-        CustomUserDetails.create(Member.builder()
+        new CustomUserDetails(Member.builder()
             .id(1L)
             .name("testName")
             .email("test@test.com")

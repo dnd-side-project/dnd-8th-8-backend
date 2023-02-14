@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import com.dnd.wedding.domain.jwt.JwtTokenProvider;
 import com.dnd.wedding.domain.jwt.RefreshToken;
 import com.dnd.wedding.domain.jwt.repository.RefreshTokenRedisRepository;
+import com.dnd.wedding.domain.member.Member;
 import com.dnd.wedding.domain.member.Role;
 import com.dnd.wedding.domain.oauth.CustomUserDetails;
 import com.dnd.wedding.domain.oauth.OAuth2Provider;
@@ -33,8 +34,14 @@ class JwtServiceTest {
   private final String cookieKey = "testCookieKey";
   private final String oldRefreshToken = "testRefreshToken";
   private final String oldAccessToken = "testAccessToken";
-  private final CustomUserDetails customUserDetails = new CustomUserDetails(1L, "test@test.com",
-      OAuth2Provider.GOOGLE, Role.USER, authority);
+  private final CustomUserDetails customUserDetails = new CustomUserDetails(
+      Member.builder()
+          .id(1L)
+          .email("test@test.com")
+          .name("test")
+          .role(Role.USER)
+          .oauth2Provider(OAuth2Provider.GOOGLE)
+          .build());
 
   private RefreshTokenRedisRepository refreshTokenRedisRepository;
   private JwtTokenProvider tokenProvider;
