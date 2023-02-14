@@ -76,4 +76,13 @@ public class ControllerExceptionHandler {
 
     return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
   }
+
+  @ExceptionHandler(Exception.class)
+  protected ResponseEntity<ErrorResponse> handleException(Exception ex) {
+    ErrorResponse message = new ErrorResponse(
+        HttpStatus.INTERNAL_SERVER_ERROR.value(),
+        ex.getMessage());
+
+    return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 }
