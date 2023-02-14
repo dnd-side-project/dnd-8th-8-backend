@@ -79,4 +79,14 @@ class ControllerExceptionHandlerTest {
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, error.getStatusCode());
     assertEquals(message, error.getBody().getMessage());
   }
+
+  @Test
+  @DisplayName("Exception 발생 테스트")
+  void exceptionTest() {
+    ResponseEntity<ErrorResponse> error = controllerExceptionHandler.handleException(
+        new Exception());
+
+    assertNotNull(error);
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, error.getStatusCode());
+  }
 }
