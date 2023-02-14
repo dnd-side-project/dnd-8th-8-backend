@@ -9,6 +9,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import com.dnd.wedding.domain.jwt.repository.RefreshTokenRedisRepository;
+import com.dnd.wedding.domain.member.Member;
 import com.dnd.wedding.domain.member.Role;
 import com.dnd.wedding.domain.oauth.CustomUserDetails;
 import com.dnd.wedding.domain.oauth.OAuth2Provider;
@@ -16,8 +17,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import javax.crypto.SecretKey;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,21 +25,23 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseCookie;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 class JwtTokenProviderTest {
 
   private static final String SECRET =
       "testSecretKeytestSecretKeytestSecretKeytestSecretKeytestSecretKeytestSecretKeytestSecretKey";
-  private static final Collection<? extends GrantedAuthority> authority = Collections.singletonList(
-      new SimpleGrantedAuthority("ROLE_USER"));
 
   private final RefreshTokenRedisRepository refreshTokenRedisRepository = mock(
       RefreshTokenRedisRepository.class);
-  private final CustomUserDetails customUserDetailsObject = new CustomUserDetails(1L,
-      "test@test.com",
-      OAuth2Provider.GOOGLE, Role.USER, authority);
+  private final CustomUserDetails customUserDetailsObject =
+      new CustomUserDetails(
+          Member.builder()
+              .id(1L)
+              .email("test@test.com")
+              .name("test")
+              .role(Role.USER)
+              .oauth2Provider(OAuth2Provider.GOOGLE)
+              .build());
 
   private JwtTokenProvider jwtTokenProvider;
   private SecretKey secretKey;

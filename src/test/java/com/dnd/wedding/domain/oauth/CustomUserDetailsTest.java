@@ -25,9 +25,13 @@ class CustomUserDetailsTest {
   private static final Collection<? extends GrantedAuthority> authority = Collections.singletonList(
       new SimpleGrantedAuthority("ROLE_USER"));
 
-  private static final CustomUserDetails customUserDetailsObject = new CustomUserDetails(1L,
-      "test@test.com",
-      OAuth2Provider.GOOGLE, Role.USER, authority);
+  private static final CustomUserDetails customUserDetailsObject = new CustomUserDetails(Member.builder()
+      .id(1L)
+      .email("test@test.com")
+      .name("test")
+      .role(Role.USER)
+      .oauth2Provider(OAuth2Provider.GOOGLE)
+      .build());
 
   private static MockedStatic<CustomUserDetails> customUserDetails;
 
@@ -51,13 +55,11 @@ class CustomUserDetailsTest {
   @Test
   @DisplayName("Member 객체를 통한 CustomUserDetails 생성")
   void createCustomUserDetailsByMember() {
-    CustomUserDetails customUserDetails1 = CustomUserDetails.create(member);
+    CustomUserDetails customUserDetails1 = new CustomUserDetails(member);
 
     assertNotNull(customUserDetails1);
     assertEquals(member.getId(), customUserDetails1.getId());
     assertEquals(member.getEmail(), customUserDetails1.getEmail());
-    assertEquals(member.getOauth2Provider(), customUserDetails1.getOauth2Provider());
-    assertEquals(Role.USER, customUserDetails1.getRole());
     assertEquals(authority, customUserDetails1.getAuthorities());
   }
 
@@ -65,13 +67,11 @@ class CustomUserDetailsTest {
   @DisplayName("Member 객체와 Attributes를 통한 CustomUserDetails 생성")
   void createCustomUserDetailsByMemberAndAttributes() {
     Map<String, Object> attributes = new HashMap<>();
-    CustomUserDetails customUserDetails1 = CustomUserDetails.create(member, attributes);
+    CustomUserDetails customUserDetails1 = new CustomUserDetails(member, attributes);
 
     assertNotNull(customUserDetails1);
     assertEquals(member.getId(), customUserDetails1.getId());
     assertEquals(member.getEmail(), customUserDetails1.getEmail());
-    assertEquals(member.getOauth2Provider(), customUserDetails1.getOauth2Provider());
-    assertEquals(Role.USER, customUserDetails1.getRole());
     assertEquals(authority, customUserDetails1.getAuthorities());
     assertEquals(attributes, customUserDetails1.getAttributes());
   }
@@ -83,9 +83,15 @@ class CustomUserDetailsTest {
   }
 
   @Test
-  @DisplayName("Email 조회")
+  @DisplayName("Username 조회")
   void getUsername() {
-    assertEquals("test@test.com", customUserDetailsObject.getUsername());
+    assertEquals("test", customUserDetailsObject.getUsername());
+  }
+
+  @Test
+  @DisplayName("Email 조회")
+  void getEmail() {
+    assertEquals("test@test.com", customUserDetailsObject.getEmail());
   }
 
   @Test
@@ -128,7 +134,7 @@ class CustomUserDetailsTest {
   @DisplayName("Attributes 조회")
   void getAttributes() {
     Map<String, Object> attributes = new HashMap<>();
-    CustomUserDetails customUserDetails1 = CustomUserDetails.create(member, attributes);
+    CustomUserDetails customUserDetails1 = new CustomUserDetails(member, attributes);
 
     assertEquals(attributes, customUserDetails1.getAttributes());
   }

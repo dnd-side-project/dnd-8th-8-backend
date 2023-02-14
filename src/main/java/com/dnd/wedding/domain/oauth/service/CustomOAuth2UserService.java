@@ -25,8 +25,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
   private final MemberRepository memberRepository;
 
   @Override
-  public OAuth2User loadUser(OAuth2UserRequest userRequest)
-      throws OAuth2AuthenticationException {
+  public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
     OAuth2User oauth2User = super.loadUser(userRequest);
 
     try {
@@ -59,7 +58,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     } else {
       member = createMember(userInfo, oauth2Provider);
     }
-    return CustomUserDetails.create(member, oauth2User.getAttributes());
+    return new CustomUserDetails(member, oauth2User.getAttributes());
   }
 
   private Member createMember(OAuth2UserInfo userInfo, OAuth2Provider oauth2Provider) {
