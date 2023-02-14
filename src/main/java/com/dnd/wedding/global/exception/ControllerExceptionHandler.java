@@ -3,6 +3,7 @@ package com.dnd.wedding.global.exception;
 import com.dnd.wedding.global.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -53,5 +54,16 @@ public class ControllerExceptionHandler {
         ex.getMessage());
 
     return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+  public ResponseEntity<ErrorResponse> httpRequestMethodNotSupportedException(
+      final HttpRequestMethodNotSupportedException ex) {
+
+    ErrorResponse message = new ErrorResponse(
+        HttpStatus.NOT_FOUND.value(),
+        ex.getMessage());
+
+    return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
   }
 }
