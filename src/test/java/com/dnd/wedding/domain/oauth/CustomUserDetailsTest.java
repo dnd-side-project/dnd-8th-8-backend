@@ -22,16 +22,18 @@ import org.springframework.test.context.event.annotation.BeforeTestClass;
 
 class CustomUserDetailsTest {
 
-  private static final Collection<? extends GrantedAuthority> authority = Collections.singletonList(
-      new SimpleGrantedAuthority("ROLE_USER"));
+  private static final Collection<? extends GrantedAuthority> authority =
+      Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
 
-  private static final CustomUserDetails customUserDetailsObject = new CustomUserDetails(Member.builder()
-      .id(1L)
-      .email("test@test.com")
-      .name("test")
-      .role(Role.USER)
-      .oauth2Provider(OAuth2Provider.GOOGLE)
-      .build());
+  private static final CustomUserDetails customUserDetailsObject =
+      new CustomUserDetails(Member.builder()
+        .id(1L)
+        .email("test@test.com")
+        .name("test")
+        .role(Role.USER)
+        .oauth2Provider(OAuth2Provider.GOOGLE)
+        .build()
+      );
 
   private static MockedStatic<CustomUserDetails> customUserDetails;
 
