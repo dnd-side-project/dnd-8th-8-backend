@@ -72,7 +72,7 @@ public class ControllerExceptionHandler {
   protected ResponseEntity<ErrorResponse> handleNotBlankValid(MethodArgumentNotValidException ex) {
     ErrorResponse message = new ErrorResponse(
         HttpStatus.BAD_REQUEST.value(),
-        ex.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+        ex.getAllErrors().get(0).getDefaultMessage());
 
     return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
   }
