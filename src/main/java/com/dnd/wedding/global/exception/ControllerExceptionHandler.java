@@ -4,6 +4,7 @@ import com.dnd.wedding.global.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -65,5 +66,14 @@ public class ControllerExceptionHandler {
         ex.getMessage());
 
     return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  protected ResponseEntity<ErrorResponse> handleNotBlankValid(MethodArgumentNotValidException ex) {
+    ErrorResponse message = new ErrorResponse(
+        HttpStatus.BAD_REQUEST.value(),
+        ex.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+
+    return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
   }
 }
