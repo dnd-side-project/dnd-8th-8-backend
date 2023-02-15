@@ -41,7 +41,8 @@ public class ChecklistItem extends BaseTimeEntity {
 
   @Builder
   public ChecklistItem(
-      Long id, String title, LocalDate checkDate, LocalTime time, String place, String memo, Member member
+      Long id, String title, LocalDate checkDate, LocalTime time, String place, String memo,
+      Member member
   ) {
     this.id = id;
     this.title = title;
