@@ -35,6 +35,7 @@ public class ChecklistItemDto {
 
   public ChecklistItem toEntity(Member member) {
     return ChecklistItem.builder()
+        .id(this.id)
         .title(this.title)
         .checkDate(this.checkDate)
         .time(this.time)

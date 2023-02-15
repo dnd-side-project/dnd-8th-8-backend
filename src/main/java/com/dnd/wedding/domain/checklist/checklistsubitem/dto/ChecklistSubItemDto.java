@@ -25,6 +25,7 @@ public class ChecklistSubItemDto {
 
   public ChecklistSubItem toEntity(ChecklistItem checklistItem) {
     return ChecklistSubItem.builder()
+        .id(this.id)
         .contents(this.contents)
         .isChecked(this.isChecked)
         .checklistItem(checklistItem)

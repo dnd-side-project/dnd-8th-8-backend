@@ -37,8 +37,9 @@ public class ChecklistSubItem extends BaseTimeEntity {
 
   @Builder
   public ChecklistSubItem(
-      String contents, Boolean isChecked, ChecklistItem checklistItem
+      Long id, String contents, Boolean isChecked, ChecklistItem checklistItem
   ) {
+    this.id = id;
     this.contents = contents;
     this.isChecked = isChecked;
     this.checklistItem = checklistItem;
