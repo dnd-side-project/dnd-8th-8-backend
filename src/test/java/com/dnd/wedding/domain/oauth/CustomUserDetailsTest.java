@@ -87,7 +87,7 @@ class CustomUserDetailsTest {
   @Test
   @DisplayName("Username 조회")
   void getUsername() {
-    assertEquals("test", customUserDetailsObject.getUsername());
+    assertEquals("1", customUserDetailsObject.getUsername());
   }
 
   @Test
@@ -129,7 +129,7 @@ class CustomUserDetailsTest {
   @Test
   @DisplayName("Id 조회")
   void getName() {
-    assertEquals(Long.toString(1L), customUserDetailsObject.getName());
+    assertEquals("1", customUserDetailsObject.getName());
   }
 
   @Test
