@@ -21,7 +21,7 @@ public class ChecklistSubItemServiceImpl implements ChecklistSubItemService {
 
   @Override
   public List<ChecklistSubItem> findChecklistSubItems(Long checklistItemId) {
-    return checklistSubItemRepository.findAllByChecklistItem_Id(checklistItemId);
+    return checklistSubItemRepository.findAllByChecklistItemId(checklistItemId);
   }
 
   @Transactional

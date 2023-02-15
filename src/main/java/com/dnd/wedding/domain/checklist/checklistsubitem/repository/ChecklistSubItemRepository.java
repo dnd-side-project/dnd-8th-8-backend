@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ChecklistSubItemRepository extends JpaRepository<ChecklistSubItem, Long> {
 
-  List<ChecklistSubItem> findAllByChecklistItem_Id(Long id);
+  List<ChecklistSubItem> findAllByChecklistItemId(Long id);
 }

@@ -33,7 +33,7 @@ public class ChecklistServiceImpl implements ChecklistService {
   }
 
   public List<ChecklistSubItem> findChecklistSubItem(Long checklistItemId) {
-    return checklistSubItemRepository.findAllByChecklistItem_Id(checklistItemId);
+    return checklistSubItemRepository.findAllByChecklistItemId(checklistItemId);
   }
 
   private ChecklistItemApiDto toDto(ChecklistItem checklistItem,
