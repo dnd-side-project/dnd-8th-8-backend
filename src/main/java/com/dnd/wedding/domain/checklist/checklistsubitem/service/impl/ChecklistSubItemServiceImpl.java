@@ -20,8 +20,10 @@ public class ChecklistSubItemServiceImpl implements ChecklistSubItemService {
   private final ChecklistSubItemRepository checklistSubItemRepository;
 
   @Override
-  public List<ChecklistSubItem> findChecklistSubItems(Long checklistItemId) {
-    return checklistSubItemRepository.findAllByChecklistItemId(checklistItemId);
+  public List<ChecklistSubItemDto> findChecklistSubItems(Long checklistItemId) {
+    List<ChecklistSubItem> checklistSubItems = checklistSubItemRepository.findAllByChecklistItemId(
+        checklistItemId);
+    return checklistSubItems.stream().map(ChecklistSubItemDto::new).toList();
   }
 
   @Transactional

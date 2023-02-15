@@ -4,7 +4,6 @@ import com.dnd.wedding.domain.checklist.checklistitem.ChecklistItem;
 import com.dnd.wedding.domain.checklist.checklistitem.dto.ChecklistItemApiDto;
 import com.dnd.wedding.domain.checklist.checklistitem.dto.ChecklistItemDto;
 import com.dnd.wedding.domain.checklist.checklistitem.service.ChecklistItemService;
-import com.dnd.wedding.domain.checklist.checklistsubitem.ChecklistSubItem;
 import com.dnd.wedding.domain.checklist.checklistsubitem.dto.ChecklistSubItemDto;
 import com.dnd.wedding.domain.checklist.checklistsubitem.service.ChecklistSubItemService;
 import com.dnd.wedding.domain.member.Member;
@@ -43,12 +42,11 @@ public class ChecklistItemController {
     ChecklistItem checklistItem = checklistItemService.findChecklistItemById(checklistItemId)
         .orElseThrow(() -> new NotFoundException("not found checklist item"));
 
-    List<ChecklistSubItem> checklistSubItems = checklistSubItemService.findChecklistSubItems(
+    List<ChecklistSubItemDto> checklistSubItems = checklistSubItemService.findChecklistSubItems(
         checklistItem.getId());
-    List<ChecklistSubItemDto> checklistSubItemDtoList = checklistSubItems.stream()
-        .map(ChecklistSubItemDto::new).toList();
+
     ChecklistItemApiDto responseData = new ChecklistItemApiDto(
-        new ChecklistItemDto(checklistItem), checklistSubItemDtoList);
+        new ChecklistItemDto(checklistItem), checklistSubItems);
 
     return ResponseEntity.ok().body(SuccessResponse.builder().data(responseData).build());
   }
