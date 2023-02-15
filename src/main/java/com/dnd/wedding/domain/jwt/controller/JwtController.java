@@ -2,6 +2,7 @@ package com.dnd.wedding.domain.jwt.controller;
 
 import com.dnd.wedding.domain.jwt.service.JwtService;
 import com.dnd.wedding.global.exception.UnauthorizedException;
+import com.dnd.wedding.global.response.SuccessResponse;
 import io.lettuce.core.dynamic.annotation.Param;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,7 +20,7 @@ public class JwtController {
   private final JwtService jwtService;
 
   @GetMapping("/refresh")
-  public ResponseEntity<String> refreshToken(HttpServletRequest request,
+  public ResponseEntity<SuccessResponse> refreshToken(HttpServletRequest request,
       HttpServletResponse response, @Param("accessToken") String accessToken) {
 
     String newToken = jwtService.refreshToken(request, response, accessToken);
@@ -28,6 +29,8 @@ public class JwtController {
       throw new UnauthorizedException("Failed renew access token");
     }
 
-    return ResponseEntity.ok().body(newToken);
+    return ResponseEntity.ok().body(
+        SuccessResponse.builder().data(newToken).build()
+    );
   }
 }
