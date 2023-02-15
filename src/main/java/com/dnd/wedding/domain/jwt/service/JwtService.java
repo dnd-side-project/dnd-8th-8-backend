@@ -4,7 +4,7 @@ import com.dnd.wedding.domain.jwt.JwtTokenProvider;
 import com.dnd.wedding.domain.jwt.RefreshToken;
 import com.dnd.wedding.domain.jwt.repository.RefreshTokenRedisRepository;
 import com.dnd.wedding.domain.oauth.CustomUserDetails;
-import com.dnd.wedding.global.config.util.CookieUtil;
+import com.dnd.wedding.global.util.CookieUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

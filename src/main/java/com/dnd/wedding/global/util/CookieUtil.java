@@ -1,4 +1,4 @@
-package com.dnd.wedding.global.config.util;
+package com.dnd.wedding.global.util;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
