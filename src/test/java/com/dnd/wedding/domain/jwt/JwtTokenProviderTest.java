@@ -13,6 +13,7 @@ import com.dnd.wedding.domain.member.Member;
 import com.dnd.wedding.domain.member.Role;
 import com.dnd.wedding.domain.oauth.CustomUserDetails;
 import com.dnd.wedding.domain.oauth.OAuth2Provider;
+import com.dnd.wedding.domain.oauth.service.CustomUserDetailsService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -25,6 +26,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseCookie;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 class JwtTokenProviderTest {
 
@@ -33,6 +35,9 @@ class JwtTokenProviderTest {
 
   private final RefreshTokenRedisRepository refreshTokenRedisRepository = mock(
       RefreshTokenRedisRepository.class);
+
+  private final UserDetailsService userDetailsService = mock(CustomUserDetailsService.class);
+
   private final CustomUserDetails customUserDetailsObject =
       new CustomUserDetails(
           Member.builder()
@@ -50,7 +55,7 @@ class JwtTokenProviderTest {
   @BeforeEach
   void init() {
     this.jwtTokenProvider = new JwtTokenProvider(SECRET, "cookie",
-        this.refreshTokenRedisRepository);
+        this.refreshTokenRedisRepository, this.userDetailsService);
     this.authentication = mock(Authentication.class);
     this.secretKey = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
   }
@@ -108,6 +113,10 @@ class JwtTokenProviderTest {
   @Test
   @DisplayName("accessToken 인증 객체 조회")
   void getAuthenticationByToken() {
+
+    given(userDetailsService.loadUserByUsername("1"))
+        .willReturn(customUserDetailsObject);
+
     Date now = new Date();
     Date validity = new Date(now.getTime() + 1000L * 60 * 60);
 
@@ -130,6 +139,10 @@ class JwtTokenProviderTest {
   @Test
   @DisplayName("만료된 accessToken 인증 객체 조회")
   void getAuthenticationByExpiredToken() {
+
+    given(userDetailsService.loadUserByUsername("1"))
+        .willReturn(customUserDetailsObject);
+
     Date now = new Date();
     Date validity = new Date(now.getTime());
 
@@ -144,6 +157,7 @@ class JwtTokenProviderTest {
 
     Authentication authentication2 = jwtTokenProvider.getAuthentication(token);
     CustomUserDetails principal = (CustomUserDetails) authentication2.getPrincipal();
+
     assertEquals(1, principal.getId());
   }
 
