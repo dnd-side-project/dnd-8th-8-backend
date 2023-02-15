@@ -3,6 +3,7 @@ package com.dnd.wedding.domain.checklist.checklistsubitem.dto;
 import com.dnd.wedding.domain.checklist.checklistitem.ChecklistItem;
 import com.dnd.wedding.domain.checklist.checklistsubitem.ChecklistSubItem;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,5 +31,12 @@ public class ChecklistSubItemDto {
         .isChecked(this.isChecked)
         .checklistItem(checklistItem)
         .build();
+  }
+
+  @Builder
+  public ChecklistSubItemDto(Long id, String contents, Boolean isChecked) {
+    this.id = id;
+    this.contents = contents;
+    this.isChecked = isChecked;
   }
 }

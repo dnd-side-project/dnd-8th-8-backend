@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,5 +44,16 @@ public class ChecklistItemDto {
         .memo(this.memo)
         .member(member)
         .build();
+  }
+
+  @Builder
+  public ChecklistItemDto(Long id, String title, LocalDate checkDate, LocalTime time, String place,
+      String memo) {
+    this.id = id;
+    this.title = title;
+    this.checkDate = checkDate;
+    this.time = time;
+    this.place = place;
+    this.memo = memo;
   }
 }
