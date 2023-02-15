@@ -25,8 +25,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
   private final MemberRepository memberRepository;
 
   @Override
-  public OAuth2User loadUser(OAuth2UserRequest userRequest)
-      throws OAuth2AuthenticationException {
+  public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
     OAuth2User oauth2User = super.loadUser(userRequest);
 
     try {
@@ -39,6 +38,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
   }
 
   private OAuth2User processOAuth2User(OAuth2UserRequest userRequest, OAuth2User oauth2User) {
+
     OAuth2Provider oauth2Provider = OAuth2Provider.valueOf(
         userRequest.getClientRegistration().getRegistrationId().toUpperCase());
     OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2Userinfo(oauth2Provider,
@@ -47,9 +47,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     if (userInfo.getEmail().isEmpty()) {
       throw new OAuthProcessingException("Email not found from OAuth2 provider");
     }
-    Optional<Member> memberOptional = memberRepository.findByEmail(userInfo.getEmail());
-    Member member;
 
+    Optional<Member> memberOptional = memberRepository.findByEmail(userInfo.getEmail());
+
+    Member member;
     if (memberOptional.isPresent()) {
       member = memberOptional.get();
       if (oauth2Provider != member.getOauth2Provider()) {
@@ -59,16 +60,19 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     } else {
       member = createMember(userInfo, oauth2Provider);
     }
-    return CustomUserDetails.create(member, oauth2User.getAttributes());
+
+    return new CustomUserDetails(member, oauth2User.getAttributes());
   }
 
   private Member createMember(OAuth2UserInfo userInfo, OAuth2Provider oauth2Provider) {
-    return memberRepository.save(Member.builder()
+    return memberRepository.save(
+      Member.builder()
         .email(userInfo.getEmail())
         .name(userInfo.getName())
         .profileImage(userInfo.getImageUrl())
         .role(Role.USER)
         .oauth2Provider(oauth2Provider)
-        .build());
+        .build()
+    );
   }
 }

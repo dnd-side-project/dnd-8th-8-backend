@@ -1,6 +1,7 @@
 package com.dnd.wedding.domain.jwt;
 
 import com.dnd.wedding.domain.jwt.repository.RefreshTokenRedisRepository;
+import com.dnd.wedding.domain.member.Member;
 import com.dnd.wedding.domain.oauth.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -109,8 +110,9 @@ public class JwtTokenProvider {
         Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
             .map(SimpleGrantedAuthority::new).toList();
 
-    CustomUserDetails principal = new CustomUserDetails(Long.valueOf(claims.getSubject()), "",
-        null, null, authorities);
+    CustomUserDetails principal = new CustomUserDetails(Member.builder()
+        .id(Long.valueOf(claims.getSubject()))
+        .build());
 
     return new UsernamePasswordAuthenticationToken(principal, "", authorities);
   }
