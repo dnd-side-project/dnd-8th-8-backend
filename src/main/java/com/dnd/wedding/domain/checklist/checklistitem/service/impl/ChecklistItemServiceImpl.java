@@ -78,7 +78,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
   @Override
   public ChecklistItem updateChecklistItem(Long checklistItemId,
       ChecklistItemDto checklistItemDto) {
-    Optional<ChecklistItem> checklistItem = checklistItemRepository.findOneById(
+    Optional<ChecklistItem> checklistItem = checklistItemRepository.findById(
         checklistItemId);
 
     if (checklistItem.isEmpty()) {
@@ -97,7 +97,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
   @Transactional
   @Override
   public ChecklistSubItem updateChecklistSubItem(ChecklistSubItemDto checklistSubItemDto) {
-    Optional<ChecklistSubItem> checklistSubItem = checklistSubItemRepository.findOneById(
+    Optional<ChecklistSubItem> checklistSubItem = checklistSubItemRepository.findById(
         checklistSubItemDto.getId());
 
     if (checklistSubItem.isEmpty()) {
