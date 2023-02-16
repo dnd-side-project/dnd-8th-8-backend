@@ -1,0 +1,10 @@
+== Checklist API
+:doctype: book
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:seclinks:
+
+=== Checklist 조회
+==== GET ->  /api/v1/checklist
+operation::checklist/checklist/[snippets="http-request,http-response,response-fields-data"]

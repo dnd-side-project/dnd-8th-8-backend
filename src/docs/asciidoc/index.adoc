@@ -6,3 +6,4 @@
 :seclinks:
 
 include::api/checklist/checklistItem.adoc[]
+include::api/checklist/checklist.adoc[]
