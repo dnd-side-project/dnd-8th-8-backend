@@ -1,0 +1,18 @@
+== Checklist Sub Item API
+:doctype: book
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:seclinks:
+
+=== Checklist Sub Item 생성
+==== POST ->  /api/v1/checklist/item/{item-id}/sub-item
+operation::checklist/sub-item/checklist-sub-item-create/[snippets="http-request,path-parameters,request-fields,http-response,response-fields-data"]
+
+=== Checklist Sub Item 체크 여부 수정
+==== PUT ->  /api/v1/checklist/item/{item-id}/sub-item/{sub-item-id}
+operation::checklist/sub-item/checklist-sub-item-modify/[snippets="http-request,path-parameters,request-fields,http-response,response-fields-data"]
+
+=== Checklist Sub Item 삭제
+==== DELETE ->  /api/v1/checklist/item/{item-id}/sub-item/{sub-item-id}
+operation::checklist/sub-item/checklist-sub-item-withdraw/[snippets="http-request,path-parameters,http-response"]
