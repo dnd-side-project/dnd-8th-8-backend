@@ -1,7 +1,6 @@
 package com.dnd.wedding.domain.jwt;
 
-import static com.dnd.wedding.global.util.HeaderUtil.parseBearerToken;
-
+import com.dnd.wedding.global.util.HeaderUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,10 +25,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException {
 
-    String token = parseBearerToken(request);
+    String accessToken = HeaderUtil.getAccessToken(request);
 
-    if (StringUtils.hasText(token) && Boolean.TRUE.equals(tokenProvider.validateToken(token))) {
-      Authentication authentication = tokenProvider.getAuthentication(token);
+    if (StringUtils.hasText(accessToken) && Boolean.TRUE.equals(tokenProvider.validateToken(accessToken))) {
+      Authentication authentication = tokenProvider.getAuthentication(accessToken);
       SecurityContextHolder.getContext().setAuthentication(authentication);
       log.debug("save: " + authentication.getName() + "credentials");
     } else {
