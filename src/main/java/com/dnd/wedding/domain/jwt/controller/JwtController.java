@@ -1,5 +1,6 @@
 package com.dnd.wedding.domain.jwt.controller;
 
+import com.dnd.wedding.domain.jwt.dto.AccessTokenResponse;
 import com.dnd.wedding.domain.jwt.service.JwtService;
 import com.dnd.wedding.global.exception.UnauthorizedException;
 import com.dnd.wedding.global.response.SuccessResponse;
@@ -31,7 +32,7 @@ public class JwtController {
     }
 
     return ResponseEntity.ok().body(
-        SuccessResponse.builder().data(newToken).build()
+        SuccessResponse.builder().data(new AccessTokenResponse(newToken)).build()
     );
   }
 }
