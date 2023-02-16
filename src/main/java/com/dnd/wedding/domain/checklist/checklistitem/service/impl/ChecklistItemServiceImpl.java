@@ -32,14 +32,21 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
   @Override
   public ChecklistItemApiDto createChecklistItem(ChecklistItemApiDto dto, Member member) {
     ChecklistItem savedChecklistItem = saveChecklistItem(dto.getChecklistItem(), member);
-    List<ChecklistSubItem> savedChecklistSubItems = saveChecklistSubItems(
-        dto.getChecklistSubItems(), savedChecklistItem);
 
-    List<ChecklistSubItemDto> checklistSubItemDtoList = savedChecklistSubItems.stream()
-        .map(ChecklistSubItemDto::new).toList();
+    if (dto.getChecklistSubItems() != null) {
+      List<ChecklistSubItem> savedChecklistSubItems = saveChecklistSubItems(
+          dto.getChecklistSubItems(), savedChecklistItem);
 
-    return new ChecklistItemApiDto(
-        new ChecklistItemDto(savedChecklistItem), checklistSubItemDtoList);
+      return ChecklistItemApiDto.builder()
+          .checklistItem(new ChecklistItemDto(savedChecklistItem))
+          .checklistSubItems(savedChecklistSubItems.stream()
+              .map(ChecklistSubItemDto::new).toList())
+          .build();
+    }
+
+    return ChecklistItemApiDto.builder()
+        .checklistItem(new ChecklistItemDto(savedChecklistItem))
+        .build();
   }
 
   @Transactional
