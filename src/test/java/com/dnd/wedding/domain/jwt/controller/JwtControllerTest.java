@@ -23,6 +23,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(JwtController.class)
 class JwtControllerTest extends AbstractRestDocsTests {
@@ -37,14 +38,18 @@ class JwtControllerTest extends AbstractRestDocsTests {
   @DisplayName("access token 갱신 성공 시 새로 발급한 token을 전달한다.")
   void refresh() throws Exception {
 
+    // given
     given(jwtService.refreshToken(
         any(HttpServletRequest.class), any(HttpServletResponse.class), eq("accessToken")
     )).willReturn("newAccessToken");
 
-    mockMvc.perform(post("/api/v1/jwt/refresh")
+    // when
+    ResultActions result = mockMvc.perform(post("/api/v1/jwt/refresh")
             .cookie(new Cookie("refresh", "refreshToken"))
-            .header("Authorization", "Bearer " + "accessToken"))
-        .andExpect(status().isOk())
+            .header("Authorization", "Bearer " + "accessToken"));
+
+    // then
+    result.andExpect(status().isOk())
         .andDo(document("jwt/refresh",
             requestCookies(
                 cookieWithName("refresh").description("refresh token")
