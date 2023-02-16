@@ -4,3 +4,5 @@
 :toc: left
 :toclevels: 2
 :seclinks:
+
+include::checklistItem.adoc[]
