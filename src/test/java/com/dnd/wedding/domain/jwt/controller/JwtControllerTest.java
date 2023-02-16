@@ -5,12 +5,12 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.dnd.wedding.docs.springrestdocs.AbstractRestDocsTests;
@@ -37,19 +37,20 @@ class JwtControllerTest extends AbstractRestDocsTests {
   @DisplayName("access token 갱신 성공 시 새로 발급한 token을 전달한다.")
   void refresh() throws Exception {
 
-    Cookie cookie = new Cookie("refresh", "refreshToken");
     given(jwtService.refreshToken(
         any(HttpServletRequest.class), any(HttpServletResponse.class), eq("accessToken")
     )).willReturn("newAccessToken");
 
-    mockMvc.perform(get("/api/v1/jwt/refresh?accessToken=accessToken").cookie(cookie))
+    mockMvc.perform(post("/api/v1/jwt/refresh")
+            .cookie(new Cookie("refresh", "refreshToken"))
+            .header("Authorization", "Bearer " + "accessToken"))
         .andExpect(status().isOk())
         .andDo(document("jwt/refresh",
             requestCookies(
                 cookieWithName("refresh").description("refresh token")
             ),
-            queryParameters(
-                parameterWithName("accessToken").description("갱신할 access token")
+            requestHeaders(
+                headerWithName("Authorization").description("access token")
             ),
             responseFields(
                 fieldWithPath("status").description("응답 상태 코드"),

@@ -11,7 +11,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Log4j2
@@ -27,7 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     String accessToken = HeaderUtil.getAccessToken(request);
 
-    if (StringUtils.hasText(accessToken) && Boolean.TRUE.equals(tokenProvider.validateToken(accessToken))) {
+    if (Boolean.TRUE.equals(tokenProvider.validateToken(accessToken))) {
       Authentication authentication = tokenProvider.getAuthentication(accessToken);
       SecurityContextHolder.getContext().setAuthentication(authentication);
       log.debug("save: " + authentication.getName() + "credentials");
