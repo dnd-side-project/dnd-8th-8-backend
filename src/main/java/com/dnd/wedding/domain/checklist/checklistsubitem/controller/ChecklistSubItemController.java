@@ -45,7 +45,7 @@ public class ChecklistSubItemController {
     ChecklistSubItem checklistSubItem = checklistSubItemService.saveChecklistSubItem(
         checklistSubItemDto, checklistItem);
     if (checklistSubItem == null) {
-      throw new InternalServerErrorException(NOT_FOUND_CHECKLIST_MESSAGE);
+      throw new InternalServerErrorException("체크리스트 서브 아이템 등록에 실패하였습니다.");
     }
     return ResponseEntity.status(HttpStatus.CREATED)
         .body(SuccessResponse.builder().httpStatus(HttpStatus.CREATED).message("체크리스트 서브 아이템 등록 성공")
