@@ -65,7 +65,8 @@ public class ChecklistItemController {
       throw new InternalServerErrorException("체크리스트 아이템 등록에 실패하였습니다.");
     }
     return ResponseEntity.status(HttpStatus.CREATED).body(
-        SuccessResponse.builder().httpStatus(HttpStatus.CREATED).data(savedChecklistItem).build());
+        SuccessResponse.builder().httpStatus(HttpStatus.CREATED).message("체크리스트 아이템 등록 성공")
+            .data(savedChecklistItem).build());
   }
 
   @PutMapping("/{item-id}")
@@ -78,7 +79,8 @@ public class ChecklistItemController {
 
     ChecklistItemApiDto modifiedChecklistItem =
         checklistItemService.modifyChecklistItem(checklistItem.getId(), requestDto);
-    return ResponseEntity.ok().body(SuccessResponse.builder().data(modifiedChecklistItem).build());
+    return ResponseEntity.ok().body(
+        SuccessResponse.builder().message("체크리스트 아이템 수정 성공").data(modifiedChecklistItem).build());
   }
 
   @DeleteMapping("/{item-id}")

@@ -48,7 +48,7 @@ public class ChecklistSubItemController {
       throw new InternalServerErrorException(NOT_FOUND_CHECKLIST_MESSAGE);
     }
     return ResponseEntity.status(HttpStatus.CREATED)
-        .body(SuccessResponse.builder().httpStatus(HttpStatus.CREATED)
+        .body(SuccessResponse.builder().httpStatus(HttpStatus.CREATED).message("체크리스트 서브 아이템 등록 성공")
             .data(new ChecklistSubItemDto(checklistSubItem)).build());
   }
 
@@ -85,6 +85,7 @@ public class ChecklistSubItemController {
       throw new BadRequestException("체크리스트 아이템과 요청한 서브 아이템이 매칭되지 않습니다.");
     }
     return ResponseEntity.ok(
-        SuccessResponse.builder().data(new ChecklistSubItemDto(modifiedChecklistSubItem)).build());
+        SuccessResponse.builder().message("체크리스트 서브 아이템 체크 여부 수정 성공")
+            .data(new ChecklistSubItemDto(modifiedChecklistSubItem)).build());
   }
 }
