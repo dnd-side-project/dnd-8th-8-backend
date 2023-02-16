@@ -15,7 +15,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.dnd.wedding.docs.springrestdocs.AbstractRestDocsTests;
@@ -44,6 +43,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(ChecklistItemController.class)
 class ChecklistItemControllerTest extends AbstractRestDocsTests {
@@ -107,14 +107,17 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
   void getChecklistItemDetail() throws Exception {
     String url = "/api/v1/checklist/item/{item-id}";
 
+    // given
     when(checklistItemService.findChecklistItemById(anyLong())).thenReturn(
         Optional.ofNullable(checklistItem));
-
     when(checklistSubItemService.findChecklistSubItems(anyLong())).thenReturn(
         List.of(checklistSubItemDto1, checklistSubItemDto2));
 
-    mockMvc.perform(get(url, CHECKLIST_ITEM_ID)).andExpect(status().isOk())
-        .andDo(print())
+    // when
+    ResultActions result = mockMvc.perform(get(url, CHECKLIST_ITEM_ID));
+
+    // then
+    result.andExpect(status().isOk())
         .andDo(
             document("checklist/item/checklist-item-detail",
                 pathParameters(
@@ -163,33 +166,57 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
         .oauth2Provider(OAuth2Provider.GOOGLE)
         .build();
 
+    ChecklistItemDto createChecklistItemDto = ChecklistItemDto.builder()
+        .title("title")
+        .checkDate(LocalDate.now())
+        .time(LocalTime.now())
+        .place("place")
+        .memo("memo")
+        .build();
+
+    ChecklistSubItemDto createChecklistSubItemDto1 = ChecklistSubItemDto.builder()
+        .contents("contents 1")
+        .build();
+    ChecklistSubItemDto createChecklistSubItemDto2 = ChecklistSubItemDto.builder()
+        .contents("contents 2")
+        .build();
+
+    ChecklistItemApiDto createChecklistItemApiDto = ChecklistItemApiDto.builder()
+        .checklistItem(createChecklistItemDto)
+        .checklistSubItems(List.of(createChecklistSubItemDto1, createChecklistSubItemDto2))
+        .build();
+
+    // given
     when(memberRepository.findById(anyLong())).thenReturn(Optional.ofNullable(member));
     when(checklistItemService.createChecklistItem(any(ChecklistItemApiDto.class),
         any(Member.class))).thenReturn(checklistItemApiDto);
 
-    mockMvc.perform(post(url)
-            .with(csrf())
-            .accept(MediaType.APPLICATION_JSON)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(checklistItemApiDto)))
-        .andDo(print())
-        .andExpect(status().isCreated())
+    // when
+    ResultActions result = mockMvc.perform(post(url)
+        .with(csrf())
+        .accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(createChecklistItemApiDto)));
+
+    // then
+    result.andExpect(status().isCreated())
         .andDo(
             document("checklist/item/checklist-item-create",
                 requestFields(
                     fieldWithPath("checklistItem.id").ignored(),
-                    fieldWithPath("checklistItem.title").description("등록할 체크리스트 아이템 제목").type(
-                        JsonFieldType.STRING),
+                    fieldWithPath("checklistItem.title").description(
+                        "등록할 체크리스트 아이템 제목 (* required)").type(
+                        JsonFieldType.STRING).optional(),
                     fieldWithPath("checklistItem.checkDate").description(
                         "등록할 체크리스트 아이템 일정 날짜 ex: [yyyy,mm,dd] ").type(
                         JsonFieldType.ARRAY),
                     fieldWithPath("checklistItem.time").description(
                         "등록할 체크리스트 아이템 일정 시간 ex: [hh,mm,ss] ").type(
-                        JsonFieldType.ARRAY).optional(),
+                        JsonFieldType.ARRAY),
                     fieldWithPath("checklistItem.place").description("등록할 체크리스트 아이템 일정 장소").type(
-                        JsonFieldType.STRING).optional(),
+                        JsonFieldType.STRING),
                     fieldWithPath("checklistItem.memo").description("등록할 체크리스트 아이템 메모").type(
-                        JsonFieldType.STRING).optional(),
+                        JsonFieldType.STRING),
                     fieldWithPath("checklistSubItems[].id").ignored(),
                     fieldWithPath("checklistSubItems[].contents").description("등록할 체크리스트 서브 아이템 내용")
                         .type(
@@ -231,19 +258,21 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
   void modifyChecklistItem() throws Exception {
     String url = "/api/v1/checklist/item/{item-id}";
 
+    // given
     when(checklistItemService.findChecklistItemById(anyLong())).thenReturn(
         Optional.ofNullable(checklistItem));
-
     when(checklistItemService.modifyChecklistItem(anyLong(),
         any(ChecklistItemApiDto.class))).thenReturn(checklistItemApiDto);
 
-    mockMvc.perform(put(url, CHECKLIST_ITEM_ID)
-            .with(csrf())
-            .accept(MediaType.APPLICATION_JSON)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(checklistItemApiDto)))
-        .andExpect(status().isOk())
-        .andDo(print())
+    // when
+    ResultActions result = mockMvc.perform(put(url, CHECKLIST_ITEM_ID)
+        .with(csrf())
+        .accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(checklistItemApiDto)));
+
+    // then
+    result.andExpect(status().isOk())
         .andDo(
             document("checklist/item/checklist-item-modify",
                 pathParameters(
@@ -304,9 +333,14 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
   void withdrawChecklistItem() throws Exception {
     String url = "/api/v1/checklist/item/{item-id}";
 
+    // given
     when(checklistItemService.withdrawChecklistItem(anyLong())).thenReturn(true);
-    mockMvc.perform(delete(url, CHECKLIST_ITEM_ID).with(csrf())).andExpect(status().isOk())
-        .andDo(print())
+
+    // when
+    ResultActions result = mockMvc.perform(delete(url, CHECKLIST_ITEM_ID).with(csrf()));
+
+    // then
+    result.andExpect(status().isOk())
         .andDo(
             document("checklist/item/checklist-item-withdraw",
                 pathParameters(

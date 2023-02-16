@@ -7,7 +7,6 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.payload.PayloadDocumentation.beneathPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.dnd.wedding.docs.springrestdocs.AbstractRestDocsTests;
@@ -32,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(ChecklistController.class)
 class ChecklistControllerTest extends AbstractRestDocsTests {
@@ -87,11 +87,15 @@ class ChecklistControllerTest extends AbstractRestDocsTests {
         .oauth2Provider(OAuth2Provider.GOOGLE)
         .build();
 
+    // given
     when(memberRepository.findById(anyLong())).thenReturn(Optional.ofNullable(member));
     when(checklistService.findChecklist(anyLong())).thenReturn(List.of(checklistItemApiDto1));
 
-    mockMvc.perform(get(url)).andExpect(status().isOk())
-        .andDo(print())
+    // when
+    ResultActions result = mockMvc.perform(get(url));
+
+    // then
+    result.andExpect(status().isOk())
         .andDo(
             document("checklist/checklist",
                 responseFields(

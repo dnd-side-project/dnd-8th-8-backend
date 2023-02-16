@@ -14,7 +14,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.dnd.wedding.docs.springrestdocs.AbstractRestDocsTests;
@@ -39,6 +38,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(ChecklistSubItemController.class)
 class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
@@ -88,25 +88,28 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
         .contents("contents")
         .build();
 
+    // given
     when(checklistItemService.findChecklistItemById(anyLong())).thenReturn(
         Optional.ofNullable(checklistItem));
     when(checklistSubItemService.saveChecklistSubItem(any(ChecklistSubItemDto.class),
         any(ChecklistItem.class))).thenReturn(checklistSubItem);
 
-    mockMvc.perform(post(url, CHECKLIST_ITEM_ID)
-            .with(csrf())
-            .accept(MediaType.APPLICATION_JSON)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(createChecklistSubItemDto)))
-        .andExpect(status().isCreated())
-        .andDo(print())
+    // when
+    ResultActions result = mockMvc.perform(post(url, CHECKLIST_ITEM_ID)
+        .with(csrf())
+        .accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(createChecklistSubItemDto)));
+
+    // then
+    result.andExpect(status().isCreated())
         .andDo(
             document("checklist/sub-item/checklist-sub-item-create",
                 pathParameters(
                     parameterWithName("item-id").description("체크리스트 아이템 아이디")
                 ), requestFields(
                     fieldWithPath("id").ignored(),
-                    fieldWithPath("contents").description("등록할 체크리스트 서브 아이템 내용").type(
+                    fieldWithPath("contents").description("등록할 체크리스트 서브 아이템 내용 (* required)").type(
                         JsonFieldType.STRING),
                     fieldWithPath("isChecked").ignored()
                 ),
@@ -132,18 +135,22 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
     UpdateChecklistSubItemDto updateChecklistSubItemDto = UpdateChecklistSubItemDto.builder()
         .isChecked(false)
         .build();
+
+    // given
     when(checklistItemService.findChecklistItemById(anyLong())).thenReturn(
         Optional.ofNullable(checklistItem));
     when(checklistSubItemService.modifyChecklistSubItem(anyLong(),
         anyLong(), any(UpdateChecklistSubItemDto.class))).thenReturn(checklistSubItem);
 
-    mockMvc.perform(put(url, CHECKLIST_ITEM_ID, CHECKLIST_SUB_ITEM_ID)
-            .with(csrf())
-            .accept(MediaType.APPLICATION_JSON)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(updateChecklistSubItemDto)))
-        .andExpect(status().isOk())
-        .andDo(print())
+    // when
+    ResultActions result = mockMvc.perform(put(url, CHECKLIST_ITEM_ID, CHECKLIST_SUB_ITEM_ID)
+        .with(csrf())
+        .accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(updateChecklistSubItemDto)));
+
+    // then
+    result.andExpect(status().isOk())
         .andDo(
             document("checklist/sub-item/checklist-sub-item-modify",
                 pathParameters(
@@ -172,14 +179,17 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
   void withdrawChecklistSubItem() throws Exception {
     String url = "/api/v1/checklist/item/{item-id}/sub-item/{sub-item-id}";
 
+    // given
     when(checklistItemService.findChecklistItemById(anyLong())).thenReturn(
         Optional.ofNullable(checklistItem));
     when(checklistSubItemService.withdrawChecklistSubItem(anyLong(), anyLong())).thenReturn(true);
 
-    mockMvc.perform(delete(url, CHECKLIST_ITEM_ID, CHECKLIST_SUB_ITEM_ID)
-            .with(csrf()))
-        .andExpect(status().isOk())
-        .andDo(print())
+    // when
+    ResultActions result = mockMvc.perform(delete(url, CHECKLIST_ITEM_ID, CHECKLIST_SUB_ITEM_ID)
+        .with(csrf()));
+
+    // then
+    result.andExpect(status().isOk())
         .andDo(
             document("checklist/sub-item/checklist-sub-item-withdraw",
                 pathParameters(
