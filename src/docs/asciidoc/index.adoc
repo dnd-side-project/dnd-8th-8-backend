@@ -5,4 +5,4 @@
 :toclevels: 2
 :seclinks:
 
-include::checklistItem.adoc[]
+include::api/checklist/checklistItem.adoc[]
