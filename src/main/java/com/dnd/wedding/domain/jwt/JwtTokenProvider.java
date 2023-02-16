@@ -1,7 +1,6 @@
 package com.dnd.wedding.domain.jwt;
 
 import com.dnd.wedding.domain.jwt.repository.RefreshTokenRedisRepository;
-import com.dnd.wedding.domain.member.Member;
 import com.dnd.wedding.domain.oauth.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -11,8 +10,6 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 import javax.crypto.SecretKey;
@@ -22,7 +19,8 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 @Log4j2
@@ -36,12 +34,16 @@ public class JwtTokenProvider {
   private final SecretKey secretKey;
   private final RefreshTokenRedisRepository refreshTokenRedisRepository;
 
+  private final UserDetailsService userDetailsService;
+
   public JwtTokenProvider(@Value("${app.auth.token.secret-key}") String secret,
       @Value("${app.auth.token.refresh-cookie-key}") String cookieKey,
-      RefreshTokenRedisRepository refreshTokenRedisRepository) {
+      RefreshTokenRedisRepository refreshTokenRedisRepository,
+      UserDetailsService userDetailsService) {
     this.refreshTokenRedisRepository = refreshTokenRedisRepository;
     this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     this.cookieRefreshTokenKey = cookieKey;
+    this.userDetailsService = userDetailsService;
   }
 
   public String createAccessToken(Authentication authentication) {
@@ -105,16 +107,8 @@ public class JwtTokenProvider {
 
   public Authentication getAuthentication(String accessToken) {
     Claims claims = parseClaims(accessToken);
-
-    Collection<? extends GrantedAuthority> authorities =
-        Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-            .map(SimpleGrantedAuthority::new).toList();
-
-    CustomUserDetails principal = new CustomUserDetails(Member.builder()
-        .id(Long.valueOf(claims.getSubject()))
-        .build());
-
-    return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+    UserDetails userDetails = userDetailsService.loadUserByUsername(claims.getSubject());
+    return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
   }
 
   public Boolean validateToken(String token) {

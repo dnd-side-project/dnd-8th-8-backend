@@ -4,3 +4,5 @@
 :toc: left
 :toclevels: 2
 :seclinks:
+
+include::api/Authorization.adoc[]

@@ -1,4 +1,4 @@
-package com.dnd.wedding.global.config.util;
+package com.dnd.wedding.global.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mockStatic;
