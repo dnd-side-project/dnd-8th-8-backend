@@ -37,6 +37,7 @@ public class SecurityConfig {
 
     http.authorizeHttpRequests()
         .requestMatchers(HttpMethod.GET, "/oauth2/**").permitAll()
+        .requestMatchers(HttpMethod.POST, "/api/v1/jwt/refresh").permitAll()
         .anyRequest().authenticated();
 
     http
