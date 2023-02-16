@@ -7,9 +7,6 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.beneathPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -105,8 +102,6 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
         .andDo(print())
         .andDo(
             document("checklist/sub-item/checklist-sub-item-create",
-                preprocessRequest(prettyPrint()),
-                preprocessResponse(prettyPrint()),
                 pathParameters(
                     parameterWithName("item-id").description("체크리스트 아이템 아이디")
                 ), requestFields(
@@ -151,8 +146,6 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
         .andDo(print())
         .andDo(
             document("checklist/sub-item/checklist-sub-item-modify",
-                preprocessRequest(prettyPrint()),
-                preprocessResponse(prettyPrint()),
                 pathParameters(
                     parameterWithName("item-id").description("체크리스트 아이템 아이디"),
                     parameterWithName("sub-item-id").description("체크리스트 서브 아이템 아이디")
@@ -189,8 +182,6 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
         .andDo(print())
         .andDo(
             document("checklist/sub-item/checklist-sub-item-withdraw",
-                preprocessRequest(prettyPrint()),
-                preprocessResponse(prettyPrint()),
                 pathParameters(
                     parameterWithName("item-id").description("체크리스트 아이템 아이디"),
                     parameterWithName("sub-item-id").description("체크리스트 서브 아이템 아이디")

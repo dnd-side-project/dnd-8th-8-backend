@@ -4,9 +4,6 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.beneathPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -97,8 +94,6 @@ class ChecklistControllerTest extends AbstractRestDocsTests {
         .andDo(print())
         .andDo(
             document("checklist/checklist",
-                preprocessRequest(prettyPrint()),
-                preprocessResponse(prettyPrint()),
                 responseFields(
                     beneathPath("data").withSubsectionId("data"),
                     fieldWithPath("checklistItem.id").description("체크리스트 아이템 아이디").type(

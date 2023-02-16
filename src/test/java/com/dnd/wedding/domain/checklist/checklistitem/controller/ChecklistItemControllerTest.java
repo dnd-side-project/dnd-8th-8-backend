@@ -8,9 +8,6 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.beneathPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -120,8 +117,6 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
         .andDo(print())
         .andDo(
             document("checklist/item/checklist-item-detail",
-                preprocessRequest(prettyPrint()),
-                preprocessResponse(prettyPrint()),
                 pathParameters(
                     parameterWithName("item-id").description("체크리스트 아이템 아이디")
                 ),
@@ -181,8 +176,6 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
         .andExpect(status().isCreated())
         .andDo(
             document("checklist/item/checklist-item-create",
-                preprocessRequest(prettyPrint()),
-                preprocessResponse(prettyPrint()),
                 requestFields(
                     fieldWithPath("checklistItem.id").ignored(),
                     fieldWithPath("checklistItem.title").description("등록할 체크리스트 아이템 제목").type(
@@ -253,8 +246,6 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
         .andDo(print())
         .andDo(
             document("checklist/item/checklist-item-modify",
-                preprocessRequest(prettyPrint()),
-                preprocessResponse(prettyPrint()),
                 pathParameters(
                     parameterWithName("item-id").description("체크리스트 아이템 아이디")
                 ), requestFields(
@@ -318,8 +309,6 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
         .andDo(print())
         .andDo(
             document("checklist/item/checklist-item-withdraw",
-                preprocessRequest(prettyPrint()),
-                preprocessResponse(prettyPrint()),
                 pathParameters(
                     parameterWithName("item-id").description("체크리스트 아이템 아이디")
                 )
