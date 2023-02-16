@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
 
 class SuccessResponseTest {
 
@@ -33,7 +34,7 @@ class SuccessResponseTest {
   @Test
   @DisplayName("데이터 및 메시지 확인")
   void checkDataAndMessage() {
-    SuccessResponse successResponse = new SuccessResponse("success", "test");
+    SuccessResponse successResponse = new SuccessResponse(HttpStatus.OK, "success", "test");
     assertEquals(successResponse.getStatus(), 200);
     assertEquals(successResponse.getMessage(), "success");
     assertEquals(successResponse.getData(), "test");
