@@ -21,6 +21,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.dnd.wedding.docs.springrestdocs.AbstractRestDocsTests;
 import com.dnd.wedding.domain.checklist.checklistitem.ChecklistItem;
 import com.dnd.wedding.domain.checklist.checklistitem.dto.ChecklistItemApiDto;
 import com.dnd.wedding.domain.checklist.checklistitem.dto.ChecklistItemDto;
@@ -43,23 +44,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureRestDocs
 @ExtendWith(RestDocumentationExtension.class)
 @WebMvcTest(ChecklistItemController.class)
-class ChecklistItemControllerTest {
+class ChecklistItemControllerTest extends AbstractRestDocsTests {
 
   static final Long CHECKLIST_ITEM_ID = 1L;
-  @Autowired
-  MockMvc mockMvc;
 
   @MockBean
   ChecklistItemService checklistItemService;

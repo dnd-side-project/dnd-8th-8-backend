@@ -39,14 +39,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureRestDocs
 @ExtendWith(RestDocumentationExtension.class)
@@ -56,8 +54,6 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
   static final Long CHECKLIST_ITEM_ID = 1L;
   static final Long CHECKLIST_SUB_ITEM_ID = 1L;
 
-  @Autowired
-  MockMvc mockMvc;
   @MockBean
   ChecklistItemService checklistItemService;
   @MockBean

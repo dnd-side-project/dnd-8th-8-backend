@@ -46,8 +46,6 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(ChecklistController.class)
 class ChecklistControllerTest extends AbstractRestDocsTests {
 
-  @Autowired
-  MockMvc mockMvc;
   @MockBean
   ChecklistService checklistService;
   @MockBean
