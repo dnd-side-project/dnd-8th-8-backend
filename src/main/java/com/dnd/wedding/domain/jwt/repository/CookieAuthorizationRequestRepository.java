@@ -1,6 +1,6 @@
 package com.dnd.wedding.domain.jwt.repository;
 
-import com.dnd.wedding.global.config.util.CookieUtil;
+import com.dnd.wedding.global.util.CookieUtil;
 import com.nimbusds.oauth2.sdk.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

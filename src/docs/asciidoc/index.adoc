@@ -5,6 +5,8 @@
 :toclevels: 2
 :seclinks:
 
+include::api/Authorization.adoc[]
+
 include::api/checklist/checklist.adoc[]
 include::api/checklist/checklistItem.adoc[]
 include::api/checklist/checklistSubItem.adoc[]

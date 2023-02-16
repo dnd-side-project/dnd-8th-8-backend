@@ -1,5 +1,6 @@
 package com.dnd.wedding.domain.jwt;
 
+import com.dnd.wedding.global.util.HeaderUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,7 +11,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Log4j2
@@ -18,18 +18,16 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-  public static final String AUTHORIZATION_HEADER = "Authorization";
   private final JwtTokenProvider tokenProvider;
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-      FilterChain filterChain)
-      throws ServletException, IOException {
+      FilterChain filterChain) throws ServletException, IOException {
 
-    String token = parseBearerToken(request);
+    String accessToken = HeaderUtil.getAccessToken(request);
 
-    if (StringUtils.hasText(token) && Boolean.TRUE.equals(tokenProvider.validateToken(token))) {
-      Authentication authentication = tokenProvider.getAuthentication(token);
+    if (Boolean.TRUE.equals(tokenProvider.validateToken(accessToken))) {
+      Authentication authentication = tokenProvider.getAuthentication(accessToken);
       SecurityContextHolder.getContext().setAuthentication(authentication);
       log.debug("save: " + authentication.getName() + "credentials");
     } else {
@@ -37,14 +35,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     filterChain.doFilter(request, response);
-  }
-
-  private String parseBearerToken(HttpServletRequest request) {
-    String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-
-    if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-      return bearerToken.substring(7);
-    }
-    return null;
   }
 }
