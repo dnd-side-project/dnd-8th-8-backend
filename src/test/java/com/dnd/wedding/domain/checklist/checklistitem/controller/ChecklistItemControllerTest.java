@@ -283,7 +283,8 @@ class ChecklistItemControllerTest {
                     fieldWithPath("checklistSubItems[].contents").description("수정할 체크리스트 서브 아이템 내용")
                         .type(
                             JsonFieldType.STRING),
-                    fieldWithPath("checklistSubItems[].isChecked").description("수정할 체크리스트 서브 아이템 체크 여부")
+                    fieldWithPath("checklistSubItems[].isChecked").description(
+                        "수정할 체크리스트 서브 아이템 체크 여부")
                 ),
                 responseFields(
                     beneathPath("data").withSubsectionId("data"),
