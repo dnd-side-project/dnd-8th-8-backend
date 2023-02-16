@@ -14,6 +14,7 @@ import com.dnd.wedding.global.exception.NotFoundException;
 import com.dnd.wedding.global.response.SuccessResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -46,8 +47,9 @@ public class ChecklistSubItemController {
     if (checklistSubItem == null) {
       throw new InternalServerErrorException(NOT_FOUND_CHECKLIST_MESSAGE);
     }
-    return ResponseEntity.ok()
-        .body(SuccessResponse.builder().data(new ChecklistSubItemDto(checklistSubItem)).build());
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(SuccessResponse.builder().httpStatus(HttpStatus.CREATED)
+            .data(new ChecklistSubItemDto(checklistSubItem)).build());
   }
 
   @DeleteMapping("/{sub-item-id}")
