@@ -7,6 +7,7 @@ import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWit
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -39,7 +40,7 @@ class JwtControllerTest extends AbstractRestDocsTests {
   JwtService jwtService;
 
   @Test
-  @DisplayName("access token 갱신 성공 시 새로 발급한 token을 전달한다.")
+  @DisplayName("Access Token 재발급")
   void refresh() throws Exception {
 
     // given
@@ -55,17 +56,13 @@ class JwtControllerTest extends AbstractRestDocsTests {
     // then
     result.andExpect(status().isOk())
         .andDo(document("jwt/refresh",
-            requestCookies(
-                cookieWithName(REFRESH_TOKEN_NAME).description("refresh token")
-            ),
-            requestHeaders(
-                headerWithName(HttpHeaders.AUTHORIZATION).description("access token")
-            ),
+            requestCookies(cookieWithName(REFRESH_TOKEN_NAME).description("재발급할 리프레시 토큰")),
+            requestHeaders(headerWithName(HttpHeaders.AUTHORIZATION).description("재발급할 액세스 토큰")),
             responseFields(
                 fieldWithPath("status").description("응답 상태 코드"),
                 fieldWithPath("message").description("응답 메시지"),
                 fieldWithPath("data").description("응답 데이터"),
-                fieldWithPath("data.accessToken").description("새로 발급한 access token")
+                fieldWithPath("data.accessToken").description("재발급한 액세스 토큰")
             )
         ));
   }
