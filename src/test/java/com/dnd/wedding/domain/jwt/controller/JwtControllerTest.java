@@ -55,7 +55,8 @@ class JwtControllerTest extends AbstractRestDocsTests {
             responseFields(
                 fieldWithPath("status").description("응답 상태 코드"),
                 fieldWithPath("message").description("응답 메시지"),
-                fieldWithPath("data").description("응답 데이터")
+                fieldWithPath("data").description("응답 데이터"),
+                fieldWithPath("data.accessToken").description("새로 발급한 access token")
             )
         ));
   }
