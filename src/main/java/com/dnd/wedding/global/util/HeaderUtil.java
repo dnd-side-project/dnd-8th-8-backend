@@ -11,7 +11,7 @@ public class HeaderUtil {
     throw new IllegalStateException("Utility class");
   }
 
-  public static String parseBearerToken(HttpServletRequest request) {
+  public static String getAccessToken(HttpServletRequest request) {
     String bearerToken = request.getHeader(HEADER_AUTHORIZATION);
 
     if (bearerToken.startsWith(TOKEN_PREFIX)) {
