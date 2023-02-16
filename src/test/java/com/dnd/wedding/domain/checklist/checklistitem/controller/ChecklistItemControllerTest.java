@@ -127,7 +127,7 @@ class ChecklistItemControllerTest {
     mockMvc.perform(get(url, CHECKLIST_ITEM_ID)).andExpect(status().isOk())
         .andDo(print())
         .andDo(
-            document("checklist-item-detail",
+            document("checklist/item/checklist-item-detail",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
                 pathParameters(
@@ -188,7 +188,7 @@ class ChecklistItemControllerTest {
         .andDo(print())
         .andExpect(status().isCreated())
         .andDo(
-            document("checklist-item-create",
+            document("checklist/item/checklist-item-create",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
                 requestFields(
@@ -260,7 +260,7 @@ class ChecklistItemControllerTest {
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(
-            document("checklist-item-modify",
+            document("checklist/item/checklist-item-modify",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
                 pathParameters(
@@ -325,7 +325,7 @@ class ChecklistItemControllerTest {
     mockMvc.perform(delete(url, CHECKLIST_ITEM_ID).with(csrf())).andExpect(status().isOk())
         .andDo(print())
         .andDo(
-            document("checklist-item-withdraw",
+            document("checklist/item/checklist-item-withdraw",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
                 pathParameters(

@@ -7,16 +7,16 @@
 
 === Checklist Item 생성
 ==== POST ->  /api/v1/checklist/item
-operation::checklist-item-create/[snippets="http-request,request-fields,http-response,response-fields-data"]
+operation::checklist/item/checklist-item-create/[snippets="http-request,request-fields,http-response,response-fields-data"]
 
 === Checklist Item 상세 조회
 ==== GET ->  /api/v1/checklist/item/{item-id}
-operation::checklist-item-detail/[snippets="http-request,path-parameters,http-response,response-fields-data"]
+operation::checklist/item/checklist-item-detail/[snippets="http-request,path-parameters,http-response,response-fields-data"]
 
 === Checklist Item 수정
 ==== PUT ->  /api/v1/checklist/item/{item-id}
-operation::checklist-item-modify/[snippets="http-request,path-parameters,request-fields,http-response,response-fields-data"]
+operation::checklist/item/checklist-item-modify/[snippets="http-request,path-parameters,request-fields,http-response,response-fields-data"]
 
 === Checklist Item 삭제
 ==== DELETE ->  /api/v1/checklist/item/{item-id}
-operation::checklist-item-withdraw/[snippets="http-request,path-parameters,http-response"]
+operation::checklist/item/checklist-item-withdraw/[snippets="http-request,path-parameters,http-response"]
