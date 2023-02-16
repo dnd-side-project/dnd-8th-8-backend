@@ -3,7 +3,6 @@ package com.dnd.wedding.domain.checklist.checklistitem.dto;
 import com.dnd.wedding.domain.checklist.checklistitem.ChecklistItem;
 import com.dnd.wedding.domain.member.Member;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import lombok.Builder;
@@ -19,7 +18,6 @@ public class ChecklistItemDto {
   private Long id;
   @NotBlank
   private String title;
-  @NotNull
   private LocalDate checkDate;
   private LocalTime time;
   private String place;

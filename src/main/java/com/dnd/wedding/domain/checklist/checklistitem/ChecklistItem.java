@@ -27,7 +27,7 @@ public class ChecklistItem extends BaseTimeEntity {
   private Long id;
   @Column(length = 64, nullable = false)
   private String title;
-  @Column(nullable = false)
+  @Column
   private LocalDate checkDate;
   @Column
   private LocalTime time;
