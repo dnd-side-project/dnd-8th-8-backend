@@ -52,4 +52,27 @@ class MemberControllerTest extends AbstractRestDocsTests {
             )
         ));
   }
+
+  @Test
+  @DisplayName("프로필 이미지 조회 테스트")
+  @WithMockOAuth2User
+  void getProfileImage() throws Exception {
+
+    // given
+    given(memberService.getProfileImage(anyLong()))
+        .willReturn(Optional.of("https://image.storage.com/profile/1"));
+
+    // when
+    ResultActions result = mockMvc.perform(get("/api/v1/user/profile"));
+
+    // then
+    result.andExpect(status().isOk())
+        .andDo(document("member/get-profile",
+            responseFields(
+                fieldWithPath("status").description("응답 상태 코드"),
+                fieldWithPath("message").description("응답 메시지"),
+                fieldWithPath("data.url").description("프로필 이미지 URL")
+            )
+        ));
+  }
 }

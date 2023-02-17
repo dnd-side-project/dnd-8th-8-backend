@@ -8,3 +8,7 @@
 === 유저 성별 조회
 
 operation::member/get-gender[snippets='http-request,http-response,response-fields']
+
+=== 프로필 이미지 조회
+
+operation::member/get-profile[snippets='http-request,http-response,response-fields']
