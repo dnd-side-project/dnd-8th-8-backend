@@ -49,7 +49,10 @@ public class MemberController {
       @AuthenticationPrincipal CustomUserDetails user) {
     String profileImage = memberService.getProfileImage(user.getId())
         .orElseThrow(() -> new NotFoundException("프로필 이미지가 존재하지 않습니다."));
-    return ResponseEntity.ok(SuccessResponse.builder().data(profileImage).build());
+
+    return ResponseEntity.ok(SuccessResponse.builder()
+        .data(new ProfileImageDto(profileImage))
+        .build());
   }
 
   @PutMapping("/profile")
