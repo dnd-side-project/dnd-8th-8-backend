@@ -25,3 +25,9 @@ operation::member/post-gender[snippets='http-request,http-response,response-fiel
 해당 URL에 ``GET`` 요청을 보내면 이미지를 다운로드할 수 있습니다.
 
 operation::member/get-profile[snippets='http-request,http-response,response-fields']
+
+=== 프로필 이미지 업데이트
+
+사용자의 프로필 이미지를 업데이트합니다. AWS S3에 업로드한 이미지의 URL을 요청 데이터의 ``url``에 포함시켜야 합니다.
+
+operation::member/put-profile[snippets='http-request,http-response,response-fields']

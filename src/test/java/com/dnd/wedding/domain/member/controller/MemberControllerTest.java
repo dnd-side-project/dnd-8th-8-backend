@@ -8,6 +8,7 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.requestHe
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -17,6 +18,7 @@ import com.dnd.wedding.docs.springrestdocs.AbstractRestDocsTests;
 import com.dnd.wedding.domain.jwt.JwtTokenProvider;
 import com.dnd.wedding.domain.member.Gender;
 import com.dnd.wedding.domain.member.dto.GenderDto;
+import com.dnd.wedding.domain.member.dto.ProfileImageDto;
 import com.dnd.wedding.domain.member.service.MemberService;
 import com.dnd.wedding.global.WithMockOAuth2User;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -126,6 +128,40 @@ class MemberControllerTest extends AbstractRestDocsTests {
                 fieldWithPath("status").description("응답 상태 코드"),
                 fieldWithPath("message").description("응답 메시지"),
                 fieldWithPath("data.url").description("프로필 이미지 URL")
+            )
+        ));
+  }
+
+  @Test
+  @DisplayName("프로필 이미지 수정 테스트")
+  @WithMockOAuth2User
+  void putProfile() throws Exception {
+
+    // given
+    ProfileImageDto dto = ProfileImageDto.builder()
+        .url("https://image.storage.com/profile/1").build();
+
+    // when
+    ResultActions result = mockMvc.perform(put("/api/v1/user/profile")
+        .header(HttpHeaders.AUTHORIZATION, "Bearer " + "accessToken")
+        .content(objectMapper.writeValueAsString(dto))
+        .contentType(MediaType.APPLICATION_JSON)
+        .accept(MediaType.APPLICATION_JSON)
+    );
+
+    // then
+    result.andExpect(status().isOk())
+        .andDo(document("member/put-profile",
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
+            ),
+            requestFields(
+                fieldWithPath("url").description("프로필 이미지 URL")
+            ),
+            responseFields(
+                fieldWithPath("status").description("응답 상태 코드"),
+                fieldWithPath("message").description("응답 메시지"),
+                fieldWithPath("data").description("응답 데이터").ignored()
             )
         ));
   }
