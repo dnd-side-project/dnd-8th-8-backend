@@ -7,6 +7,12 @@
 
 사용자의 정보를 조회하거나 수정할 수 있습니다. ``Header``의 ``Authorization``에 사용자의 ``액세스 토큰``을 포함시켜야 합니다.
 
+=== 사용자 탈퇴
+
+사용자의 탈퇴를 진행합니다. 요청이 완료된 사용자는 더 이상 로그인할 수 없습니다.
+
+operation::member/delete[snippets='http-request,http-response,response-fields']
+
 === 성별 정보 조회
 
 사용자의 성별 정보를 조회합니다. 값은 ``MALE``, ``FEMALE`` 중 하나입니다. 값이 없는 경우 `404 Not Found` 에러가 발생합니다.

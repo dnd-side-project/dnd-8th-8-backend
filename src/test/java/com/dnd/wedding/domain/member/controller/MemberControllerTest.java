@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
@@ -157,6 +158,32 @@ class MemberControllerTest extends AbstractRestDocsTests {
             ),
             requestFields(
                 fieldWithPath("url").description("프로필 이미지 URL")
+            ),
+            responseFields(
+                fieldWithPath("status").description("응답 상태 코드"),
+                fieldWithPath("message").description("응답 메시지"),
+                fieldWithPath("data").description("응답 데이터").ignored()
+            )
+        ));
+  }
+
+  @Test
+  @DisplayName("사용자 탈퇴 테스트")
+  @WithMockOAuth2User
+  void deleteMember() throws Exception {
+
+    // given
+    given(memberService.withdraw(anyLong())).willReturn(true);
+
+    // when
+    ResultActions result = mockMvc.perform(delete("/api/v1/user")
+        .header(HttpHeaders.AUTHORIZATION, "Bearer " + "accessToken"));
+
+    // then
+    result.andExpect(status().isOk())
+        .andDo(document("member/delete",
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
             ),
             responseFields(
                 fieldWithPath("status").description("응답 상태 코드"),
