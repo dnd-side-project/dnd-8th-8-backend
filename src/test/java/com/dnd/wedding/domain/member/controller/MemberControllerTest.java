@@ -7,21 +7,27 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.dnd.wedding.docs.springrestdocs.AbstractRestDocsTests;
 import com.dnd.wedding.domain.jwt.JwtTokenProvider;
 import com.dnd.wedding.domain.member.Gender;
+import com.dnd.wedding.domain.member.dto.GenderDto;
 import com.dnd.wedding.domain.member.service.MemberService;
 import com.dnd.wedding.global.WithMockOAuth2User;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(MemberController.class)
@@ -32,6 +38,9 @@ class MemberControllerTest extends AbstractRestDocsTests {
 
   @MockBean
   MemberService memberService;
+
+  @Autowired
+  ObjectMapper objectMapper;
 
   @Test
   @DisplayName("성별 정보 조회 테스트")
@@ -56,6 +65,40 @@ class MemberControllerTest extends AbstractRestDocsTests {
                 fieldWithPath("status").description("응답 상태 코드"),
                 fieldWithPath("message").description("응답 메시지"),
                 fieldWithPath("data.gender").description("성별 정보")
+            )
+        ));
+  }
+
+  @Test
+  @DisplayName("성별 정보 추가 테스트")
+  @WithMockOAuth2User
+  void postGender() throws Exception {
+
+    // given
+    GenderDto dto = GenderDto.builder()
+        .gender(Gender.MALE).build();
+
+    // when
+    ResultActions result = mockMvc.perform(post("/api/v1/user/gender")
+        .header(HttpHeaders.AUTHORIZATION, "Bearer " + "accessToken")
+        .content(objectMapper.writeValueAsString(dto))
+        .contentType(MediaType.APPLICATION_JSON)
+        .accept(MediaType.APPLICATION_JSON)
+    );
+
+    // then
+    result.andExpect(status().isOk())
+        .andDo(document("member/post-gender",
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
+            ),
+            requestFields(
+                fieldWithPath("gender").description("성별 정보")
+            ),
+            responseFields(
+                fieldWithPath("status").description("응답 상태 코드"),
+                fieldWithPath("message").description("응답 메시지"),
+                fieldWithPath("data").description("응답 데이터").ignored()
             )
         ));
   }

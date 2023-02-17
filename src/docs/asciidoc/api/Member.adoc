@@ -7,11 +7,17 @@
 
 사용자의 정보를 조회하거나 수정할 수 있습니다. ``Header``의 ``Authorization``에 사용자의 ``액세스 토큰``을 포함시켜야 합니다.
 
-=== 성별 조회
+=== 성별 정보 조회
 
-사용자의 성별을 조회합니다. 값은 ``MALE``, ``FEMALE`` 중 하나입니다. 값이 없는 경우 `404 Not Found` 에러가 발생합니다.
+사용자의 성별 정보를 조회합니다. 값은 ``MALE``, ``FEMALE`` 중 하나입니다. 값이 없는 경우 `404 Not Found` 에러가 발생합니다.
 
 operation::member/get-gender[snippets='http-request,http-response,response-fields']
+
+=== 성별 정보 업데이트
+
+사용자의 성별 정보를 추가하거나 수정합니다. 성별은 ``MALE``, ``FEMALE`` 중 하나입니다.
+
+operation::member/post-gender[snippets='http-request,http-response,response-fields']
 
 === 프로필 이미지 조회
 
