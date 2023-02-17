@@ -1,0 +1,10 @@
+== 유저 API
+:doctype: book
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:seclinks:
+
+=== 유저 성별 조회
+
+operation::member/get-gender[snippets='http-request,http-response,response-fields']
