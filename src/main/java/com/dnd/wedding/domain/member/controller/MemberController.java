@@ -28,6 +28,7 @@ public class MemberController {
   @GetMapping("/gender")
   public ResponseEntity<SuccessResponse> getGender(
       @AuthenticationPrincipal CustomUserDetails user) {
+
     Gender gender = memberService.getGender(user.getId())
         .orElseThrow(() -> new NotFoundException("성별 정보가 존재하지 않습니다."));
 
@@ -38,8 +39,9 @@ public class MemberController {
 
   @PostMapping("/gender")
   public ResponseEntity<SuccessResponse> postGender(
-      @AuthenticationPrincipal CustomUserDetails user, @RequestBody GenderDto dto
-  ) {
+      @AuthenticationPrincipal CustomUserDetails user,
+      @RequestBody GenderDto dto) {
+
     memberService.postGender(user.getId(), dto.getGender());
     return ResponseEntity.ok(SuccessResponse.builder().message("성별 정보 등록 성공").build());
   }
@@ -47,6 +49,7 @@ public class MemberController {
   @GetMapping("/profile")
   public ResponseEntity<SuccessResponse> getProfileImage(
       @AuthenticationPrincipal CustomUserDetails user) {
+
     String profileImage = memberService.getProfileImage(user.getId())
         .orElseThrow(() -> new NotFoundException("프로필 이미지가 존재하지 않습니다."));
 
@@ -57,7 +60,9 @@ public class MemberController {
 
   @PutMapping("/profile")
   public ResponseEntity<SuccessResponse> putProfileImage(
-      @AuthenticationPrincipal CustomUserDetails user, @RequestBody ProfileImageDto dto) {
+      @AuthenticationPrincipal CustomUserDetails user,
+      @RequestBody ProfileImageDto dto) {
+
     memberService.putProfileImage(user.getId(), dto.getUrl());
     return ResponseEntity.ok(SuccessResponse.builder().message("프로필 이미지 등록 성공").build());
   }
@@ -65,7 +70,9 @@ public class MemberController {
   @DeleteMapping
   public ResponseEntity<SuccessResponse> withdraw(
       @AuthenticationPrincipal CustomUserDetails user) {
+
     boolean result = memberService.withdraw(user.getId());
+
     if (!result) {
       throw new NotFoundException("회원 정보가 존재하지 않습니다.");
     }
