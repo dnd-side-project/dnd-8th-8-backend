@@ -6,3 +6,4 @@
 :seclinks:
 
 include::api/Authorization.adoc[]
+include::api/Member.adoc[]
