@@ -71,14 +71,19 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
       ChecklistItemApiDto dto) {
     ChecklistItem modifiedChecklistItem = updateChecklistItem(
         checklistItemId, dto.getChecklistItem());
-    List<ChecklistSubItem> modifiedChecklistSubItems = updateChecklistSubItems(
-        dto.getChecklistSubItems());
 
-    List<ChecklistSubItemDto> checklistSubItemDtoList = modifiedChecklistSubItems.stream()
-        .map(ChecklistSubItemDto::new).toList();
+    List<ChecklistSubItemDto> checklistSubItemDtoList = null;
+    if (dto.getChecklistSubItems() != null) {
+      List<ChecklistSubItem> modifiedChecklistSubItems = updateChecklistSubItems(
+          dto.getChecklistSubItems());
+      checklistSubItemDtoList = modifiedChecklistSubItems.stream()
+          .map(ChecklistSubItemDto::new).toList();
+    }
 
-    return new ChecklistItemApiDto(
-        new ChecklistItemDto(modifiedChecklistItem), checklistSubItemDtoList);
+    return ChecklistItemApiDto.builder()
+        .checklistItem(new ChecklistItemDto(modifiedChecklistItem))
+        .checklistSubItems(checklistSubItemDtoList)
+        .build();
   }
 
   @Transactional
