@@ -109,7 +109,7 @@ class MemberControllerTest extends AbstractRestDocsTests {
             responseFields(
                 fieldWithPath("status").description("응답 상태 코드"),
                 fieldWithPath("message").description("응답 메시지"),
-                fieldWithPath("data").description("응답 데이터").ignored()
+                fieldWithPath("data").description("응답 데이터")
             )
         ));
   }
@@ -171,7 +171,7 @@ class MemberControllerTest extends AbstractRestDocsTests {
             ),
             responseFields(
                 fieldWithPath("status").description("응답 상태 코드"),
-                fieldWithPath("message").description("응답 메시지").ignored(),
+                fieldWithPath("message").description("응답 메시지"),
                 fieldWithPath("data.url").description("사용자 프로필 이미지 URL")
             )
         ));
@@ -198,7 +198,7 @@ class MemberControllerTest extends AbstractRestDocsTests {
             responseFields(
                 fieldWithPath("status").description("응답 상태 코드"),
                 fieldWithPath("message").description("응답 메시지"),
-                fieldWithPath("data").description("응답 데이터").ignored()
+                fieldWithPath("data").description("응답 데이터")
             )
         ));
   }
