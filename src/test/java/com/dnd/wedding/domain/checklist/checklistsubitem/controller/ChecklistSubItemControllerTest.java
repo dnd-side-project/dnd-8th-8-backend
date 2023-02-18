@@ -21,7 +21,7 @@ import com.dnd.wedding.domain.checklist.checklistitem.ChecklistItem;
 import com.dnd.wedding.domain.checklist.checklistitem.service.ChecklistItemService;
 import com.dnd.wedding.domain.checklist.checklistsubitem.ChecklistSubItem;
 import com.dnd.wedding.domain.checklist.checklistsubitem.dto.ChecklistSubItemDto;
-import com.dnd.wedding.domain.checklist.checklistsubitem.dto.UpdateChecklistSubItemDto;
+import com.dnd.wedding.domain.checklist.checklistsubitem.dto.ChecklistSubItemStateDto;
 import com.dnd.wedding.domain.checklist.checklistsubitem.service.ChecklistSubItemService;
 import com.dnd.wedding.domain.jwt.JwtTokenProvider;
 import com.dnd.wedding.domain.member.MemberRepository;
@@ -133,7 +133,7 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
   void modifyChecklistSubItem() throws Exception {
     String url = "/api/v1/checklist/item/{item-id}/sub-item/{sub-item-id}";
 
-    UpdateChecklistSubItemDto updateChecklistSubItemDto = UpdateChecklistSubItemDto.builder()
+    ChecklistSubItemStateDto checklistSubItemStateDto = ChecklistSubItemStateDto.builder()
         .isChecked(false)
         .build();
 
@@ -141,14 +141,14 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
     given(checklistItemService.findChecklistItemById(anyLong())).willReturn(
         Optional.ofNullable(checklistItem));
     given(checklistSubItemService.modifyChecklistSubItem(anyLong(),
-        anyLong(), any(UpdateChecklistSubItemDto.class))).willReturn(checklistSubItem);
+        anyLong(), any(ChecklistSubItemStateDto.class))).willReturn(checklistSubItem);
 
     // when
     ResultActions result = mockMvc.perform(put(url, CHECKLIST_ITEM_ID, CHECKLIST_SUB_ITEM_ID)
         .with(csrf())
         .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(updateChecklistSubItemDto)));
+        .content(objectMapper.writeValueAsString(checklistSubItemStateDto)));
 
     // then
     result.andExpect(status().isOk())

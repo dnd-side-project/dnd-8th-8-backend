@@ -9,13 +9,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UpdateChecklistSubItemDto {
+public class ChecklistSubItemStateDto {
 
   @NotNull
   private Boolean isChecked;
 
   @Builder
-  public UpdateChecklistSubItemDto(Boolean isChecked) {
+  public ChecklistSubItemStateDto(Boolean isChecked) {
     this.isChecked = isChecked;
   }
 }

@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.dnd.wedding.domain.checklist.checklistsubitem.dto.ChecklistSubItemDto;
-import com.dnd.wedding.domain.checklist.checklistsubitem.dto.UpdateChecklistSubItemDto;
+import com.dnd.wedding.domain.checklist.checklistsubitem.dto.ChecklistSubItemStateDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -66,7 +66,7 @@ class ChecklistSubItemTest {
   void updateState() {
     Boolean isChecked = true;
 
-    checklistSubItem.updateState(UpdateChecklistSubItemDto.builder()
+    checklistSubItem.updateState(ChecklistSubItemStateDto.builder()
         .isChecked(isChecked)
         .build()
     );
