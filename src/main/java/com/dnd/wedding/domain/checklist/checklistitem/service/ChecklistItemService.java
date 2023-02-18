@@ -18,7 +18,7 @@ public interface ChecklistItemService {
 
   ChecklistItem saveChecklistItem(ChecklistItemDto checklistItemDto, Member member);
 
-  List<ChecklistSubItem> saveChecklistSubItems(
+  List<ChecklistSubItem> saveChecklistSubItemList(
       List<ChecklistSubItemDto> checklistSubItemDtoList,
       ChecklistItem checklistItem);
 
@@ -27,7 +27,7 @@ public interface ChecklistItemService {
   ChecklistItem updateChecklistItem(Long checklistItemId, ChecklistItemDto checklistItemDto);
 
 
-  List<ChecklistSubItem> updateChecklistSubItems(List<ChecklistSubItemDto> checklistSubItemDtoList);
+  List<ChecklistSubItem> updateChecklistSubItemList(List<ChecklistSubItemDto> checklistSubItemDtoList);
 
   ChecklistSubItem updateChecklistSubItem(ChecklistSubItemDto checklistSubItemDto);
 

@@ -34,7 +34,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
     ChecklistItem savedChecklistItem = saveChecklistItem(dto.getChecklistItem(), member);
 
     if (dto.getChecklistSubItems() != null) {
-      List<ChecklistSubItem> savedChecklistSubItems = saveChecklistSubItems(
+      List<ChecklistSubItem> savedChecklistSubItems = saveChecklistSubItemList(
           dto.getChecklistSubItems(), savedChecklistItem);
 
       return ChecklistItemApiDto.builder()
@@ -57,7 +57,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
 
   @Transactional
   @Override
-  public List<ChecklistSubItem> saveChecklistSubItems(
+  public List<ChecklistSubItem> saveChecklistSubItemList(
       List<ChecklistSubItemDto> checklistSubItemDtoList,
       ChecklistItem checklistItem) {
     List<ChecklistSubItem> checklistSubItems = checklistSubItemDtoList.stream()
@@ -74,7 +74,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
 
     List<ChecklistSubItemDto> checklistSubItemDtoList = null;
     if (dto.getChecklistSubItems() != null) {
-      List<ChecklistSubItem> modifiedChecklistSubItems = updateChecklistSubItems(
+      List<ChecklistSubItem> modifiedChecklistSubItems = updateChecklistSubItemList(
           dto.getChecklistSubItems());
       checklistSubItemDtoList = modifiedChecklistSubItems.stream()
           .map(ChecklistSubItemDto::new).toList();
@@ -101,7 +101,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
 
   @Transactional
   @Override
-  public List<ChecklistSubItem> updateChecklistSubItems(
+  public List<ChecklistSubItem> updateChecklistSubItemList(
       List<ChecklistSubItemDto> checklistSubItemDtoList) {
     return checklistSubItemDtoList.stream().map(this::updateChecklistSubItem).toList();
   }
