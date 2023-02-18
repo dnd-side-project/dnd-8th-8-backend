@@ -1,6 +1,7 @@
 package com.dnd.wedding.domain.member.dto;
 
 import com.dnd.wedding.domain.member.Gender;
+import com.dnd.wedding.global.validator.ValidEnum;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class GenderDto {
 
+  @ValidEnum(value = Gender.class, message = "성별은 남자, 여자 중 하나여야 합니다.")
   private Gender gender;
 
   @Builder

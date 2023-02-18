@@ -9,6 +9,7 @@ import com.dnd.wedding.domain.oauth.CustomUserDetails;
 import com.dnd.wedding.global.exception.NotFoundException;
 import com.dnd.wedding.global.exception.RequestTimeoutException;
 import com.dnd.wedding.global.response.SuccessResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -44,7 +45,7 @@ public class MemberController {
   @PostMapping("/gender")
   public ResponseEntity<SuccessResponse> postGender(
       @AuthenticationPrincipal CustomUserDetails user,
-      @RequestBody GenderDto dto) {
+      @RequestBody @Valid GenderDto dto) {
 
     memberService.postGender(user.getId(), dto.getGender());
     return ResponseEntity.ok(SuccessResponse.builder().message("성별 정보 등록 성공").build());
