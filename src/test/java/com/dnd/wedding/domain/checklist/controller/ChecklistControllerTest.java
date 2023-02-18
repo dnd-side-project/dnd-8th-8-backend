@@ -1,7 +1,7 @@
 package com.dnd.wedding.domain.checklist.controller;
 
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.beneathPath;
@@ -89,8 +89,8 @@ class ChecklistControllerTest extends AbstractRestDocsTests {
         .build();
 
     // given
-    when(memberRepository.findById(anyLong())).thenReturn(Optional.ofNullable(member));
-    when(checklistService.findChecklist(anyLong())).thenReturn(List.of(checklistItemApiDto1));
+    given(memberRepository.findById(anyLong())).willReturn(Optional.ofNullable(member));
+    given(checklistService.findChecklist(anyLong())).willReturn(List.of(checklistItemApiDto1));
 
     // when
     ResultActions result = mockMvc.perform(get(url));

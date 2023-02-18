@@ -2,7 +2,7 @@ package com.dnd.wedding.domain.checklist.checklistitem.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -110,9 +110,9 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
     String url = "/api/v1/checklist/item/{item-id}";
 
     // given
-    when(checklistItemService.findChecklistItemById(anyLong())).thenReturn(
+    given(checklistItemService.findChecklistItemById(anyLong())).willReturn(
         Optional.ofNullable(checklistItem));
-    when(checklistSubItemService.findChecklistSubItems(anyLong())).thenReturn(
+    given(checklistSubItemService.findChecklistSubItems(anyLong())).willReturn(
         List.of(checklistSubItemDto1, checklistSubItemDto2));
 
     // when
@@ -193,9 +193,9 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
         .build();
 
     // given
-    when(memberRepository.findById(anyLong())).thenReturn(Optional.ofNullable(member));
-    when(checklistItemService.createChecklistItem(any(ChecklistItemApiDto.class),
-        any(Member.class))).thenReturn(checklistItemApiDto);
+    given(memberRepository.findById(anyLong())).willReturn(Optional.ofNullable(member));
+    given(checklistItemService.createChecklistItem(any(ChecklistItemApiDto.class),
+        any(Member.class))).willReturn(checklistItemApiDto);
 
     // when
     ResultActions result = mockMvc.perform(post(url)
@@ -271,10 +271,10 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
     String url = "/api/v1/checklist/item/{item-id}";
 
     // given
-    when(checklistItemService.findChecklistItemById(anyLong())).thenReturn(
+    given(checklistItemService.findChecklistItemById(anyLong())).willReturn(
         Optional.ofNullable(checklistItem));
-    when(checklistItemService.modifyChecklistItem(anyLong(),
-        any(ChecklistItemApiDto.class))).thenReturn(checklistItemApiDto);
+    given(checklistItemService.modifyChecklistItem(anyLong(),
+        any(ChecklistItemApiDto.class))).willReturn(checklistItemApiDto);
 
     // when
     ResultActions result = mockMvc.perform(put(url, CHECKLIST_ITEM_ID)
@@ -352,7 +352,7 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
     String url = "/api/v1/checklist/item/{item-id}";
 
     // given
-    when(checklistItemService.withdrawChecklistItem(anyLong())).thenReturn(true);
+    given(checklistItemService.withdrawChecklistItem(anyLong())).willReturn(true);
 
     // when
     ResultActions result = mockMvc.perform(delete(url, CHECKLIST_ITEM_ID).with(csrf()));
