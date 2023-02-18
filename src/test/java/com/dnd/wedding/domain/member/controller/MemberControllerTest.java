@@ -1,6 +1,7 @@
 package com.dnd.wedding.domain.member.controller;
 
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -8,18 +9,20 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.requestHe
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.dnd.wedding.docs.springrestdocs.AbstractRestDocsTests;
+import com.dnd.wedding.domain.aws.service.S3Service;
 import com.dnd.wedding.domain.jwt.JwtTokenProvider;
 import com.dnd.wedding.domain.member.Gender;
 import com.dnd.wedding.domain.member.dto.GenderDto;
-import com.dnd.wedding.domain.member.dto.ProfileImageDto;
 import com.dnd.wedding.domain.member.service.MemberService;
 import com.dnd.wedding.global.WithMockOAuth2User;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,7 +34,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.multipart.MultipartFile;
 
 @WebMvcTest(MemberController.class)
 class MemberControllerTest extends AbstractRestDocsTests {
@@ -41,6 +46,9 @@ class MemberControllerTest extends AbstractRestDocsTests {
 
   @MockBean
   MemberService memberService;
+
+  @MockBean
+  S3Service s3Service;
 
   @Autowired
   ObjectMapper objectMapper;
@@ -139,14 +147,16 @@ class MemberControllerTest extends AbstractRestDocsTests {
   void putProfile() throws Exception {
 
     // given
-    ProfileImageDto dto = ProfileImageDto.builder()
-        .url("https://image.storage.com/profile/1").build();
+    MockMultipartFile image = new MockMultipartFile(
+        "image", "image.png", "image/png", "image data".getBytes());
+    given(s3Service.upload(any(MultipartFile.class)))
+        .willReturn("https://image.storage.com/profile/1");
 
     // when
-    ResultActions result = mockMvc.perform(put("/api/v1/user/profile")
+    ResultActions result = mockMvc.perform(multipart("/api/v1/user/profile")
+        .file(image)
         .header(HttpHeaders.AUTHORIZATION, "Bearer " + "accessToken")
-        .content(objectMapper.writeValueAsString(dto))
-        .contentType(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.MULTIPART_FORM_DATA)
         .accept(MediaType.APPLICATION_JSON)
     );
 
@@ -156,13 +166,13 @@ class MemberControllerTest extends AbstractRestDocsTests {
             requestHeaders(
                 headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
             ),
-            requestFields(
-                fieldWithPath("url").description("프로필 이미지 URL")
+            requestParts(
+                partWithName("image").description("프로필 이미지")
             ),
             responseFields(
                 fieldWithPath("status").description("응답 상태 코드"),
-                fieldWithPath("message").description("응답 메시지"),
-                fieldWithPath("data").description("응답 데이터").ignored()
+                fieldWithPath("message").description("응답 메시지").ignored(),
+                fieldWithPath("data.url").description("사용자 프로필 이미지 URL")
             )
         ));
   }

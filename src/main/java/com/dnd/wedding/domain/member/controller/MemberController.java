@@ -1,11 +1,13 @@
 package com.dnd.wedding.domain.member.controller;
 
+import com.dnd.wedding.domain.aws.service.S3Service;
 import com.dnd.wedding.domain.member.Gender;
 import com.dnd.wedding.domain.member.dto.GenderDto;
 import com.dnd.wedding.domain.member.dto.ProfileImageDto;
 import com.dnd.wedding.domain.member.service.MemberService;
 import com.dnd.wedding.domain.oauth.CustomUserDetails;
 import com.dnd.wedding.global.exception.NotFoundException;
+import com.dnd.wedding.global.exception.RequestTimeoutException;
 import com.dnd.wedding.global.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +15,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
   private final MemberService memberService;
+  private final S3Service s3Service;
 
   @GetMapping("/gender")
   public ResponseEntity<SuccessResponse> getGender(
@@ -58,13 +62,23 @@ public class MemberController {
         .build());
   }
 
-  @PutMapping("/profile")
+  @PostMapping("/profile")
   public ResponseEntity<SuccessResponse> putProfileImage(
       @AuthenticationPrincipal CustomUserDetails user,
-      @RequestBody ProfileImageDto dto) {
+      @RequestParam("image") MultipartFile imageFile) {
 
-    memberService.putProfileImage(user.getId(), dto.getUrl());
-    return ResponseEntity.ok(SuccessResponse.builder().message("프로필 이미지 등록 성공").build());
+    String imageUrl;
+
+    try {
+      imageUrl = s3Service.upload(imageFile);
+    } catch (Exception e) {
+      throw new RequestTimeoutException("이미지 업로드에 실패했습니다.");
+    }
+    memberService.putProfileImage(user.getId(), imageUrl);
+
+    return ResponseEntity.ok(SuccessResponse.builder()
+        .data(new ProfileImageDto(imageUrl))
+        .build());
   }
 
   @DeleteMapping
