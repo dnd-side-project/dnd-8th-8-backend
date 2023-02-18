@@ -52,7 +52,7 @@ public class ChecklistItemController {
     return ResponseEntity.ok().body(SuccessResponse.builder().data(responseData).build());
   }
 
-  @PostMapping()
+  @PostMapping
   public ResponseEntity<SuccessResponse> createChecklistItem(
       @Valid @RequestBody ChecklistItemApiDto requestDto,
       @AuthenticationPrincipal CustomUserDetails user) {

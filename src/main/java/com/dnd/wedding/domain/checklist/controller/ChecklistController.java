@@ -23,7 +23,7 @@ public class ChecklistController {
   private final MemberRepository memberRepository;
   private final ChecklistService checklistService;
 
-  @GetMapping()
+  @GetMapping
   public ResponseEntity<SuccessResponse> getChecklist(
       @AuthenticationPrincipal CustomUserDetails user) {
     Member member = memberRepository.findById(user.getId())

@@ -34,7 +34,7 @@ public class ChecklistSubItemController {
   private final ChecklistItemService checklistItemService;
   private final ChecklistSubItemService checklistSubItemService;
 
-  @PostMapping()
+  @PostMapping
   public ResponseEntity<SuccessResponse> createChecklistSubItem(
       @PathVariable("item-id") Long checklistItemId,
       @Valid @RequestBody ChecklistSubItemDto checklistSubItemDto,
