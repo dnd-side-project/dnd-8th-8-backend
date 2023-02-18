@@ -55,7 +55,7 @@ public class ChecklistItemController {
   @PostMapping
   public ResponseEntity<SuccessResponse> createChecklistItem(
       @AuthenticationPrincipal CustomUserDetails user,
-      @Valid @RequestBody ChecklistItemApiDto requestDto) {
+      @RequestBody @Valid ChecklistItemApiDto requestDto) {
     Member member = memberRepository.findById(user.getId())
         .orElseThrow(() -> new NotFoundException("not found user"));
     ChecklistItemApiDto savedChecklistItem = checklistItemService.createChecklistItem(
@@ -73,7 +73,7 @@ public class ChecklistItemController {
   public ResponseEntity<SuccessResponse> modifyChecklistItem(
       @AuthenticationPrincipal CustomUserDetails user,
       @PathVariable("item-id") Long checklistItemId,
-      @Valid @RequestBody ChecklistItemApiDto requestDto) {
+      @RequestBody @Valid ChecklistItemApiDto requestDto) {
     ChecklistItem checklistItem = checklistItemService.findChecklistItemById(checklistItemId)
         .orElseThrow(() -> new NotFoundException("존재하지 않는 체크리스트입니다."));
 

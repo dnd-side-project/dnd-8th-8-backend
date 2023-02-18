@@ -38,7 +38,7 @@ public class ChecklistSubItemController {
   public ResponseEntity<SuccessResponse> createChecklistSubItem(
       @AuthenticationPrincipal CustomUserDetails user,
       @PathVariable("item-id") Long checklistItemId,
-      @Valid @RequestBody ChecklistSubItemDto checklistSubItemDto) {
+      @RequestBody @Valid ChecklistSubItemDto checklistSubItemDto) {
     ChecklistItem checklistItem = checklistItemService.findChecklistItemById(checklistItemId)
         .orElseThrow(() -> new NotFoundException(NOT_FOUND_CHECKLIST_MESSAGE));
 
@@ -73,7 +73,7 @@ public class ChecklistSubItemController {
       @AuthenticationPrincipal CustomUserDetails user,
       @PathVariable("item-id") Long checklistItemId,
       @PathVariable("sub-item-id") Long checklistSubItemId,
-      @Valid @RequestBody UpdateChecklistSubItemDto checklistSubItemDto) {
+      @RequestBody @Valid UpdateChecklistSubItemDto checklistSubItemDto) {
     ChecklistItem checklistItem = checklistItemService.findChecklistItemById(checklistItemId)
         .orElseThrow(() -> new NotFoundException(NOT_FOUND_CHECKLIST_MESSAGE));
 
