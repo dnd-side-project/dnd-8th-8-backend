@@ -27,7 +27,8 @@ public interface ChecklistItemService {
   ChecklistItem updateChecklistItem(Long checklistItemId, ChecklistItemDto checklistItemDto);
 
 
-  List<ChecklistSubItem> updateChecklistSubItemList(List<ChecklistSubItemDto> checklistSubItemDtoList);
+  List<ChecklistSubItem> updateChecklistSubItemList(
+      List<ChecklistSubItemDto> checklistSubItemDtoList);
 
   ChecklistSubItem updateChecklistSubItem(ChecklistSubItemDto checklistSubItemDto);
 

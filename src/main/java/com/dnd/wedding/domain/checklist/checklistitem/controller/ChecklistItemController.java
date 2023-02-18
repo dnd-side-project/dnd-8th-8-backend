@@ -43,8 +43,8 @@ public class ChecklistItemController {
     ChecklistItem checklistItem = checklistItemService.findChecklistItemById(checklistItemId)
         .orElseThrow(() -> new NotFoundException("not found checklist item"));
 
-    List<ChecklistSubItemDto> checklistSubItemDtoList = checklistSubItemService.findChecklistSubItems(
-        checklistItem.getId());
+    List<ChecklistSubItemDto> checklistSubItemDtoList =
+        checklistSubItemService.findChecklistSubItems(checklistItem.getId());
 
     ChecklistItemApiDto responseData = new ChecklistItemApiDto(
         new ChecklistItemDto(checklistItem), checklistSubItemDtoList);
