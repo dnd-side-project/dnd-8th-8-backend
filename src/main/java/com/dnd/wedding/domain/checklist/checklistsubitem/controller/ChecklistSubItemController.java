@@ -36,9 +36,9 @@ public class ChecklistSubItemController {
 
   @PostMapping
   public ResponseEntity<SuccessResponse> createChecklistSubItem(
+      @AuthenticationPrincipal CustomUserDetails user,
       @PathVariable("item-id") Long checklistItemId,
-      @Valid @RequestBody ChecklistSubItemDto checklistSubItemDto,
-      @AuthenticationPrincipal CustomUserDetails user) {
+      @Valid @RequestBody ChecklistSubItemDto checklistSubItemDto) {
     ChecklistItem checklistItem = checklistItemService.findChecklistItemById(checklistItemId)
         .orElseThrow(() -> new NotFoundException(NOT_FOUND_CHECKLIST_MESSAGE));
 
@@ -54,9 +54,9 @@ public class ChecklistSubItemController {
 
   @DeleteMapping("/{sub-item-id}")
   public ResponseEntity<SuccessResponse> withdrawChecklistSubItem(
+      @AuthenticationPrincipal CustomUserDetails user,
       @PathVariable("item-id") Long checklistItemId,
-      @PathVariable("sub-item-id") Long checklistSubItemId,
-      @AuthenticationPrincipal CustomUserDetails user) {
+      @PathVariable("sub-item-id") Long checklistSubItemId) {
     ChecklistItem checklistItem = checklistItemService.findChecklistItemById(checklistItemId)
         .orElseThrow(() -> new NotFoundException(NOT_FOUND_CHECKLIST_MESSAGE));
 
@@ -70,11 +70,10 @@ public class ChecklistSubItemController {
 
   @PutMapping("/{sub-item-id}")
   public ResponseEntity<SuccessResponse> modifyChecklistSubItem(
+      @AuthenticationPrincipal CustomUserDetails user,
       @PathVariable("item-id") Long checklistItemId,
       @PathVariable("sub-item-id") Long checklistSubItemId,
-      @Valid @RequestBody UpdateChecklistSubItemDto checklistSubItemDto,
-      @AuthenticationPrincipal CustomUserDetails user
-  ) {
+      @Valid @RequestBody UpdateChecklistSubItemDto checklistSubItemDto) {
     ChecklistItem checklistItem = checklistItemService.findChecklistItemById(checklistItemId)
         .orElseThrow(() -> new NotFoundException(NOT_FOUND_CHECKLIST_MESSAGE));
 
