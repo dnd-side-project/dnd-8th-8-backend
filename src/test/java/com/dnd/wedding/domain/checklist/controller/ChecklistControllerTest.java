@@ -51,7 +51,8 @@ class ChecklistControllerTest extends AbstractRestDocsTests {
       .id(1L)
       .title("title")
       .checkDate(LocalDate.now())
-      .time(LocalTime.now())
+      .startTime(LocalTime.MIN)
+      .endTime(LocalTime.MAX)
       .place("place")
       .memo("memo")
       .build();
@@ -107,8 +108,11 @@ class ChecklistControllerTest extends AbstractRestDocsTests {
                     fieldWithPath("checklistItem.checkDate").description(
                         "체크리스트 아이템 일정 날짜 (yyyy-mm-dd)").type(
                         JsonFieldType.STRING),
-                    fieldWithPath("checklistItem.time").description(
-                        "체크리스트 아이템 일정 시간 (hh:mm:ss)").type(
+                    fieldWithPath("checklistItem.startTime").description(
+                        "체크리스트 아이템 일정 시작 시간 (hh:mm:ss)").type(
+                        JsonFieldType.STRING),
+                    fieldWithPath("checklistItem.endTime").description(
+                        "체크리스트 아이템 일정 종료 시간 (hh:mm:ss)").type(
                         JsonFieldType.STRING),
                     fieldWithPath("checklistItem.place").description("체크리스트 아이템 일정 장소").type(
                         JsonFieldType.STRING),

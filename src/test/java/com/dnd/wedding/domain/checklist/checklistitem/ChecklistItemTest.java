@@ -15,7 +15,8 @@ class ChecklistItemTest {
   private final ChecklistItem checklistItem = ChecklistItem.builder()
       .title("title")
       .checkDate(LocalDate.of(2023, Month.OCTOBER, 1))
-      .time(LocalTime.MAX)
+      .startTime(LocalTime.MIN)
+      .endTime(LocalTime.MAX)
       .place("place")
       .memo("memo")
       .build();
@@ -39,9 +40,15 @@ class ChecklistItemTest {
   }
 
   @Test
-  @DisplayName("체크리스트 아이템 일정 시간 조회")
-  void getTime() {
-    assertEquals(LocalTime.MAX, checklistItem.getTime());
+  @DisplayName("체크리스트 아이템 일정 시작 시간 조회")
+  void getStartTime() {
+    assertEquals(LocalTime.MIN, checklistItem.getStartTime());
+  }
+
+  @Test
+  @DisplayName("체크리스트 아이템 일정 종료 시간 조회")
+  void getEndTime() {
+    assertEquals(LocalTime.MAX, checklistItem.getEndTime());
   }
 
   @Test
@@ -73,14 +80,16 @@ class ChecklistItemTest {
   void update() {
     String title = "test title";
     LocalDate checkDate = LocalDate.of(2020, Month.OCTOBER, 1);
-    LocalTime time = LocalTime.MIN;
+    LocalTime startTime = LocalTime.NOON;
+    LocalTime endTime = LocalTime.NOON;
     String place = "test place";
     String memo = "test memo";
 
     checklistItem.update(ChecklistItemDto.builder()
         .title(title)
         .checkDate(checkDate)
-        .time(time)
+        .startTime(startTime)
+        .endTime(endTime)
         .place(place)
         .memo(memo)
         .build()
@@ -88,7 +97,8 @@ class ChecklistItemTest {
 
     assertEquals(title, checklistItem.getTitle());
     assertEquals(checkDate, checklistItem.getCheckDate());
-    assertEquals(title, checklistItem.getTitle());
+    assertEquals(startTime, checklistItem.getStartTime());
+    assertEquals(endTime, checklistItem.getEndTime());
     assertEquals(place, checklistItem.getPlace());
     assertEquals(memo, checklistItem.getMemo());
   }

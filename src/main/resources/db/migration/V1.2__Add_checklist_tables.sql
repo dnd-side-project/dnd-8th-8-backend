@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS `checklist_item` (
     `check_date` date,
     `memo` varchar(255),
     `place` varchar(255),
-    `time` time,
+    `start_time` time,
+    `end_time` time,
     `member_id` bigint NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`member_id`) REFERENCES member (id)

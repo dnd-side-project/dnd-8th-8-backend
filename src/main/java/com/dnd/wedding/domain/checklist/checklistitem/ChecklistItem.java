@@ -30,7 +30,9 @@ public class ChecklistItem extends BaseTimeEntity {
   @Column
   private LocalDate checkDate;
   @Column
-  private LocalTime time;
+  private LocalTime startTime;
+  @Column
+  private LocalTime endTime;
   @Column
   private String place;
   @Column
@@ -41,13 +43,15 @@ public class ChecklistItem extends BaseTimeEntity {
 
   @Builder
   public ChecklistItem(
-      Long id, String title, LocalDate checkDate, LocalTime time, String place, String memo,
+      Long id, String title, LocalDate checkDate, LocalTime startTime, LocalTime endTime,
+      String place, String memo,
       Member member
   ) {
     this.id = id;
     this.title = title;
     this.checkDate = checkDate;
-    this.time = time;
+    this.startTime = startTime;
+    this.endTime = endTime;
     this.place = place;
     this.memo = memo;
     this.member = member;
@@ -56,7 +60,8 @@ public class ChecklistItem extends BaseTimeEntity {
   public ChecklistItem update(ChecklistItemDto checklistItemDto) {
     this.title = checklistItemDto.getTitle();
     this.checkDate = checklistItemDto.getCheckDate();
-    this.time = checklistItemDto.getTime();
+    this.startTime = checklistItemDto.getStartTime();
+    this.endTime = checklistItemDto.getEndTime();
     this.place = checklistItemDto.getPlace();
     this.memo = checklistItemDto.getMemo();
 

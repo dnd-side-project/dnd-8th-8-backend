@@ -53,7 +53,8 @@ class ChecklistItemRepositoryTest {
     ChecklistItem checklistItem1 = ChecklistItem.builder()
         .title("test title1")
         .checkDate(LocalDate.of(2023, Month.OCTOBER, 1))
-        .time(LocalTime.MAX)
+        .startTime(LocalTime.MIN)
+        .endTime(LocalTime.MAX)
         .place("test place1")
         .memo("test memo1")
         .member(member)
@@ -62,7 +63,8 @@ class ChecklistItemRepositoryTest {
     ChecklistItem checklistItem2 = ChecklistItem.builder()
         .title("test title2")
         .checkDate(LocalDate.of(2023, Month.OCTOBER, 2))
-        .time(LocalTime.MIN)
+        .startTime(LocalTime.MIN)
+        .endTime(LocalTime.MAX)
         .place("test place2")
         .memo("test memo2")
         .member(member)
@@ -81,14 +83,16 @@ class ChecklistItemRepositoryTest {
   void findById() {
     String title = "test title";
     LocalDate checkDate = LocalDate.of(2023, Month.OCTOBER, 1);
-    LocalTime time = LocalTime.MAX;
+    LocalTime startTime = LocalTime.MIN;
+    LocalTime endTime = LocalTime.MAX;
     String place = "test place";
     String memo = "test memo";
 
     ChecklistItem savedChecklistItem = checklistItemRepository.save(ChecklistItem.builder()
         .title(title)
         .checkDate(checkDate)
-        .time(time)
+        .startTime(startTime)
+        .endTime(endTime)
         .place(place)
         .memo(memo)
         .member(member)
@@ -100,7 +104,8 @@ class ChecklistItemRepositoryTest {
     assertTrue(checklistItem.isPresent());
     assertEquals(title, checklistItem.get().getTitle());
     assertEquals(checkDate, checklistItem.get().getCheckDate());
-    assertEquals(time, checklistItem.get().getTime());
+    assertEquals(startTime, checklistItem.get().getStartTime());
+    assertEquals(endTime, checklistItem.get().getEndTime());
     assertEquals(place, checklistItem.get().getPlace());
     assertEquals(memo, checklistItem.get().getMemo());
   }

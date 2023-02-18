@@ -19,7 +19,8 @@ public class ChecklistItemDto {
   @NotBlank
   private String title;
   private LocalDate checkDate;
-  private LocalTime time;
+  private LocalTime startTime;
+  private LocalTime endTime;
   private String place;
   private String memo;
 
@@ -27,7 +28,8 @@ public class ChecklistItemDto {
     this.id = checklistItem.getId();
     this.title = checklistItem.getTitle();
     this.checkDate = checklistItem.getCheckDate();
-    this.time = checklistItem.getTime();
+    this.startTime = checklistItem.getStartTime();
+    this.endTime = checklistItem.getEndTime();
     this.place = checklistItem.getPlace();
     this.memo = checklistItem.getMemo();
   }
@@ -37,7 +39,8 @@ public class ChecklistItemDto {
         .id(this.id)
         .title(this.title)
         .checkDate(this.checkDate)
-        .time(this.time)
+        .startTime(this.startTime)
+        .endTime(this.endTime)
         .place(this.place)
         .memo(this.memo)
         .member(member)
@@ -45,12 +48,14 @@ public class ChecklistItemDto {
   }
 
   @Builder
-  public ChecklistItemDto(Long id, String title, LocalDate checkDate, LocalTime time, String place,
+  public ChecklistItemDto(Long id, String title, LocalDate checkDate, LocalTime startTime,
+      LocalTime endTime, String place,
       String memo) {
     this.id = id;
     this.title = title;
     this.checkDate = checkDate;
-    this.time = time;
+    this.startTime = startTime;
+    this.endTime = endTime;
     this.place = place;
     this.memo = memo;
   }

@@ -61,7 +61,8 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
       .id(1L)
       .title("title")
       .checkDate(LocalDate.now())
-      .time(LocalTime.now())
+      .startTime(LocalTime.MIN)
+      .endTime(LocalTime.MAX)
       .place("place")
       .memo("memo")
       .build();
