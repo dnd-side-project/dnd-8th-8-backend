@@ -41,6 +41,10 @@ public class Member extends BaseTimeEntity {
   @Enumerated(value = EnumType.STRING)
   private OAuth2Provider oauth2Provider;
 
+  @Column(length = 10)
+  @Enumerated(value = EnumType.STRING)
+  private Gender gender;
+
   @Builder
   public Member(
       Long id,
@@ -56,6 +60,14 @@ public class Member extends BaseTimeEntity {
     this.profileImage = profileImage;
     this.role = role;
     this.oauth2Provider = oauth2Provider;
+  }
+
+  public void setGender(Gender gender) {
+    this.gender = gender;
+  }
+
+  public void setProfileImage(String profileImage) {
+    this.profileImage = profileImage;
   }
 
   public Member update(String name, String profileImage) {

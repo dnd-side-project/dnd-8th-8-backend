@@ -44,6 +44,18 @@ class ControllerExceptionHandlerTest {
   }
 
   @Test
+  @DisplayName("RequestTimeoutException 발생 테스트")
+  void requestTimeoutExceptionTest() {
+    String message = "Request Timeout";
+    RequestTimeoutException ex = new RequestTimeoutException(message);
+    ResponseEntity<ErrorResponse> error = controllerExceptionHandler.requestTimeoutException(ex);
+
+    assertNotNull(error);
+    assertEquals(HttpStatus.REQUEST_TIMEOUT, error.getStatusCode());
+    assertEquals(message, error.getBody().getMessage());
+  }
+
+  @Test
   @DisplayName("UnauthorizedException 발생 테스트")
   void unauthorizedUserExceptionTest() {
     String message = "Unauthorized user";
