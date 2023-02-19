@@ -54,8 +54,8 @@ class ChecklistControllerTest extends AbstractRestDocsTests {
       .id(1L)
       .title("title")
       .checkDate(LocalDate.now())
-      .startTime(LocalTime.MIN)
-      .endTime(LocalTime.MAX)
+      .startTime(LocalTime.of(1, 1, 1))
+      .endTime(LocalTime.of(12, 11, 14))
       .place("place")
       .memo("memo")
       .build();
