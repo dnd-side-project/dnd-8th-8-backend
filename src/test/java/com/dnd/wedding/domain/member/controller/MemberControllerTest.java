@@ -189,7 +189,7 @@ class MemberControllerTest extends AbstractRestDocsTests {
 
     // when
     ResultActions result = mockMvc.perform(delete("/api/v1/user")
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + "accessToken"));
+        .header(HttpHeaders.AUTHORIZATION, "Bearer " + "ACCESS_TOKEN"));
 
     // then
     result.andExpect(status().isOk())
