@@ -30,11 +30,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(ChecklistController.class)
 class ChecklistControllerTest extends AbstractRestDocsTests {
+
+  static final String ACCESS_TOKEN_PREFIX = "Bearer ";
 
   @MockBean
   ChecklistService checklistService;
@@ -93,7 +96,8 @@ class ChecklistControllerTest extends AbstractRestDocsTests {
     given(checklistService.findChecklist(anyLong())).willReturn(List.of(checklistItemApiDto1));
 
     // when
-    ResultActions result = mockMvc.perform(get(url));
+    ResultActions result = mockMvc.perform(get(url)
+        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN"));
 
     // then
     result.andExpect(status().isOk())
