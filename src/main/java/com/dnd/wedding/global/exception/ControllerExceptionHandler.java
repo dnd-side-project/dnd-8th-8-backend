@@ -27,6 +27,15 @@ public class ControllerExceptionHandler {
     return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
   }
 
+  @ExceptionHandler(RequestTimeoutException.class)
+  public ResponseEntity<ErrorResponse> requestTimeoutException(RequestTimeoutException ex) {
+    ErrorResponse message = new ErrorResponse(
+        HttpStatus.REQUEST_TIMEOUT.value(),
+        ex.getMessage());
+
+    return new ResponseEntity<>(message, HttpStatus.REQUEST_TIMEOUT);
+  }
+
   @ExceptionHandler(UnauthorizedException.class)
   public ResponseEntity<ErrorResponse> unauthorizedUserException(UnauthorizedException ex) {
     ErrorResponse message = new ErrorResponse(
