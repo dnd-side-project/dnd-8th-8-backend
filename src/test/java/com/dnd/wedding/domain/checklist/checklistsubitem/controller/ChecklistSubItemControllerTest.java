@@ -36,6 +36,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
@@ -45,6 +46,7 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
 
   static final Long CHECKLIST_ITEM_ID = 1L;
   static final Long CHECKLIST_SUB_ITEM_ID = 1L;
+  static final String ACCESS_TOKEN_PREFIX = "Bearer ";
 
   @MockBean
   ChecklistItemService checklistItemService;
@@ -97,6 +99,7 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
 
     // when
     ResultActions result = mockMvc.perform(post(url, CHECKLIST_ITEM_ID)
+        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN")
         .with(csrf())
         .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
@@ -145,6 +148,7 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
 
     // when
     ResultActions result = mockMvc.perform(put(url, CHECKLIST_ITEM_ID, CHECKLIST_SUB_ITEM_ID)
+        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN")
         .with(csrf())
         .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
@@ -187,6 +191,7 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
 
     // when
     ResultActions result = mockMvc.perform(delete(url, CHECKLIST_ITEM_ID, CHECKLIST_SUB_ITEM_ID)
+        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN")
         .with(csrf()));
 
     // then
