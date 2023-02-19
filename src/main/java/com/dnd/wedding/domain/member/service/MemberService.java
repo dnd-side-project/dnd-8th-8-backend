@@ -1,6 +1,7 @@
 package com.dnd.wedding.domain.member.service;
 
 import com.dnd.wedding.domain.member.Gender;
+import com.dnd.wedding.domain.member.Member;
 import java.util.Optional;
 
 public interface MemberService {
@@ -14,4 +15,6 @@ public interface MemberService {
   void putProfileImage(Long id, String url);
 
   boolean withdraw(Long id);
+
+  Optional<Member> findMember(Long id);
 }
