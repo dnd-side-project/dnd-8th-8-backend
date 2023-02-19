@@ -24,7 +24,7 @@ import com.dnd.wedding.domain.checklist.checklistsubitem.dto.ChecklistSubItemDto
 import com.dnd.wedding.domain.checklist.checklistsubitem.dto.ChecklistSubItemStateDto;
 import com.dnd.wedding.domain.checklist.checklistsubitem.service.ChecklistSubItemService;
 import com.dnd.wedding.domain.jwt.JwtTokenProvider;
-import com.dnd.wedding.domain.member.MemberRepository;
+import com.dnd.wedding.domain.member.service.MemberService;
 import com.dnd.wedding.global.WithMockOAuth2User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -51,7 +51,7 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
   @MockBean
   ChecklistSubItemService checklistSubItemService;
   @MockBean
-  MemberRepository memberRepository;
+  MemberService memberService;
   @MockBean
   JwtTokenProvider jwtTokenProvider;
 

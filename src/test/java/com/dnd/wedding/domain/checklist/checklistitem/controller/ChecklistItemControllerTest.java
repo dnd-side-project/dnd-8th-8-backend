@@ -26,8 +26,8 @@ import com.dnd.wedding.domain.checklist.checklistsubitem.dto.ChecklistSubItemDto
 import com.dnd.wedding.domain.checklist.checklistsubitem.service.ChecklistSubItemService;
 import com.dnd.wedding.domain.jwt.JwtTokenProvider;
 import com.dnd.wedding.domain.member.Member;
-import com.dnd.wedding.domain.member.MemberRepository;
 import com.dnd.wedding.domain.member.Role;
+import com.dnd.wedding.domain.member.service.MemberService;
 import com.dnd.wedding.domain.oauth.OAuth2Provider;
 import com.dnd.wedding.global.WithMockOAuth2User;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,7 +55,7 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
   @MockBean
   ChecklistSubItemService checklistSubItemService;
   @MockBean
-  MemberRepository memberRepository;
+  MemberService memberService;
   @MockBean
   JwtTokenProvider jwtTokenProvider;
 
@@ -193,7 +193,7 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
         .build();
 
     // given
-    given(memberRepository.findById(anyLong())).willReturn(Optional.ofNullable(member));
+    given(memberService.findMember(anyLong())).willReturn(Optional.ofNullable(member));
     given(checklistItemService.createChecklistItem(any(ChecklistItemApiDto.class),
         any(Member.class))).willReturn(checklistItemApiDto);
 
