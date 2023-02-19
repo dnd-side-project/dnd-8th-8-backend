@@ -66,7 +66,7 @@ class MemberControllerTest extends AbstractRestDocsTests {
 
     // when
     ResultActions result = mockMvc.perform(get("/api/v1/user/gender")
-        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "accessToken"));
+        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN"));
 
     // then
     result.andExpect(status().isOk())
@@ -93,7 +93,7 @@ class MemberControllerTest extends AbstractRestDocsTests {
 
     // when
     ResultActions result = mockMvc.perform(post("/api/v1/user/gender")
-        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "accessToken")
+        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN")
         .content(objectMapper.writeValueAsString(dto))
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON)
@@ -127,7 +127,7 @@ class MemberControllerTest extends AbstractRestDocsTests {
 
     // when
     ResultActions result = mockMvc.perform(get("/api/v1/user/profile")
-        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "accessToken"));
+        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN"));
 
     // then
     result.andExpect(status().isOk())
@@ -157,7 +157,7 @@ class MemberControllerTest extends AbstractRestDocsTests {
     // when
     ResultActions result = mockMvc.perform(multipart("/api/v1/user/profile")
         .file(image)
-        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "accessToken")
+        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN")
         .contentType(MediaType.MULTIPART_FORM_DATA)
         .accept(MediaType.APPLICATION_JSON)
     );
@@ -189,7 +189,7 @@ class MemberControllerTest extends AbstractRestDocsTests {
 
     // when
     ResultActions result = mockMvc.perform(delete("/api/v1/user")
-        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "accessToken"));
+        .header(HttpHeaders.AUTHORIZATION, "Bearer " + "accessToken"));
 
     // then
     result.andExpect(status().isOk())
