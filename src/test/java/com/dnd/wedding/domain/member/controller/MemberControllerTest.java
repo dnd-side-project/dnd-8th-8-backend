@@ -41,6 +41,8 @@ import org.springframework.web.multipart.MultipartFile;
 @WebMvcTest(MemberController.class)
 class MemberControllerTest extends AbstractRestDocsTests {
 
+  static final String ACCESS_TOKEN_PREFIX = "Bearer ";
+
   @MockBean
   JwtTokenProvider jwtTokenProvider;
 
@@ -64,7 +66,7 @@ class MemberControllerTest extends AbstractRestDocsTests {
 
     // when
     ResultActions result = mockMvc.perform(get("/api/v1/user/gender")
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + "accessToken"));
+        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "accessToken"));
 
     // then
     result.andExpect(status().isOk())
@@ -91,7 +93,7 @@ class MemberControllerTest extends AbstractRestDocsTests {
 
     // when
     ResultActions result = mockMvc.perform(post("/api/v1/user/gender")
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + "accessToken")
+        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "accessToken")
         .content(objectMapper.writeValueAsString(dto))
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON)
@@ -125,7 +127,7 @@ class MemberControllerTest extends AbstractRestDocsTests {
 
     // when
     ResultActions result = mockMvc.perform(get("/api/v1/user/profile")
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + "accessToken"));
+        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "accessToken"));
 
     // then
     result.andExpect(status().isOk())
@@ -155,7 +157,7 @@ class MemberControllerTest extends AbstractRestDocsTests {
     // when
     ResultActions result = mockMvc.perform(multipart("/api/v1/user/profile")
         .file(image)
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + "accessToken")
+        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "accessToken")
         .contentType(MediaType.MULTIPART_FORM_DATA)
         .accept(MediaType.APPLICATION_JSON)
     );
@@ -187,7 +189,7 @@ class MemberControllerTest extends AbstractRestDocsTests {
 
     // when
     ResultActions result = mockMvc.perform(delete("/api/v1/user")
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + "accessToken"));
+        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "accessToken"));
 
     // then
     result.andExpect(status().isOk())
