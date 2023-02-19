@@ -26,4 +26,4 @@ app:
     token:
       secret-key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
   oauth2:
-    authorizedRedirectUri: http://localhost:8080/oauth2/redirect
+    authorized-redirect-uri: http://localhost:8080/oauth2/redirect

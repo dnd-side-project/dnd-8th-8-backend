@@ -26,4 +26,4 @@ app:
     token:
       secret-key: ${JWT_SECRET_KEY}
   oauth2:
-    authorizedRedirectUri: ${OAUTH2_REDIRECT_URI}
+    authorized-redirect-uri: ${OAUTH2_REDIRECT_URI}
