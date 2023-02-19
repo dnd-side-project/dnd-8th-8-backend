@@ -67,8 +67,8 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
       .id(1L)
       .title("title")
       .checkDate(LocalDate.now())
-      .startTime(LocalTime.now())
-      .endTime(LocalTime.now())
+      .startTime(LocalTime.of(1, 1, 1))
+      .endTime(LocalTime.of(12, 11, 14))
       .place("place")
       .memo("memo")
       .build();
@@ -77,8 +77,8 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
       .id(1L)
       .title("title")
       .checkDate(LocalDate.now())
-      .startTime(LocalTime.now())
-      .endTime(LocalTime.now())
+      .startTime(LocalTime.of(1, 1, 1))
+      .endTime(LocalTime.of(12, 11, 14))
       .place("place")
       .memo("memo")
       .build();
@@ -177,8 +177,8 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
     ChecklistItemDto createChecklistItemDto = ChecklistItemDto.builder()
         .title("title")
         .checkDate(LocalDate.now())
-        .startTime(LocalTime.now())
-        .endTime(LocalTime.now())
+        .startTime(LocalTime.of(1, 1, 1))
+        .endTime(LocalTime.of(12, 11, 14))
         .place("place")
         .memo("memo")
         .build();
