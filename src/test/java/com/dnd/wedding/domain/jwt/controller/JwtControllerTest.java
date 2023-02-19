@@ -29,8 +29,8 @@ import org.springframework.test.web.servlet.ResultActions;
 @WebMvcTest(JwtController.class)
 class JwtControllerTest extends AbstractRestDocsTests {
 
-  final String ACCESS_TOKEN_PREFIX = "Bearer ";
-  final String REFRESH_TOKEN_NAME = "refresh";
+  static final String ACCESS_TOKEN_PREFIX = "Bearer ";
+  static final String REFRESH_TOKEN_NAME = "refresh";
 
   @MockBean
   JwtTokenProvider jwtTokenProvider;
