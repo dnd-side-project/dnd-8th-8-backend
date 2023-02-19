@@ -7,7 +7,9 @@ import com.dnd.weddingmap.domain.checklist.checklistitem.repository.ChecklistIte
 import com.dnd.weddingmap.domain.checklist.checklistsubitem.ChecklistSubItem;
 import com.dnd.weddingmap.domain.checklist.checklistsubitem.dto.ChecklistSubItemDto;
 import com.dnd.weddingmap.domain.checklist.checklistsubitem.repository.ChecklistSubItemRepository;
+import com.dnd.weddingmap.domain.checklist.dto.PreChecklistItemListDto;
 import com.dnd.weddingmap.domain.checklist.service.ChecklistService;
+import com.dnd.weddingmap.domain.member.Member;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,18 @@ public class ChecklistServiceImpl implements ChecklistService {
     checklistItemList.forEach(item -> result.add(toDto(item, findChecklistSubItem(item.getId()))));
 
     return result;
+  }
+
+  @Transactional
+  @Override
+  public List<ChecklistItemDto> savePreChecklistItemList(Member member,
+      PreChecklistItemListDto preChecklistItemListDto) {
+    return preChecklistItemListDto.getPreChecklistItems().stream()
+        .map(preChecklistItem ->
+            new ChecklistItemDto(checklistItemRepository.save(ChecklistItem.builder()
+                .title(preChecklistItem.getTitle())
+                .member(member)
+                .build()))).toList();
   }
 
   public List<ChecklistSubItem> findChecklistSubItem(Long checklistItemId) {
