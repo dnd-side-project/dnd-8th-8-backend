@@ -7,3 +7,6 @@
 
 include::api/Authorization.adoc[]
 include::api/Member.adoc[]
+include::api/checklist/checklist.adoc[]
+include::api/checklist/checklistItem.adoc[]
+include::api/checklist/checklistSubItem.adoc[]

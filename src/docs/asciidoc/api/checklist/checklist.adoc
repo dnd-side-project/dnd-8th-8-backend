@@ -1,0 +1,15 @@
+== Checklist API
+:doctype: book
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:seclinks:
+
+=== Checklist 조회
+
+사용자의 ``전체 체크리스트``를 조회할 수 있습니다.
+이를 위해서는 ``Header``의 ``Authorization``에 사용자의 ``액세스 토큰``을 포함시켜야 합니다.
+
+사용자가 등록한 체크리스트 아이템과 체크리스트 서브 아이템 목록 전체를 조회할 수 있습니다.
+
+operation::checklist/checklist/[snippets="http-request,http-response,response-fields-data"]
