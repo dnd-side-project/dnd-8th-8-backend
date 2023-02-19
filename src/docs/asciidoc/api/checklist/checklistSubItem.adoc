@@ -1,4 +1,4 @@
-== Checklist Sub Item API
+== 체크리스트 서브 아이템 API
 :doctype: book
 :source-highlighter: highlightjs
 :toc: left
@@ -8,21 +8,21 @@
 체크리스트 서브 아이템 등록, 체크 여부 수정, 삭제가 가능합니다.
 관련된 모든 요청에서 사용자 정보 식별을 위해 ``Header``의 ``Authorization``에 사용자의 ``액세스 토큰``을 포함시켜야 합니다.
 
-=== Checklist Sub Item 등록
+=== 체크리스트 서브 아이템 등록
 
 체크리스트 서브 아이템 등록이 가능합니다.
 서브 아이템 등록 시 체크 여부는 ``false``로 등록됩니다.
 
 operation::checklist/sub-item/checklist-sub-item-create/[snippets="http-request,path-parameters,request-fields,http-response,response-fields-data"]
 
-=== Checklist Sub Item 체크 여부 수정
+=== 체크리스트 서브 아이템 체크 여부 수정
 
 체크리스트 서브 아이템 체크 여부 수정이 가능합니다.
 요청 성공 시 수정된 서브 아이템의 정보가 반환됩니다.
 
 operation::checklist/sub-item/checklist-sub-item-modify/[snippets="http-request,path-parameters,request-fields,http-response,response-fields-data"]
 
-=== Checklist Sub Item 삭제
+=== 체크리스트 서브 아이템 삭제
 
 체크리스트 서브 아이템 삭제가 가능합니다.
 
