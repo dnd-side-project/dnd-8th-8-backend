@@ -27,4 +27,4 @@ app:
       secret-key: ${JWT_SECRET_KEY}
       refresh-cookie-key: ${REFRESH_COOKIE_KEY}
   oauth2:
-    authorizedRedirectUri: ${GOOGLE_OAUTH2_REDIRECT_URI}
+    authorizedRedirectUri: ${OAUTH2_REDIRECT_URI}
