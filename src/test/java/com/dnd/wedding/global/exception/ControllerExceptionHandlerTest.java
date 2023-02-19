@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 class ControllerExceptionHandlerTest {
@@ -116,5 +117,18 @@ class ControllerExceptionHandlerTest {
     assertNotNull(error);
     assertEquals(HttpStatus.BAD_REQUEST, error.getStatusCode());
     assertEquals(message, error.getBody().getMessage());
+  }
+
+  @Test
+  @DisplayName("HttpRequestMethodNotSupportedException 발생 테스트")
+  void httpRequestMethodNotSupportedExceptionTest() throws Exception {
+    HttpRequestMethodNotSupportedException exception = mock(
+        HttpRequestMethodNotSupportedException.class);
+
+    ResponseEntity<ErrorResponse> error = controllerExceptionHandler
+        .httpRequestMethodNotSupportedException(exception);
+
+    assertNotNull(error);
+    assertEquals(HttpStatus.NOT_FOUND, error.getStatusCode());
   }
 }
