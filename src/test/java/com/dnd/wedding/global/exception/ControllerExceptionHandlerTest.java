@@ -112,7 +112,7 @@ class ControllerExceptionHandlerTest {
     when(e.getDefaultMessage()).thenReturn(message);
 
     ResponseEntity<ErrorResponse> error = controllerExceptionHandler
-        .handleNotBlankValid(exception);
+        .methodArgumentNotValidException(exception);
 
     assertNotNull(error);
     assertEquals(HttpStatus.BAD_REQUEST, error.getStatusCode());

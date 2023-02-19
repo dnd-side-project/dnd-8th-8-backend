@@ -69,7 +69,7 @@ public class ControllerExceptionHandler {
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  protected ResponseEntity<ErrorResponse> handleNotBlankValid(MethodArgumentNotValidException ex) {
+  protected ResponseEntity<ErrorResponse> methodArgumentNotValidException(MethodArgumentNotValidException ex) {
     ErrorResponse message = new ErrorResponse(
         HttpStatus.BAD_REQUEST.value(),
         ex.getAllErrors().get(0).getDefaultMessage());
