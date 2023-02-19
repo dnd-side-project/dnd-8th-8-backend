@@ -18,8 +18,8 @@ import com.dnd.wedding.domain.checklist.checklistsubitem.service.ChecklistSubIte
 import com.dnd.wedding.domain.checklist.service.ChecklistService;
 import com.dnd.wedding.domain.jwt.JwtTokenProvider;
 import com.dnd.wedding.domain.member.Member;
-import com.dnd.wedding.domain.member.MemberRepository;
 import com.dnd.wedding.domain.member.Role;
+import com.dnd.wedding.domain.member.service.MemberService;
 import com.dnd.wedding.domain.oauth.OAuth2Provider;
 import com.dnd.wedding.global.WithMockOAuth2User;
 import java.time.LocalDate;
@@ -43,7 +43,7 @@ class ChecklistControllerTest extends AbstractRestDocsTests {
   @MockBean
   ChecklistSubItemService checklistSubItemService;
   @MockBean
-  MemberRepository memberRepository;
+  MemberService memberService;
   @MockBean
   JwtTokenProvider jwtTokenProvider;
 
@@ -89,7 +89,7 @@ class ChecklistControllerTest extends AbstractRestDocsTests {
         .build();
 
     // given
-    given(memberRepository.findById(anyLong())).willReturn(Optional.ofNullable(member));
+    given(memberService.findMember(anyLong())).willReturn(Optional.ofNullable(member));
     given(checklistService.findChecklist(anyLong())).willReturn(List.of(checklistItemApiDto1));
 
     // when

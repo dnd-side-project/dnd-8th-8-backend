@@ -53,4 +53,9 @@ public class MemberServiceImpl implements MemberService {
         })
         .orElse(false);
   }
+
+  @Override
+  public Optional<Member> findMember(Long id) {
+    return memberRepository.findById(id);
+  }
 }

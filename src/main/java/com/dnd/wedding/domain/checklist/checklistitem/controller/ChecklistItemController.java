@@ -7,7 +7,7 @@ import com.dnd.wedding.domain.checklist.checklistitem.service.ChecklistItemServi
 import com.dnd.wedding.domain.checklist.checklistsubitem.dto.ChecklistSubItemDto;
 import com.dnd.wedding.domain.checklist.checklistsubitem.service.ChecklistSubItemService;
 import com.dnd.wedding.domain.member.Member;
-import com.dnd.wedding.domain.member.MemberRepository;
+import com.dnd.wedding.domain.member.service.MemberService;
 import com.dnd.wedding.domain.oauth.CustomUserDetails;
 import com.dnd.wedding.global.exception.InternalServerErrorException;
 import com.dnd.wedding.global.exception.NotFoundException;
@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/checklist/item")
 public class ChecklistItemController {
 
-  private final MemberRepository memberRepository;
+  private final MemberService memberService;
   private final ChecklistItemService checklistItemService;
   private final ChecklistSubItemService checklistSubItemService;
 
@@ -56,7 +56,7 @@ public class ChecklistItemController {
   public ResponseEntity<SuccessResponse> createChecklistItem(
       @AuthenticationPrincipal CustomUserDetails user,
       @RequestBody @Valid ChecklistItemApiDto requestDto) {
-    Member member = memberRepository.findById(user.getId())
+    Member member = memberService.findMember(user.getId())
         .orElseThrow(() -> new NotFoundException("not found user"));
     ChecklistItemApiDto savedChecklistItem = checklistItemService.createChecklistItem(
         requestDto, member);

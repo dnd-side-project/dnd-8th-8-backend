@@ -3,7 +3,7 @@ package com.dnd.wedding.domain.checklist.controller;
 import com.dnd.wedding.domain.checklist.checklistitem.dto.ChecklistItemApiDto;
 import com.dnd.wedding.domain.checklist.service.ChecklistService;
 import com.dnd.wedding.domain.member.Member;
-import com.dnd.wedding.domain.member.MemberRepository;
+import com.dnd.wedding.domain.member.service.MemberService;
 import com.dnd.wedding.domain.oauth.CustomUserDetails;
 import com.dnd.wedding.global.exception.NotFoundException;
 import com.dnd.wedding.global.response.SuccessResponse;
@@ -20,13 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/checklist")
 public class ChecklistController {
 
-  private final MemberRepository memberRepository;
+  private final MemberService memberService;
   private final ChecklistService checklistService;
 
   @GetMapping
   public ResponseEntity<SuccessResponse> getChecklist(
       @AuthenticationPrincipal CustomUserDetails user) {
-    Member member = memberRepository.findById(user.getId())
+    Member member = memberService.findMember(user.getId())
         .orElseThrow(() -> new NotFoundException("존재하지 않는 사용자입니다."));
 
     List<ChecklistItemApiDto> result = checklistService.findChecklist(member.getId());
