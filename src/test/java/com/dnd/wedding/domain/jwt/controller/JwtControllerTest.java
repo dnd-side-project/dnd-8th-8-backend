@@ -23,9 +23,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
+import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(JwtController.class)
 class JwtControllerTest extends AbstractRestDocsTests {
+
+  static final String ACCESS_TOKEN_PREFIX = "Bearer ";
+  static final String REFRESH_TOKEN_NAME = "refresh";
 
   @MockBean
   JwtTokenProvider jwtTokenProvider;
@@ -34,29 +39,29 @@ class JwtControllerTest extends AbstractRestDocsTests {
   JwtService jwtService;
 
   @Test
-  @DisplayName("access token 갱신 성공 시 새로 발급한 token을 전달한다.")
+  @DisplayName("Access Token 재발급")
   void refresh() throws Exception {
 
+    // given
     given(jwtService.refreshToken(
-        any(HttpServletRequest.class), any(HttpServletResponse.class), eq("accessToken")
-    )).willReturn("newAccessToken");
+        any(HttpServletRequest.class), any(HttpServletResponse.class), eq("OLD_ACCESS_TOKEN")
+    )).willReturn("NEW_ACCESS_TOKEN");
 
-    mockMvc.perform(post("/api/v1/jwt/refresh")
-            .cookie(new Cookie("refresh", "refreshToken"))
-            .header("Authorization", "Bearer " + "accessToken"))
-        .andExpect(status().isOk())
+    // when
+    ResultActions result = mockMvc.perform(post("/api/v1/jwt/refresh")
+            .cookie(new Cookie(REFRESH_TOKEN_NAME, "OLD_REFRESH_TOKEN"))
+            .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "OLD_ACCESS_TOKEN"));
+
+    // then
+    result.andExpect(status().isOk())
         .andDo(document("jwt/refresh",
-            requestCookies(
-                cookieWithName("refresh").description("refresh token")
-            ),
-            requestHeaders(
-                headerWithName("Authorization").description("access token")
-            ),
+            requestCookies(cookieWithName(REFRESH_TOKEN_NAME).description("재발급할 리프레시 토큰")),
+            requestHeaders(headerWithName(HttpHeaders.AUTHORIZATION).description("재발급할 액세스 토큰")),
             responseFields(
                 fieldWithPath("status").description("응답 상태 코드"),
                 fieldWithPath("message").description("응답 메시지"),
                 fieldWithPath("data").description("응답 데이터"),
-                fieldWithPath("data.accessToken").description("새로 발급한 access token")
+                fieldWithPath("data.accessToken").description("재발급한 액세스 토큰")
             )
         ));
   }
