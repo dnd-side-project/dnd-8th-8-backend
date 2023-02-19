@@ -26,7 +26,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Component
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-  @Value("${app.oauth2.authorizedRedirectUri}")
+  @Value("${app.oauth2.authorized-redirect-uri}")
   private String redirectUri;
 
   private final JwtTokenProvider tokenProvider;

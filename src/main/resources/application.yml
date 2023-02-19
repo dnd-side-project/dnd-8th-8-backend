@@ -27,6 +27,10 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+app:
+  auth:
+    token:
+      refresh-cookie-key: refresh
 aws:
   s3:
     access-key: ${AWS_S3_ACCESS_KEY}
