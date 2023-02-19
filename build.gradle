@@ -6,6 +6,7 @@ plugins {
     id 'jacoco'
     id 'org.sonarqube' version '3.5.0.2730'
     id "org.asciidoctor.jvm.convert" version "3.3.2"
+    id 'com.google.cloud.tools.jib' version '3.1.4'
 }
 
 group = 'com.dnd'
@@ -95,5 +96,22 @@ sonar {
         property 'sonar.projectKey', 'dnd-side-project_dnd-8th-8-backend'
         property 'sonar.java.checkstyle.reportPaths', 'build/reports/checkstyle/main.xml'
         property 'sonar.coverage.jacoco.xmlReportPaths', 'build/reports/jacoco/test/jacocoTestReport.xml'
+    }
+}
+
+jib {
+    from {
+        image = 'eclipse-temurin:17-jdk-alpine'
+    }
+    to {
+        image = '339286557484.dkr.ecr.ap-northeast-2.amazonaws.com/weddingmap'
+        tags = ['latest', "${project.version}".toString()]
+        credHelper = 'ecr-login'
+    }
+    container {
+        creationTime = 'USE_CURRENT_TIMESTAMP'
+        jvmFlags = ['-Dspring.profiles.active=prod', '-XX:+UseContainerSupport', '-Dserver.port=8080', '-Dfile.encoding=UTF-8']
+        ports = ['8080']
+        user = 'nobody:nogroup'
     }
 }
