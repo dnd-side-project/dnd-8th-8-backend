@@ -1,0 +1,89 @@
+== 소셜 로그인 API
+:doctype: book
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:seclinks:
+
+소셜 로그인 기능을 제공합니다.
+
+- Google
+- Kakao
+
+로그인 성공 후에는 요청 시 전달한 ``redirect uri`` path로 ``redirect``되며, 이때 ``JWT token``이 함께 전달됩니다.
+
+[cols=2*]
+|===
+|*Token 종류*
+|*Token 전달 방식*
+
+| Access token
+| redirect path url의 query로 전달
+
+| Refresh token
+| 쿠키로 전달
+|===
+
+=== 구글 로그인
+
+==== HTTP request
+
+[source,http,options="nowrap"]
+----
+GET /oauth2/authorization/google?redirect_uri={redirect_uri} HTTP/1.1
+Host: localhost:8080
+----
+
+==== Request Query
+
+===== _Table 1. /oauth2/authorization/google?redirect_uri={redirect_uri}_
+
+[cols=2*]
+|===
+|*Query*
+|*Description*
+
+|redirect_uri
+|로그인 성공 후 redirect될 path
+|===
+
+==== HTTP response
+
+[source,http,options="nowrap"]
+----
+HTTP/1.1 302 Found
+Location: {redirect_uri}?code=ACCESS_TOKEN
+Set-Cookie: refresh=REFRESH_TOKEN
+----
+
+=== 카카오 로그인
+
+==== HTTP request
+
+[source,http,options="nowrap"]
+----
+GET /oauth2/authorization/kakao?redirect_uri={redirect_uri} HTTP/1.1
+Host: localhost:8080
+----
+
+==== Request Query
+
+===== _Table 1. /oauth2/authorization/kakao?redirect_uri={redirect_uri}_
+
+[cols=2*]
+|===
+|*Query*
+|*Description*
+
+|redirect_uri
+|로그인 성공 후 redirect될 path
+|===
+
+==== HTTP response
+
+[source,http,options="nowrap"]
+----
+HTTP/1.1 302 Found
+Location: {redirect_uri}?code=ACCESS_TOKEN
+Set-Cookie: refresh=REFRESH_TOKEN
+----
