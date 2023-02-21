@@ -14,6 +14,8 @@
 
 사용자가 등록한 체크리스트 아이템과 체크리스트 서브 아이템 목록 전체를 조회할 수 있습니다.
 
+응답 데이터는 ``체크리스트 아이템 일정 날짜 (checkDate)`` 에 맞추어 오름차순으로 정렬된 데이터이며, 일정 날짜가 입력되지 않은 데이터가 제일 앞쪽에 위치합니다.
+
 operation::checklist/checklist/[snippets="http-request,http-response,response-fields-data"]
 
 === 온보딩 체크리스트 사전 등록
