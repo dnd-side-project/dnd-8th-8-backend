@@ -1,19 +1,33 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:339286557484:task-definition/weddingmap:9",
+    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:339286557484:task-definition/application-stack:2",
     "containerDefinitions": [
+        {
+            "name": "nginx",
+            "image": "339286557484.dkr.ecr.ap-northeast-2.amazonaws.com/reverse-proxy",
+            "cpu": 256,
+            "memory": 256,
+            "links": [
+                "application"
+            ],
+            "portMappings": [
+                {
+                    "containerPort": 80,
+                    "hostPort": 0,
+                    "protocol": "tcp",
+                    "name": "nginx-80-tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": []
+        },
         {
             "name": "application",
             "image": "339286557484.dkr.ecr.ap-northeast-2.amazonaws.com/weddingmap",
-            "cpu": 0,
-            "portMappings": [
-                {
-                    "containerPort": 8080,
-                    "hostPort": 8080,
-                    "protocol": "tcp",
-                    "name": "application-8080-tcp",
-                    "appProtocol": "http"
-                }
-            ],
+            "cpu": 256,
+            "memory": 256,
+            "portMappings": [],
             "essential": true,
             "environment": [],
             "environmentFiles": [
@@ -23,67 +37,30 @@
                 }
             ],
             "mountPoints": [],
-            "volumesFrom": [],
-            "logConfiguration": {
-                "logDriver": "awslogs",
-                "options": {
-                    "awslogs-create-group": "true",
-                    "awslogs-group": "/ecs/weddingmap",
-                    "awslogs-region": "ap-northeast-2",
-                    "awslogs-stream-prefix": "ecs"
-                }
-            }
+            "volumesFrom": []
         }
     ],
-    "family": "weddingmap",
+    "family": "application-stack",
     "executionRoleArn": "arn:aws:iam::339286557484:role/ecsTaskExecutionRole",
-    "networkMode": "awsvpc",
-    "revision": 9,
+    "networkMode": "bridge",
+    "revision": 2,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
         {
-            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
-        },
-        {
-            "name": "ecs.capability.execution-role-awslogs"
-        },
-        {
             "name": "com.amazonaws.ecs.capability.ecr-auth"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
         },
         {
             "name": "ecs.capability.env-files.s3"
         },
         {
             "name": "ecs.capability.execution-role-ecr-pull"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
-        },
-        {
-            "name": "ecs.capability.task-eni"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
         }
     ],
     "placementConstraints": [],
     "compatibilities": [
-        "EC2",
-        "FARGATE"
+        "EC2"
     ],
-    "runtimePlatform": {
-        "cpuArchitecture": "X86_64",
-        "operatingSystemFamily": "LINUX"
-    },
-    "requiresCompatibilities": [
-        "FARGATE"
-    ],
-    "cpu": "1024",
-    "memory": "2048",
-    "registeredAt": "2023-02-21T14:33:12.880000+09:00",
+    "registeredAt": "2023-02-21T21:51:39.331000+09:00",
     "registeredBy": "arn:aws:iam::339286557484:root"
 }
