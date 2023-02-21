@@ -73,7 +73,8 @@ class ChecklistItemRepositoryTest {
     checklistItemRepository.save(checklistItem1);
     checklistItemRepository.save(checklistItem2);
 
-    List<ChecklistItem> checklistItems = checklistItemRepository.findByMemberId(member.getId());
+    List<ChecklistItem> checklistItems = checklistItemRepository
+        .findByMemberIdOrderByCheckDate(member.getId());
 
     assertEquals(2, checklistItems.size());
   }
