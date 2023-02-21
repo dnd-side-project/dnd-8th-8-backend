@@ -16,7 +16,8 @@ public enum TransactionCategory {
   @JsonCreator
   public static com.dnd.weddingmap.domain.transaction.TransactionCategory findBy(String key) {
 
-    for (com.dnd.weddingmap.domain.transaction.TransactionCategory transactionCategory : com.dnd.weddingmap.domain.transaction.TransactionCategory.values()) {
+    for (com.dnd.weddingmap.domain.transaction.TransactionCategory transactionCategory :
+        com.dnd.weddingmap.domain.transaction.TransactionCategory.values()) {
       if (transactionCategory.name().equals(key.toUpperCase())) {
         return transactionCategory;
       }
