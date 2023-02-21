@@ -7,6 +7,8 @@ import com.dnd.weddingmap.domain.transaction.repository.TransactionRepository;
 import com.dnd.weddingmap.domain.transaction.service.TransactionService;
 import com.dnd.weddingmap.global.exception.BadRequestException;
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -48,5 +50,16 @@ public class TransactionServiceImpl implements TransactionService {
           return true;
         })
         .orElse(false);
+  }
+
+  @Transactional
+  @Override
+  public List<TransactionDto> findTransactionList(Long memberId) {
+    List<Transaction> transactionList =
+        transactionRepository.findByMemberIdOrderByTransactionDate(memberId);
+
+    List<TransactionDto> result = new ArrayList<>();
+    transactionList.forEach(transaction -> result.add(new TransactionDto(transaction)));
+    return result;
   }
 }

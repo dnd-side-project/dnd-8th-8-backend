@@ -3,6 +3,7 @@ package com.dnd.weddingmap.domain.transaction.service;
 import com.dnd.weddingmap.domain.member.Member;
 import com.dnd.weddingmap.domain.transaction.Transaction;
 import com.dnd.weddingmap.domain.transaction.dto.TransactionDto;
+import java.util.List;
 import java.util.Optional;
 
 public interface TransactionService {
@@ -14,4 +15,6 @@ public interface TransactionService {
   TransactionDto modifyTransaction(Long id, TransactionDto transactionDto);
 
   boolean withdrawTransaction(Long id);
+
+  List<TransactionDto> findTransactionList(Long memberId);
 }

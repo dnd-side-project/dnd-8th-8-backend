@@ -10,6 +10,7 @@ import com.dnd.weddingmap.global.exception.InternalServerErrorException;
 import com.dnd.weddingmap.global.exception.NotFoundException;
 import com.dnd.weddingmap.global.response.SuccessResponse;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -79,5 +80,16 @@ public class TransactionController {
       throw new NotFoundException("존재하지 않는 예산표입니다.");
     }
     return ResponseEntity.ok(SuccessResponse.builder().message("예산표 삭제 성공").build());
+  }
+
+  @GetMapping
+  public ResponseEntity<SuccessResponse> getTransactionList(
+      @AuthenticationPrincipal CustomUserDetails user) {
+    Member member = memberService.findMember(user.getId())
+        .orElseThrow(() -> new NotFoundException("존재하지 않는 사용자입니다."));
+    List<TransactionDto> transactionList = transactionService.findTransactionList(member.getId());
+
+    return ResponseEntity.ok()
+        .body(SuccessResponse.builder().data(transactionList).build());
   }
 }
