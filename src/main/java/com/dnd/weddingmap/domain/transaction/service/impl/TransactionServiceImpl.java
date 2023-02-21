@@ -38,4 +38,15 @@ public class TransactionServiceImpl implements TransactionService {
 
     return new TransactionDto(transaction.update(transactionDto));
   }
+
+  @Transactional
+  @Override
+  public boolean withdrawTransaction(Long id) {
+    return transactionRepository.findById(id)
+        .map(transaction -> {
+          transactionRepository.delete(transaction);
+          return true;
+        })
+        .orElse(false);
+  }
 }

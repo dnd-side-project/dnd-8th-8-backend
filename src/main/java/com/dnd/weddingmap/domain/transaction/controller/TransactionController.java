@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -67,5 +68,16 @@ public class TransactionController {
 
     return ResponseEntity.ok()
         .body(SuccessResponse.builder().data(result).build());
+  }
+
+  @DeleteMapping("/{transaction-id}")
+  public ResponseEntity<SuccessResponse> withdrawTransaction(
+      @AuthenticationPrincipal CustomUserDetails user,
+      @PathVariable("transaction-id") Long transactionId) {
+    boolean result = transactionService.withdrawTransaction(transactionId);
+    if (!result) {
+      throw new NotFoundException("존재하지 않는 예산표입니다.");
+    }
+    return ResponseEntity.ok(SuccessResponse.builder().message("예산표 삭제 성공").build());
   }
 }

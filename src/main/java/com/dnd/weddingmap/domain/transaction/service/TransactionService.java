@@ -12,4 +12,6 @@ public interface TransactionService {
   Optional<Transaction> findTransaction(Long id);
 
   TransactionDto modifyTransaction(Long id, TransactionDto transactionDto);
+
+  boolean withdrawTransaction(Long id);
 }
