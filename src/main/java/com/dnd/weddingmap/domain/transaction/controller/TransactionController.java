@@ -17,6 +17,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,5 +56,16 @@ public class TransactionController {
 
     return ResponseEntity.ok()
         .body(SuccessResponse.builder().data(new TransactionDto(transaction)).build());
+  }
+
+  @PutMapping("/{transaction-id}")
+  public ResponseEntity<SuccessResponse> modifyTransaction(
+      @AuthenticationPrincipal CustomUserDetails user,
+      @PathVariable("transaction-id") Long transactionId,
+      @RequestBody @Valid TransactionDto requestDto) {
+    TransactionDto result = transactionService.modifyTransaction(transactionId, requestDto);
+
+    return ResponseEntity.ok()
+        .body(SuccessResponse.builder().data(result).build());
   }
 }

@@ -2,6 +2,7 @@ package com.dnd.weddingmap.domain.transaction;
 
 import com.dnd.weddingmap.domain.common.BaseTimeEntity;
 import com.dnd.weddingmap.domain.member.Member;
+import com.dnd.weddingmap.domain.transaction.dto.TransactionDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -75,6 +76,20 @@ public class Transaction extends BaseTimeEntity {
     this.accountNumber = accountNumber;
     this.memo = memo;
     this.member = member;
+  }
+
+  public Transaction update(TransactionDto transactionDto) {
+    this.title = transactionDto.getTitle();
+    this.agency = transactionDto.getAgency();
+    this.transactionDate = transactionDto.getTransactionDate();
+    this.payment = transactionDto.getPayment();
+    this.balance = transactionDto.getBalance();
+    this.transactionCategory = transactionDto.getTransactionCategory();
+    this.accountHolder = transactionDto.getAccountHolder();
+    this.accountNumber = transactionDto.getAccountNumber();
+    this.memo = transactionDto.getMemo();
+
+    return this;
   }
 }
 

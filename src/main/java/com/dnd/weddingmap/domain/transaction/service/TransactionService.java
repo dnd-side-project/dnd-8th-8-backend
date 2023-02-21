@@ -10,4 +10,6 @@ public interface TransactionService {
   TransactionDto createTransaction(TransactionDto dto, Member member);
 
   Optional<Transaction> findTransaction(Long id);
+
+  TransactionDto modifyTransaction(Long id, TransactionDto transactionDto);
 }
