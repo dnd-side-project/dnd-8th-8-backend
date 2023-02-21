@@ -3,6 +3,7 @@ package com.dnd.weddingmap.domain.transaction.controller;
 import com.dnd.weddingmap.domain.member.Member;
 import com.dnd.weddingmap.domain.member.service.MemberService;
 import com.dnd.weddingmap.domain.oauth.CustomUserDetails;
+import com.dnd.weddingmap.domain.transaction.Transaction;
 import com.dnd.weddingmap.domain.transaction.dto.TransactionDto;
 import com.dnd.weddingmap.domain.transaction.service.TransactionService;
 import com.dnd.weddingmap.global.exception.InternalServerErrorException;
@@ -13,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,5 +44,16 @@ public class TransactionController {
     return ResponseEntity.status(HttpStatus.CREATED).body(
         SuccessResponse.builder().httpStatus(HttpStatus.CREATED).message("예산표 등록 성공")
             .data(savedTransaction).build());
+  }
+
+  @GetMapping("/{transaction-id}")
+  public ResponseEntity<SuccessResponse> getTransaction(
+      @AuthenticationPrincipal CustomUserDetails user,
+      @PathVariable("transaction-id") Long transactionId) {
+    Transaction transaction = transactionService.findTransaction(transactionId)
+        .orElseThrow(() -> new NotFoundException("존재하지 않는 예산표입니다."));
+
+    return ResponseEntity.ok()
+        .body(SuccessResponse.builder().data(new TransactionDto(transaction)).build());
   }
 }

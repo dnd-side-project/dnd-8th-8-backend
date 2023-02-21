@@ -6,6 +6,7 @@ import com.dnd.weddingmap.domain.transaction.dto.TransactionDto;
 import com.dnd.weddingmap.domain.transaction.repository.TransactionRepository;
 import com.dnd.weddingmap.domain.transaction.service.TransactionService;
 import jakarta.transaction.Transactional;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,5 +21,11 @@ public class TransactionServiceImpl implements TransactionService {
   public TransactionDto createTransaction(TransactionDto dto, Member member) {
     Transaction savedTransaction = transactionRepository.save(dto.toEntity(member));
     return new TransactionDto(savedTransaction);
+  }
+
+  @Transactional
+  @Override
+  public Optional<Transaction> findTransaction(Long id) {
+    return transactionRepository.findById(id);
   }
 }
