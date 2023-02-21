@@ -24,4 +24,4 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
       - name: Build and push image to Amazon ECR
-        run: ./gradlew jib
+        run: ./gradlew clean jib -x test
