@@ -1,4 +1,4 @@
-= DND 8th-8 Application API Document
+= 웨딩맵 API
 :doctype: book
 :source-highlighter: highlightjs
 :toc: left
