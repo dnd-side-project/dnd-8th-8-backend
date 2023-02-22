@@ -1,6 +1,5 @@
 package com.dnd.weddingmap.domain.member.controller;
 
-import com.dnd.weddingmap.domain.aws.service.S3Service;
 import com.dnd.weddingmap.domain.member.Gender;
 import com.dnd.weddingmap.domain.member.dto.GenderDto;
 import com.dnd.weddingmap.domain.member.dto.ProfileImageDto;
@@ -9,6 +8,7 @@ import com.dnd.weddingmap.domain.oauth.CustomUserDetails;
 import com.dnd.weddingmap.global.exception.NotFoundException;
 import com.dnd.weddingmap.global.exception.RequestTimeoutException;
 import com.dnd.weddingmap.global.response.SuccessResponse;
+import com.dnd.weddingmap.global.service.S3Service;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -71,7 +71,7 @@ public class MemberController {
     String imageUrl;
 
     try {
-      imageUrl = s3Service.upload(imageFile);
+      imageUrl = s3Service.upload(imageFile, "profile");
     } catch (Exception e) {
       throw new RequestTimeoutException("이미지 업로드에 실패했습니다.");
     }

@@ -3,6 +3,7 @@ package com.dnd.weddingmap.domain.member.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -19,12 +20,12 @@ import static org.springframework.restdocs.request.RequestDocumentation.requestP
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.dnd.weddingmap.docs.springrestdocs.AbstractRestDocsTests;
-import com.dnd.weddingmap.domain.aws.service.S3Service;
 import com.dnd.weddingmap.domain.jwt.JwtTokenProvider;
 import com.dnd.weddingmap.domain.member.Gender;
 import com.dnd.weddingmap.domain.member.dto.GenderDto;
 import com.dnd.weddingmap.domain.member.service.MemberService;
 import com.dnd.weddingmap.global.WithMockOAuth2User;
+import com.dnd.weddingmap.global.service.S3Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -146,12 +147,12 @@ class MemberControllerTest extends AbstractRestDocsTests {
   @Test
   @DisplayName("프로필 이미지 수정 테스트")
   @WithMockOAuth2User
-  void putProfile() throws Exception {
+  void postProfile() throws Exception {
 
     // given
     MockMultipartFile image = new MockMultipartFile(
         "image", "image.png", "image/png", "image data".getBytes());
-    given(s3Service.upload(any(MultipartFile.class)))
+    given(s3Service.upload(any(MultipartFile.class), eq("profile")))
         .willReturn("https://image.storage.com/profile/1");
 
     // when
