@@ -1,4 +1,4 @@
-package com.dnd.weddingmap.domain.aws.service;
+package com.dnd.weddingmap.global.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;

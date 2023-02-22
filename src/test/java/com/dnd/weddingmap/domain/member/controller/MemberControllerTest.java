@@ -20,12 +20,12 @@ import static org.springframework.restdocs.request.RequestDocumentation.requestP
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.dnd.weddingmap.docs.springrestdocs.AbstractRestDocsTests;
-import com.dnd.weddingmap.domain.aws.service.S3Service;
 import com.dnd.weddingmap.domain.jwt.JwtTokenProvider;
 import com.dnd.weddingmap.domain.member.Gender;
 import com.dnd.weddingmap.domain.member.dto.GenderDto;
 import com.dnd.weddingmap.domain.member.service.MemberService;
 import com.dnd.weddingmap.global.WithMockOAuth2User;
+import com.dnd.weddingmap.global.service.S3Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
