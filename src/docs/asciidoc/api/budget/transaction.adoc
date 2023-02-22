@@ -14,6 +14,13 @@
 
 operation::budget/transaction/transaction-detail/[snippets="http-request,path-parameters,http-response,response-fields-data"]
 
+=== 예산표 전체 리스트 조회
+
+사용자 예산표 전체 리스트를 조회할 수 있습니다.
+거래 일자 순으로 정렬된 데이터가 전달됩니다.
+
+operation::budget/transaction/get-transaction-list/[snippets="http-request,http-response,response-fields-data"]
+
 === 예산표 등록
 
 예산표 등록이 가능합니다.
