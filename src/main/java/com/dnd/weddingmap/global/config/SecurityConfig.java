@@ -36,6 +36,7 @@ public class SecurityConfig {
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
     http.authorizeHttpRequests()
+        .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
         .requestMatchers(HttpMethod.GET, "/oauth2/**").permitAll()
         .requestMatchers(HttpMethod.POST, "/api/v1/jwt/refresh").permitAll()
         .anyRequest().authenticated();
