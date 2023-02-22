@@ -147,7 +147,7 @@ class MemberControllerTest extends AbstractRestDocsTests {
   @Test
   @DisplayName("프로필 이미지 수정 테스트")
   @WithMockOAuth2User
-  void putProfile() throws Exception {
+  void postProfile() throws Exception {
 
     // given
     MockMultipartFile image = new MockMultipartFile(
