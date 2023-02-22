@@ -59,6 +59,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
   private ObjectMapper objectMapper;
 
   private final Member member = Member.builder()
+      .id(1L)
       .name("test")
       .email("test@example.com")
       .profileImage("test.png")
@@ -287,6 +288,61 @@ class TransactionControllerTest extends AbstractRestDocsTests {
             document("budget/transaction/withdraw-transaction",
                 pathParameters(
                     parameterWithName("transaction-id").description("삭제할 예산표 아이디")
+                )
+            ));
+  }
+
+  @Test
+  @WithMockOAuth2User
+  @DisplayName("예산표 리스트 조회")
+  void getTransactionList() throws Exception {
+    String url = "/api/v1/budget/transaction";
+
+    TransactionListResponseDto transactionListResponseDto1 = TransactionListResponseDto.builder()
+        .id(1L)
+        .title("test title1")
+        .agency("test agency1")
+        .transactionDate(LocalDate.now())
+        .payment(-1000000L)
+        .transactionCategory(TransactionCategory.CARD)
+        .build();
+
+    TransactionListResponseDto transactionListResponseDto2 = TransactionListResponseDto.builder()
+        .id(2L)
+        .title("test title2")
+        .agency("test agency2")
+        .transactionDate(LocalDate.now())
+        .payment(-2000000L)
+        .transactionCategory(TransactionCategory.CASH)
+        .build();
+
+    // given
+    given(memberService.findMember(anyLong())).willReturn(Optional.ofNullable(member));
+    given(transactionService.findTransactionList(anyLong())).willReturn(
+        List.of(transactionListResponseDto1,
+            transactionListResponseDto2));
+
+    // when
+    ResultActions result = mockMvc.perform(get(url)
+        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN"));
+
+    // then
+    result.andExpect(status().isOk())
+        .andDo(
+            document("budget/transaction/get-transaction-list",
+                responseFields(
+                    beneathPath("data").withSubsectionId("data"),
+                    fieldWithPath("id").description("예산표 아이디").type(
+                        JsonFieldType.NUMBER),
+                    fieldWithPath("title").description("제목").type(
+                        JsonFieldType.STRING),
+                    fieldWithPath("agency").description("계약 업체")
+                        .type(JsonFieldType.STRING),
+                    fieldWithPath("transactionDate").description("계약 날짜 (yyyy-mm-dd)")
+                        .type(JsonFieldType.STRING),
+                    fieldWithPath("payment").description("계약금").type(JsonFieldType.NUMBER),
+                    fieldWithPath("transactionCategory").description("거래 구분 (CARD / CASH)")
+                        .type(JsonFieldType.STRING)
                 )
             ));
   }
