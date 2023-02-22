@@ -5,6 +5,7 @@ import com.dnd.weddingmap.domain.member.service.MemberService;
 import com.dnd.weddingmap.domain.oauth.CustomUserDetails;
 import com.dnd.weddingmap.domain.transaction.Transaction;
 import com.dnd.weddingmap.domain.transaction.dto.TransactionDto;
+import com.dnd.weddingmap.domain.transaction.dto.TransactionListResponseDto;
 import com.dnd.weddingmap.domain.transaction.service.TransactionService;
 import com.dnd.weddingmap.global.exception.InternalServerErrorException;
 import com.dnd.weddingmap.global.exception.NotFoundException;
@@ -87,7 +88,8 @@ public class TransactionController {
       @AuthenticationPrincipal CustomUserDetails user) {
     Member member = memberService.findMember(user.getId())
         .orElseThrow(() -> new NotFoundException("존재하지 않는 사용자입니다."));
-    List<TransactionDto> transactionList = transactionService.findTransactionList(member.getId());
+    List<TransactionListResponseDto> transactionList = transactionService.findTransactionList(
+        member.getId());
 
     return ResponseEntity.ok()
         .body(SuccessResponse.builder().data(transactionList).build());

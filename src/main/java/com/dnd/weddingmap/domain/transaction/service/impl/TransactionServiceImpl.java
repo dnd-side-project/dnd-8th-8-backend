@@ -3,6 +3,7 @@ package com.dnd.weddingmap.domain.transaction.service.impl;
 import com.dnd.weddingmap.domain.member.Member;
 import com.dnd.weddingmap.domain.transaction.Transaction;
 import com.dnd.weddingmap.domain.transaction.dto.TransactionDto;
+import com.dnd.weddingmap.domain.transaction.dto.TransactionListResponseDto;
 import com.dnd.weddingmap.domain.transaction.repository.TransactionRepository;
 import com.dnd.weddingmap.domain.transaction.service.TransactionService;
 import com.dnd.weddingmap.global.exception.BadRequestException;
@@ -54,12 +55,19 @@ public class TransactionServiceImpl implements TransactionService {
 
   @Transactional
   @Override
-  public List<TransactionDto> findTransactionList(Long memberId) {
+  public List<TransactionListResponseDto> findTransactionList(Long memberId) {
     List<Transaction> transactionList =
         transactionRepository.findByMemberIdOrderByTransactionDate(memberId);
 
-    List<TransactionDto> result = new ArrayList<>();
-    transactionList.forEach(transaction -> result.add(new TransactionDto(transaction)));
+    List<TransactionListResponseDto> result = new ArrayList<>();
+    transactionList.forEach(transaction -> result.add(TransactionListResponseDto.builder()
+        .id(transaction.getId())
+        .title(transaction.getTitle())
+        .agency(transaction.getAgency())
+        .transactionDate(transaction.getTransactionDate())
+        .payment(transaction.getPayment())
+        .transactionCategory(transaction.getTransactionCategory())
+        .build()));
     return result;
   }
 }
