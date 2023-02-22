@@ -71,7 +71,7 @@ public class MemberController {
     String imageUrl;
 
     try {
-      imageUrl = s3Service.upload(imageFile);
+      imageUrl = s3Service.upload(imageFile, "profile");
     } catch (Exception e) {
       throw new RequestTimeoutException("이미지 업로드에 실패했습니다.");
     }

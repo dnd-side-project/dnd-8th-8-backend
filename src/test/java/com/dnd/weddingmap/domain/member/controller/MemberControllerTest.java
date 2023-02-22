@@ -3,6 +3,7 @@ package com.dnd.weddingmap.domain.member.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -151,7 +152,7 @@ class MemberControllerTest extends AbstractRestDocsTests {
     // given
     MockMultipartFile image = new MockMultipartFile(
         "image", "image.png", "image/png", "image data".getBytes());
-    given(s3Service.upload(any(MultipartFile.class)))
+    given(s3Service.upload(any(MultipartFile.class), eq("profile")))
         .willReturn("https://image.storage.com/profile/1");
 
     // when
