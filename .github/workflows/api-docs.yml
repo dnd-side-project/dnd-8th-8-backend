@@ -2,6 +2,7 @@ name: API Docs
 on:
   push:
     branches:
+      - main
       - develop
 
 permissions:
