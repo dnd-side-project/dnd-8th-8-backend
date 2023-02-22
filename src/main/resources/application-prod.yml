@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate.ddl-auto: validate
+    generate-ddl: false
+  flyway:
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:/db/migration
+app:
+  auth:
+    token:
+      secret-key: ${JWT_SECRET_KEY}
+  oauth2:
+    authorized-redirect-uri: ${OAUTH2_REDIRECT_URI}

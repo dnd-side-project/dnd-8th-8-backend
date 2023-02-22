@@ -1,0 +1,66 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:339286557484:task-definition/application-stack:2",
+    "containerDefinitions": [
+        {
+            "name": "nginx",
+            "image": "339286557484.dkr.ecr.ap-northeast-2.amazonaws.com/reverse-proxy",
+            "cpu": 256,
+            "memory": 256,
+            "links": [
+                "application"
+            ],
+            "portMappings": [
+                {
+                    "containerPort": 80,
+                    "hostPort": 0,
+                    "protocol": "tcp",
+                    "name": "nginx-80-tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": []
+        },
+        {
+            "name": "application",
+            "image": "339286557484.dkr.ecr.ap-northeast-2.amazonaws.com/weddingmap",
+            "cpu": 256,
+            "memory": 256,
+            "portMappings": [],
+            "essential": true,
+            "environment": [],
+            "environmentFiles": [
+                {
+                    "value": "arn:aws:s3:::weddingmap-config/.env",
+                    "type": "s3"
+                }
+            ],
+            "mountPoints": [],
+            "volumesFrom": []
+        }
+    ],
+    "family": "application-stack",
+    "executionRoleArn": "arn:aws:iam::339286557484:role/ecsTaskExecutionRole",
+    "networkMode": "bridge",
+    "revision": 2,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "ecs.capability.env-files.s3"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2"
+    ],
+    "registeredAt": "2023-02-21T21:51:39.331000+09:00",
+    "registeredBy": "arn:aws:iam::339286557484:root"
+}

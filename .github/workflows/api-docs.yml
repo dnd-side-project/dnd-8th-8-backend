@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - main
-  pull_request:
+      - develop
 
 permissions:
   contents: read
@@ -30,7 +30,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: 17
-          distribution: 'zulu'
+          distribution: 'temurin'
           cache: 'gradle'
       - name: Build Asciidoc
         run: ./gradlew asciidoctor

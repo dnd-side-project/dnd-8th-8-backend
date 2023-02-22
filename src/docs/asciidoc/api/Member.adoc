@@ -1,0 +1,40 @@
+== 사용자 API
+:doctype: book
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:seclinks:
+
+사용자의 정보를 조회하거나 수정할 수 있습니다. ``Header``의 ``Authorization``에 사용자의 ``액세스 토큰``을 포함시켜야 합니다.
+
+=== 사용자 탈퇴
+
+사용자의 탈퇴를 진행합니다. 요청이 완료된 사용자는 더 이상 로그인할 수 없습니다.
+
+operation::member/delete[snippets='http-request,http-response,response-fields']
+
+=== 성별 정보 조회
+
+사용자의 성별 정보를 조회합니다. 값은 ``MALE``, ``FEMALE`` 중 하나입니다. 값이 없는 경우 `404 Not Found` 에러가 발생합니다.
+
+operation::member/get-gender[snippets='http-request,http-response,response-fields']
+
+=== 성별 정보 업데이트
+
+사용자의 성별 정보를 추가하거나 수정합니다. 성별은 ``MALE``, ``FEMALE`` 중 하나입니다.
+
+operation::member/post-gender[snippets='http-request,http-response,response-fields']
+
+=== 프로필 이미지 조회
+
+사용자의 프로필 이미지를 조회합니다. 응답 데이터의 URL은 사용자의 ``이미지 경로``를 나타냅니다.
+해당 URL에 ``GET`` 요청을 보내면 이미지를 다운로드할 수 있습니다.
+
+operation::member/get-profile[snippets='http-request,http-response,response-fields']
+
+=== 프로필 이미지 업데이트
+
+사용자의 프로필 이미지를 업데이트합니다. 이미지는 ``multipart/form-data`` 형식으로 전송해야 하며 ``image`` 필드에 이미지를 포함시켜야 합니다.
+요청 성공 시 ``AWS S3``에 업로드된 이미지의 URL을 응답 데이터로 반환합니다.
+
+operation::member/put-profile[snippets='http-request,http-response,response-fields']

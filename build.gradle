@@ -6,10 +6,11 @@ plugins {
     id 'jacoco'
     id 'org.sonarqube' version '3.5.0.2730'
     id "org.asciidoctor.jvm.convert" version "3.3.2"
+    id 'com.google.cloud.tools.jib' version '3.1.4'
 }
 
 group = 'com.dnd'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0-SNAPSHOT'
 sourceCompatibility = '17'
 
 configurations {
@@ -24,8 +25,23 @@ repositories {
 }
 
 dependencies {
+    // spring boot
     implementation 'org.springframework.boot:spring-boot-starter-web:3.0.1'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc:3.0.1'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.0.1'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis:3.0.0'
+    implementation 'org.springframework.boot:spring-boot-starter-security:3.0.1'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:3.0.1'
+    implementation 'org.springframework.boot:spring-boot-starter-validation:3.0.2'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.0.2'
 
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.1'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc:3.0.0'
+    testImplementation 'org.springframework.security:spring-security-test:6.0.1'
+
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor:3.0.0'
+
+    // lombok
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
     testCompileOnly 'org.projectlombok:lombok:1.18.24'
@@ -33,18 +49,18 @@ dependencies {
 
     // database
     runtimeOnly 'com.mysql:mysql-connector-j:8.0.31'
-    implementation 'org.springframework.boot:spring-boot-starter-jdbc:3.0.1'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.0.1'
+    runtimeOnly 'com.h2database:h2:2.1.214'
 
     // flyway
     implementation 'org.flywaydb:flyway-mysql:9.11.0'
 
-    // test
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.1'
+    // jwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
-    // rest docs
-    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
-    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    // AWS
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.232'
 }
 
 checkstyle {
@@ -81,5 +97,22 @@ sonar {
         property 'sonar.projectKey', 'dnd-side-project_dnd-8th-8-backend'
         property 'sonar.java.checkstyle.reportPaths', 'build/reports/checkstyle/main.xml'
         property 'sonar.coverage.jacoco.xmlReportPaths', 'build/reports/jacoco/test/jacocoTestReport.xml'
+    }
+}
+
+jib {
+    from {
+        image = 'eclipse-temurin:17-jdk-alpine'
+    }
+    to {
+        image = '339286557484.dkr.ecr.ap-northeast-2.amazonaws.com/weddingmap'
+        tags = ['latest', "${project.version}".toString()]
+        credHelper = 'ecr-login'
+    }
+    container {
+        creationTime = 'USE_CURRENT_TIMESTAMP'
+        jvmFlags = ['-Dspring.profiles.active=prod', '-XX:+UseContainerSupport', '-Dserver.port=8080', '-Dfile.encoding=UTF-8']
+        ports = ['8080']
+        user = 'nobody:nogroup'
     }
 }

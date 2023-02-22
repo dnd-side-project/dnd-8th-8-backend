@@ -6,12 +6,16 @@ services:
     image: mysql/mysql-server:8.0.31
     ports:
       - "3307:3306"
-    env_file:
-      - ./.env
     environment:
       TZ: Asia/Seoul
-      MYSQL_DATABASE: $DB_NAME
+      MYSQL_DATABASE: dnd
       MYSQL_ROOT_HOST: '%'
-      MYSQL_ROOT_PASSWORD: $DB_PASSWORD
+      MYSQL_ROOT_PASSWORD: password
     command:
       - --character-set-server=utf8mb4
+  redis:
+    container_name: dnd-redis
+    image: redis:7.0.8
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass password --port 6379
