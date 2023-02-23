@@ -44,7 +44,7 @@ public class Transaction extends BaseTimeEntity {
 
   @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
-  private TransactionCategory transactionCategory;
+  private PaymentType paymentType;
 
   @Column
   private String accountHolder;
@@ -61,7 +61,7 @@ public class Transaction extends BaseTimeEntity {
 
   @Builder
   public Transaction(Long id, String title, String agency, LocalDate transactionDate, Long payment,
-      Long balance, TransactionCategory transactionCategory, String accountHolder,
+      Long balance, PaymentType paymentType, String accountHolder,
       String accountNumber,
       String memo,
       Member member) {
@@ -71,7 +71,7 @@ public class Transaction extends BaseTimeEntity {
     this.transactionDate = transactionDate;
     this.payment = payment;
     this.balance = balance;
-    this.transactionCategory = transactionCategory;
+    this.paymentType = paymentType;
     this.accountHolder = accountHolder;
     this.accountNumber = accountNumber;
     this.memo = memo;
@@ -84,7 +84,7 @@ public class Transaction extends BaseTimeEntity {
     this.transactionDate = transactionDto.getTransactionDate();
     this.payment = transactionDto.getPayment();
     this.balance = transactionDto.getBalance();
-    this.transactionCategory = transactionDto.getTransactionCategory();
+    this.paymentType = transactionDto.getPaymentType();
     this.accountHolder = transactionDto.getAccountHolder();
     this.accountNumber = transactionDto.getAccountNumber();
     this.memo = transactionDto.getMemo();

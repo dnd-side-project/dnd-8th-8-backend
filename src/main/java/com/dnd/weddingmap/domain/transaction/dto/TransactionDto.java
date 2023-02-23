@@ -1,8 +1,8 @@
 package com.dnd.weddingmap.domain.transaction.dto;
 
 import com.dnd.weddingmap.domain.member.Member;
+import com.dnd.weddingmap.domain.transaction.PaymentType;
 import com.dnd.weddingmap.domain.transaction.Transaction;
-import com.dnd.weddingmap.domain.transaction.TransactionCategory;
 import com.dnd.weddingmap.global.validator.ValidEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -27,22 +27,22 @@ public class TransactionDto {
   @NotNull
   private Long payment;
   private Long balance;
-  @ValidEnum(value = TransactionCategory.class, message = "카테고리는 CASH, CARD만 등록 가능합니다.")
-  private TransactionCategory transactionCategory;
+  @ValidEnum(value = PaymentType.class, message = "거래 구분은 CASH, CARD만 등록 가능합니다.")
+  private PaymentType paymentType;
   private String accountHolder;
   private String accountNumber;
   private String memo;
 
   @Builder
   public TransactionDto(String title, String agency, LocalDate transactionDate, Long payment,
-      Long balance, TransactionCategory transactionCategory, String accountHolder,
+      Long balance, PaymentType paymentType, String accountHolder,
       String accountNumber, String memo) {
     this.title = title;
     this.agency = agency;
     this.transactionDate = transactionDate;
     this.payment = payment;
     this.balance = balance;
-    this.transactionCategory = transactionCategory;
+    this.paymentType = paymentType;
     this.accountHolder = accountHolder;
     this.accountNumber = accountNumber;
     this.memo = memo;
@@ -55,7 +55,7 @@ public class TransactionDto {
     this.transactionDate = transaction.getTransactionDate();
     this.payment = transaction.getPayment();
     this.balance = transaction.getBalance();
-    this.transactionCategory = transaction.getTransactionCategory();
+    this.paymentType = transaction.getPaymentType();
     this.accountHolder = transaction.getAccountHolder();
     this.accountNumber = transaction.getAccountNumber();
     this.memo = transaction.getMemo();
@@ -69,7 +69,7 @@ public class TransactionDto {
         .transactionDate(this.transactionDate)
         .payment(this.payment)
         .balance(this.balance)
-        .transactionCategory(this.transactionCategory)
+        .paymentType(this.paymentType)
         .accountHolder(this.accountHolder)
         .accountNumber(this.accountNumber)
         .memo(this.memo)

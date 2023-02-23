@@ -23,8 +23,8 @@ import com.dnd.weddingmap.domain.member.Member;
 import com.dnd.weddingmap.domain.member.Role;
 import com.dnd.weddingmap.domain.member.service.MemberService;
 import com.dnd.weddingmap.domain.oauth.OAuth2Provider;
+import com.dnd.weddingmap.domain.transaction.PaymentType;
 import com.dnd.weddingmap.domain.transaction.Transaction;
-import com.dnd.weddingmap.domain.transaction.TransactionCategory;
 import com.dnd.weddingmap.domain.transaction.dto.TransactionDto;
 import com.dnd.weddingmap.domain.transaction.dto.TransactionListResponseDto;
 import com.dnd.weddingmap.domain.transaction.service.TransactionService;
@@ -74,7 +74,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
       .transactionDate(LocalDate.now())
       .payment(-1000000L)
       .balance(2000000L)
-      .transactionCategory(TransactionCategory.CARD)
+      .paymentType(PaymentType.CARD)
       .accountHolder("좋은 웨딩홀")
       .accountNumber("123-123-1234")
       .memo("test memo")
@@ -87,7 +87,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
       .transactionDate(LocalDate.now())
       .payment(-1000000L)
       .balance(2000000L)
-      .transactionCategory(TransactionCategory.CARD)
+      .paymentType(PaymentType.CARD)
       .accountHolder("좋은 웨딩홀")
       .accountNumber("123-123-1234")
       .memo("test memo")
@@ -132,7 +132,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
                     .type(JsonFieldType.ARRAY),
                 fieldWithPath("payment").description("계약금 (* required)").type(JsonFieldType.NUMBER),
                 fieldWithPath("balance").description("잔금").type(JsonFieldType.NUMBER),
-                fieldWithPath("transactionCategory").description("거래 구분 (* required)")
+                fieldWithPath("paymentType").description("거래 구분 (* required)")
                     .type(JsonFieldType.STRING),
                 fieldWithPath("accountHolder").description("예금주").type(JsonFieldType.STRING),
                 fieldWithPath("accountNumber").description("계좌 번호").type(JsonFieldType.STRING),
@@ -151,7 +151,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
                     .type(JsonFieldType.STRING),
                 fieldWithPath("payment").description("계약금").type(JsonFieldType.NUMBER),
                 fieldWithPath("balance").description("잔금").type(JsonFieldType.NUMBER),
-                fieldWithPath("transactionCategory").description("거래 구분")
+                fieldWithPath("paymentType").description("거래 구분")
                     .type(JsonFieldType.STRING),
                 fieldWithPath("accountHolder").description("예금주").type(JsonFieldType.STRING),
                 fieldWithPath("accountNumber").description("계좌 번호").type(JsonFieldType.STRING),
@@ -195,7 +195,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
                     .type(JsonFieldType.STRING),
                 fieldWithPath("payment").description("계약금").type(JsonFieldType.NUMBER),
                 fieldWithPath("balance").description("잔금").type(JsonFieldType.NUMBER),
-                fieldWithPath("transactionCategory").description("거래 구분")
+                fieldWithPath("paymentType").description("거래 구분")
                     .type(JsonFieldType.STRING),
                 fieldWithPath("accountHolder").description("예금주").type(JsonFieldType.STRING),
                 fieldWithPath("accountNumber").description("계좌 번호").type(JsonFieldType.STRING),
@@ -240,7 +240,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
                         .type(JsonFieldType.ARRAY),
                     fieldWithPath("payment").description("계약금").type(JsonFieldType.NUMBER),
                     fieldWithPath("balance").description("잔금").type(JsonFieldType.NUMBER),
-                    fieldWithPath("transactionCategory").description("거래 구분")
+                    fieldWithPath("paymentType").description("거래 구분")
                         .type(JsonFieldType.STRING),
                     fieldWithPath("accountHolder").description("예금주").type(JsonFieldType.STRING),
                     fieldWithPath("accountNumber").description("계좌 번호").type(JsonFieldType.STRING),
@@ -259,7 +259,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
                         .type(JsonFieldType.STRING),
                     fieldWithPath("payment").description("계약금").type(JsonFieldType.NUMBER),
                     fieldWithPath("balance").description("잔금").type(JsonFieldType.NUMBER),
-                    fieldWithPath("transactionCategory").description("거래 구분")
+                    fieldWithPath("paymentType").description("거래 구분")
                         .type(JsonFieldType.STRING),
                     fieldWithPath("accountHolder").description("예금주").type(JsonFieldType.STRING),
                     fieldWithPath("accountNumber").description("계좌 번호").type(JsonFieldType.STRING),
@@ -304,7 +304,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
         .agency("test agency1")
         .transactionDate(LocalDate.now())
         .payment(-1000000L)
-        .transactionCategory(TransactionCategory.CARD)
+        .paymentType(PaymentType.CARD)
         .build();
 
     TransactionListResponseDto transactionListResponseDto2 = TransactionListResponseDto.builder()
@@ -313,7 +313,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
         .agency("test agency2")
         .transactionDate(LocalDate.now())
         .payment(-2000000L)
-        .transactionCategory(TransactionCategory.CASH)
+        .paymentType(PaymentType.CASH)
         .build();
 
     // given
@@ -341,7 +341,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
                     fieldWithPath("transactionDate").description("계약 날짜 (yyyy-mm-dd)")
                         .type(JsonFieldType.STRING),
                     fieldWithPath("payment").description("계약금").type(JsonFieldType.NUMBER),
-                    fieldWithPath("transactionCategory").description("거래 구분 (CARD / CASH)")
+                    fieldWithPath("paymentType").description("거래 구분 (CARD / CASH)")
                         .type(JsonFieldType.STRING)
                 )
             ));

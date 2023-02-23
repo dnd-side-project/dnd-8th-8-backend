@@ -1,6 +1,6 @@
 package com.dnd.weddingmap.domain.transaction.dto;
 
-import com.dnd.weddingmap.domain.transaction.TransactionCategory;
+import com.dnd.weddingmap.domain.transaction.PaymentType;
 import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,17 +15,17 @@ public class TransactionListResponseDto {
   private String agency;
   private LocalDate transactionDate;
   private Long payment;
-  private TransactionCategory transactionCategory;
+  private PaymentType paymentType;
 
   @Builder
   public TransactionListResponseDto(Long id, String title, String agency, LocalDate transactionDate,
       Long payment,
-      TransactionCategory transactionCategory) {
+      PaymentType paymentType) {
     this.id = id;
     this.title = title;
     this.agency = agency;
     this.transactionDate = transactionDate;
     this.payment = payment;
-    this.transactionCategory = transactionCategory;
+    this.paymentType = paymentType;
   }
 }

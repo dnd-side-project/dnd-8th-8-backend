@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS `transaction` (
     `transaction_date` date NOT NULL,
     `payment` bigint NOT NULL,
     `balance` bigint,
-    `transaction_category` varchar(255) NOT NULL,
+    `payment_type` varchar(255) NOT NULL,
     `account_holder` varchar(255),
     `account_number` varchar(255),
     `memo` varchar(255),

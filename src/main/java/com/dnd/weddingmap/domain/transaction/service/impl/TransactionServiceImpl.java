@@ -66,7 +66,7 @@ public class TransactionServiceImpl implements TransactionService {
         .agency(transaction.getAgency())
         .transactionDate(transaction.getTransactionDate())
         .payment(transaction.getPayment())
-        .transactionCategory(transaction.getTransactionCategory())
+        .paymentType(transaction.getPaymentType())
         .build()));
     return result;
   }
