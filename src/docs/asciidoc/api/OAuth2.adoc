@@ -32,11 +32,11 @@ GET /oauth2/authorization/google?redirect_uri={redirect_uri} HTTP/1.1
 Host: localhost:8080
 ----
 
-==== Request Query
+==== Query parameters
 
 .+/oauth2/authorization/google?redirect_uri={redirect_uri}+
 |===
-|Query|Description
+|Parameter|Description
 
 |redirect_uri
 |로그인 성공 후 redirect될 path
@@ -61,11 +61,11 @@ GET /oauth2/authorization/kakao?redirect_uri={redirect_uri} HTTP/1.1
 Host: localhost:8080
 ----
 
-==== Request Query
+==== Query parameters
 
 .+/oauth2/authorization/kakao?redirect_uri={redirect_uri}+
 |===
-|Query|Description
+|Parameter|Description
 
 |redirect_uri
 |로그인 성공 후 redirect될 path
