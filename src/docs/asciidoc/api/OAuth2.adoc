@@ -34,8 +34,7 @@ Host: localhost:8080
 
 ==== Request Query
 
-===== _Table 1. /oauth2/authorization/google?redirect_uri={redirect_uri}_
-
+.+/oauth2/authorization/google?redirect_uri={redirect_uri}+
 |===
 |Query|Description
 
@@ -64,8 +63,7 @@ Host: localhost:8080
 
 ==== Request Query
 
-===== _Table 1. /oauth2/authorization/kakao?redirect_uri={redirect_uri}_
-
+.+/oauth2/authorization/kakao?redirect_uri={redirect_uri}+
 |===
 |Query|Description
 
