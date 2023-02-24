@@ -1,19 +1,24 @@
 package com.dnd.weddingmap.domain.contract.controller;
 
+import com.dnd.weddingmap.domain.contract.Contract;
 import com.dnd.weddingmap.domain.contract.dto.ContractDto;
 import com.dnd.weddingmap.domain.contract.service.ContractService;
 import com.dnd.weddingmap.domain.member.Member;
 import com.dnd.weddingmap.domain.member.service.MemberService;
 import com.dnd.weddingmap.domain.oauth.CustomUserDetails;
+import com.dnd.weddingmap.global.exception.ForbiddenException;
 import com.dnd.weddingmap.global.exception.NotFoundException;
 import com.dnd.weddingmap.global.exception.RequestTimeoutException;
 import com.dnd.weddingmap.global.response.SuccessResponse;
 import com.dnd.weddingmap.global.service.S3Service;
 import jakarta.validation.Valid;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -50,5 +55,20 @@ public class ContractController {
     return ResponseEntity.status(HttpStatus.CREATED).body(
         SuccessResponse.builder().httpStatus(HttpStatus.CREATED).message("계약서 등록 성공")
             .data(savedContract).build());
+  }
+
+  @GetMapping("/{contract-id}")
+  public ResponseEntity<SuccessResponse> getContractDetail(
+      @AuthenticationPrincipal CustomUserDetails user,
+      @PathVariable("contract-id") Long contractId) {
+    Contract contract = contractService.findContractById(contractId)
+        .orElseThrow(() -> new NotFoundException("존재하지 않는 계약서입니다."));
+
+    if (!Objects.equals(contract.getMember().getId(), user.getId())) {
+      throw new ForbiddenException("접근할 수 없는 계약서입니다.");
+    }
+
+    return ResponseEntity.ok()
+        .body(SuccessResponse.builder().data(new ContractDto(contract)).build());
   }
 }

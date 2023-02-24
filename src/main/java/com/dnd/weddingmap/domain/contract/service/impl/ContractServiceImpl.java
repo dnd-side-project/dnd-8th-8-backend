@@ -5,6 +5,7 @@ import com.dnd.weddingmap.domain.contract.dto.ContractDto;
 import com.dnd.weddingmap.domain.contract.repository.ContractRepository;
 import com.dnd.weddingmap.domain.contract.service.ContractService;
 import com.dnd.weddingmap.domain.member.Member;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,5 +27,10 @@ public class ContractServiceImpl implements ContractService {
         .build();
 
     return new ContractDto(contractRepository.save(contract));
+  }
+
+  @Override
+  public Optional<Contract> findContractById(Long id) {
+    return contractRepository.findById(id);
   }
 }
