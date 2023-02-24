@@ -11,6 +11,6 @@ CREATE TABLE `wedding`
     DEFAULT CHARACTER SET = utf8mb4;
 
 ALTER TABLE `member`
-    ADD `wedding_id` bigint NOT NULL;
+    ADD `wedding_id` bigint;
 ALTER TABLE `member`
     ADD CONSTRAINT `member_ibfk_1` FOREIGN KEY (`wedding_id`) REFERENCES `wedding` (`id`);
