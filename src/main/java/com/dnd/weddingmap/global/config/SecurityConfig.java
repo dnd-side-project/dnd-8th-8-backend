@@ -74,7 +74,7 @@ public class SecurityConfig {
 
   @Bean
   public FilterRegistrationBean corsFilter() {
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     CorsConfiguration config = new CorsConfiguration();
     config.setAllowCredentials(true);
     config.addAllowedOrigin(originUrl);
