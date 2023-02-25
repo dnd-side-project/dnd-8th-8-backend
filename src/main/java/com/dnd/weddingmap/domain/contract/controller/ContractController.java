@@ -1,5 +1,6 @@
 package com.dnd.weddingmap.domain.contract.controller;
 
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.dnd.weddingmap.domain.contract.Contract;
 import com.dnd.weddingmap.domain.contract.dto.ContractDto;
 import com.dnd.weddingmap.domain.contract.dto.ContractListResponseDto;
@@ -34,6 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/v1/contract")
 public class ContractController {
 
+  private static final String NOT_FOUND_CONTRACT_MESSAGE = "존재하지 않는 계약서입니다.";
   private final MemberService memberService;
   private final ContractService contractService;
   private final S3Service s3Service;
@@ -65,7 +67,7 @@ public class ContractController {
       @AuthenticationPrincipal CustomUserDetails user,
       @PathVariable("contract-id") Long contractId) {
     Contract contract = contractService.findContractById(contractId)
-        .orElseThrow(() -> new NotFoundException("존재하지 않는 계약서입니다."));
+        .orElseThrow(() -> new NotFoundException(NOT_FOUND_CONTRACT_MESSAGE));
 
     if (!Objects.equals(contract.getMember().getId(), user.getId())) {
       throw new ForbiddenException("접근할 수 없는 계약서입니다.");
@@ -79,9 +81,18 @@ public class ContractController {
   public ResponseEntity<SuccessResponse> withdrawContract(
       @AuthenticationPrincipal CustomUserDetails user,
       @PathVariable("contract-id") Long contractId) {
+    Contract contract = contractService.findContractById(contractId)
+        .orElseThrow(() -> new NotFoundException(NOT_FOUND_CONTRACT_MESSAGE));
+
+    try {
+      s3Service.delete(contract.getFile(), "contract");
+    } catch (Exception e) {
+      throw new AmazonS3Exception("계약서 파일 삭제에 실패했습니다.");
+    }
+
     boolean result = contractService.withdrawContract(contractId, user.getId());
     if (!result) {
-      throw new NotFoundException("존재하지 않는 계약서입니다.");
+      throw new NotFoundException(NOT_FOUND_CONTRACT_MESSAGE);
     }
     return ResponseEntity.ok(SuccessResponse.builder().message("계약서 삭제 성공").build());
   }
