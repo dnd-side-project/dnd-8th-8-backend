@@ -5,6 +5,8 @@ import com.dnd.weddingmap.domain.contract.dto.ContractDto;
 import com.dnd.weddingmap.domain.contract.repository.ContractRepository;
 import com.dnd.weddingmap.domain.contract.service.ContractService;
 import com.dnd.weddingmap.domain.member.Member;
+import com.dnd.weddingmap.global.exception.ForbiddenException;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class ContractServiceImpl implements ContractService {
+
   private final ContractRepository contractRepository;
 
   @Override
@@ -32,5 +35,18 @@ public class ContractServiceImpl implements ContractService {
   @Override
   public Optional<Contract> findContractById(Long id) {
     return contractRepository.findById(id);
+  }
+
+  @Override
+  public boolean withdrawContract(Long contractId, Long memberId) {
+    return contractRepository.findById(contractId)
+        .map(contract -> {
+          if (!Objects.equals(contract.getMember().getId(), memberId)) {
+            throw new ForbiddenException("접근할 수 없는 계약서입니다.");
+          }
+          contractRepository.delete(contract);
+          return true;
+        })
+        .orElse(false);
   }
 }

@@ -8,5 +8,8 @@ import java.util.Optional;
 public interface ContractService {
 
   ContractDto createContract(ContractDto contractDto, Member member);
+
   Optional<Contract> findContractById(Long id);
+
+  boolean withdrawContract(Long contractId, Long memberId);
 }

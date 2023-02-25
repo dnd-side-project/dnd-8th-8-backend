@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -70,5 +71,16 @@ public class ContractController {
 
     return ResponseEntity.ok()
         .body(SuccessResponse.builder().data(new ContractDto(contract)).build());
+  }
+
+  @DeleteMapping("/{contract-id}")
+  public ResponseEntity<SuccessResponse> withdrawContract(
+      @AuthenticationPrincipal CustomUserDetails user,
+      @PathVariable("contract-id") Long contractId) {
+    boolean result = contractService.withdrawContract(contractId, user.getId());
+    if (!result) {
+      throw new NotFoundException("존재하지 않는 계약서입니다.");
+    }
+    return ResponseEntity.ok(SuccessResponse.builder().message("계약서 삭제 성공").build());
   }
 }
