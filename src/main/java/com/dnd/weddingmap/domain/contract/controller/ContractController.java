@@ -2,6 +2,7 @@ package com.dnd.weddingmap.domain.contract.controller;
 
 import com.dnd.weddingmap.domain.contract.Contract;
 import com.dnd.weddingmap.domain.contract.dto.ContractDto;
+import com.dnd.weddingmap.domain.contract.dto.ContractListResponseDto;
 import com.dnd.weddingmap.domain.contract.service.ContractService;
 import com.dnd.weddingmap.domain.member.Member;
 import com.dnd.weddingmap.domain.member.service.MemberService;
@@ -12,6 +13,7 @@ import com.dnd.weddingmap.global.exception.RequestTimeoutException;
 import com.dnd.weddingmap.global.response.SuccessResponse;
 import com.dnd.weddingmap.global.service.S3Service;
 import jakarta.validation.Valid;
+import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -82,5 +84,17 @@ public class ContractController {
       throw new NotFoundException("존재하지 않는 계약서입니다.");
     }
     return ResponseEntity.ok(SuccessResponse.builder().message("계약서 삭제 성공").build());
+  }
+
+  @GetMapping
+  public ResponseEntity<SuccessResponse> getContractList(
+      @AuthenticationPrincipal CustomUserDetails user) {
+    Member member = memberService.findMember(user.getId())
+        .orElseThrow(() -> new NotFoundException("존재하지 않는 사용자입니다."));
+
+    List<ContractListResponseDto> contractList = contractService.findContractList(member.getId());
+
+    return ResponseEntity.ok()
+        .body(SuccessResponse.builder().data(contractList).build());
   }
 }
