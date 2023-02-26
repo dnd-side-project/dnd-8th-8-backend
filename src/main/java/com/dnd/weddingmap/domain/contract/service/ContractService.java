@@ -16,4 +16,8 @@ public interface ContractService {
   boolean withdrawContract(Long contractId, Long memberId);
 
   List<ContractListResponseDto> findContractList(Long memberId);
+
+  ContractDto modifyContractFile(Long contractId, String fileUrl);
+
+  ContractDto modifyContract(Long contractId, ContractDto contractDto);
 }

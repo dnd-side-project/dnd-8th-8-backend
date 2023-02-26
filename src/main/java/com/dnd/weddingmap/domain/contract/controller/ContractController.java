@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,6 +38,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ContractController {
 
   private static final String NOT_FOUND_CONTRACT_MESSAGE = "존재하지 않는 계약서입니다.";
+  private static final String CONTRACT_DIRECTORY = "contract";
   private final MemberService memberService;
   private final ContractService contractService;
   private final S3Service s3Service;
@@ -50,7 +53,7 @@ public class ContractController {
 
     String fileUrl;
     try {
-      fileUrl = s3Service.upload(file, "contract");
+      fileUrl = s3Service.upload(file, CONTRACT_DIRECTORY);
     } catch (Exception e) {
       throw new RequestTimeoutException("계약서 파일 업로드에 실패했습니다.");
     }
@@ -85,7 +88,7 @@ public class ContractController {
         .orElseThrow(() -> new NotFoundException(NOT_FOUND_CONTRACT_MESSAGE));
 
     try {
-      s3Service.delete(contract.getFile(), "contract");
+      s3Service.delete(contract.getFile(), CONTRACT_DIRECTORY);
     } catch (Exception e) {
       throw new AmazonS3Exception("계약서 파일 삭제에 실패했습니다.");
     }
@@ -107,5 +110,53 @@ public class ContractController {
 
     return ResponseEntity.ok()
         .body(SuccessResponse.builder().data(contractList).build());
+  }
+
+  @PostMapping("/{contract-id}")
+  public ResponseEntity<SuccessResponse> modifyContractFile(
+      @AuthenticationPrincipal CustomUserDetails user,
+      @PathVariable("contract-id") Long contractId,
+      @RequestPart("file") MultipartFile file) {
+    Contract contract = checkPermission(contractId, user.getId());
+
+    try {
+      s3Service.delete(contract.getFile(), CONTRACT_DIRECTORY);
+    } catch (Exception e) {
+      throw new AmazonS3Exception("계약서 파일 삭제에 실패했습니다.");
+    }
+
+    String fileUrl;
+    try {
+      fileUrl = s3Service.upload(file, CONTRACT_DIRECTORY);
+    } catch (Exception e) {
+      throw new RequestTimeoutException("계약서 파일 수정에 실패했습니다.");
+    }
+
+    ContractDto result = contractService.modifyContractFile(contractId, fileUrl);
+    return ResponseEntity.ok()
+        .body(SuccessResponse.builder().message("계약서 파일 수정 성공").data(result).build());
+  }
+
+  @PutMapping("/{contract-id}")
+  public ResponseEntity<SuccessResponse> modifyContract(
+      @AuthenticationPrincipal CustomUserDetails user,
+      @PathVariable("contract-id") Long contractId,
+      @RequestBody @Valid ContractDto requestDto) {
+    Contract contract = checkPermission(contractId, user.getId());
+
+    ContractDto result = contractService.modifyContract(contract.getId(), requestDto);
+    return ResponseEntity.ok()
+        .body(SuccessResponse.builder().message("계약서 수정 성공").data(result).build());
+  }
+
+  private Contract checkPermission(Long contractId, Long memberId) {
+    Contract contract = contractService.findContractById(contractId)
+        .orElseThrow(() -> new NotFoundException(NOT_FOUND_CONTRACT_MESSAGE));
+
+    if (Objects.equals(contract.getMember().getId(), memberId)) {
+      return contract;
+    } else {
+      throw new ForbiddenException("접근할 수 없는 계약서입니다.");
+    }
   }
 }

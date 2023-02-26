@@ -1,6 +1,7 @@
 package com.dnd.weddingmap.domain.contract;
 
 import com.dnd.weddingmap.domain.common.BaseTimeEntity;
+import com.dnd.weddingmap.domain.contract.dto.ContractDto;
 import com.dnd.weddingmap.domain.member.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -60,5 +61,20 @@ public class Contract extends BaseTimeEntity {
     this.file = file;
     this.memo = memo;
     this.member = member;
+  }
+
+  public Contract updateFile(String file) {
+    this.file = file;
+    return this;
+  }
+
+  public Contract update(ContractDto contractDto) {
+    this.title = contractDto.getTitle();
+    this.contents = contractDto.getContents();
+    this.contractDate = contractDto.getContractDate();
+    this.contractStatus  = contractDto.getContractStatus();
+    this.memo = contractDto.getMemo();
+
+    return this;
   }
 }

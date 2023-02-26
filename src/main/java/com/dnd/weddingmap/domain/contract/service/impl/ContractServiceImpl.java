@@ -7,6 +7,8 @@ import com.dnd.weddingmap.domain.contract.repository.ContractRepository;
 import com.dnd.weddingmap.domain.contract.service.ContractService;
 import com.dnd.weddingmap.domain.member.Member;
 import com.dnd.weddingmap.global.exception.ForbiddenException;
+import com.dnd.weddingmap.global.exception.NotFoundException;
+import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -66,5 +68,23 @@ public class ContractServiceImpl implements ContractService {
             .build()));
 
     return result;
+  }
+
+  @Transactional
+  @Override
+  public ContractDto modifyContractFile(Long contractId, String fileUrl) {
+    Contract contract = contractRepository.findById(contractId).orElseThrow(
+        () -> new NotFoundException("존재하지 않는 계약서입니다.")
+    );
+    return new ContractDto(contract.updateFile(fileUrl));
+  }
+
+  @Transactional
+  @Override
+  public ContractDto modifyContract(Long contractId, ContractDto contractDto) {
+    Contract contract = contractRepository.findById(contractId).orElseThrow(
+        () -> new NotFoundException("존재하지 않는 계약서입니다.")
+    );
+    return new ContractDto(contract.update(contractDto));
   }
 }
