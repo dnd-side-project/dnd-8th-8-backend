@@ -78,6 +78,10 @@ public class Member extends BaseTimeEntity {
     this.profileImage = profileImage;
   }
 
+  public void setWedding(Wedding wedding) {
+    this.wedding = wedding;
+  }
+
   public Member update(String name, String profileImage) {
     this.name = name;
     this.profileImage = profileImage;
