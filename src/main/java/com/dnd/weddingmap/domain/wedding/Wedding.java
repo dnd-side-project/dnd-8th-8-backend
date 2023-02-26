@@ -10,7 +10,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDate;
 import java.util.List;
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -34,10 +33,10 @@ public class Wedding extends BaseTimeEntity {
     this.weddingDay = LocalDate.now();
     this.totalBudget = 0L;
   }
-
-  @Builder
-  public Wedding(LocalDate weddingDay, Long totalBudget) {
+  
+  public Wedding(Member member, LocalDate weddingDay) {
+    this.weddingMembers.add(member);
     this.weddingDay = weddingDay;
-    this.totalBudget = totalBudget;
+    this.totalBudget = 0L;
   }
 }
