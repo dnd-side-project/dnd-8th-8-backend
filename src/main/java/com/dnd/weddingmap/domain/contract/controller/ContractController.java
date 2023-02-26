@@ -69,12 +69,7 @@ public class ContractController {
   public ResponseEntity<SuccessResponse> getContractDetail(
       @AuthenticationPrincipal CustomUserDetails user,
       @PathVariable("contract-id") Long contractId) {
-    Contract contract = contractService.findContractById(contractId)
-        .orElseThrow(() -> new NotFoundException(NOT_FOUND_CONTRACT_MESSAGE));
-
-    if (!Objects.equals(contract.getMember().getId(), user.getId())) {
-      throw new ForbiddenException("접근할 수 없는 계약서입니다.");
-    }
+    Contract contract = checkPermission(contractId, user.getId());
 
     return ResponseEntity.ok()
         .body(SuccessResponse.builder().data(new ContractDto(contract)).build());
@@ -84,8 +79,7 @@ public class ContractController {
   public ResponseEntity<SuccessResponse> withdrawContract(
       @AuthenticationPrincipal CustomUserDetails user,
       @PathVariable("contract-id") Long contractId) {
-    Contract contract = contractService.findContractById(contractId)
-        .orElseThrow(() -> new NotFoundException(NOT_FOUND_CONTRACT_MESSAGE));
+    Contract contract = checkPermission(contractId, user.getId());
 
     try {
       s3Service.delete(contract.getFile(), CONTRACT_DIRECTORY);
