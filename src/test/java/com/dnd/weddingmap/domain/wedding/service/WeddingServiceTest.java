@@ -8,6 +8,7 @@ import static org.mockito.BDDMockito.given;
 import com.dnd.weddingmap.domain.member.Member;
 import com.dnd.weddingmap.domain.member.MemberRepository;
 import com.dnd.weddingmap.domain.wedding.Wedding;
+import com.dnd.weddingmap.domain.wedding.dto.TotalBudgetDto;
 import com.dnd.weddingmap.domain.wedding.dto.WeddingDayDto;
 import com.dnd.weddingmap.domain.wedding.repository.WeddingRepository;
 import com.dnd.weddingmap.domain.wedding.service.impl.WeddingServiceImpl;
@@ -109,5 +110,24 @@ class WeddingServiceTest {
 
     // then
     assertEquals(savedWeddingDayDto.getWeddingDay(), weddingDay);
+  }
+
+  @Test
+  @DisplayName("총예산을 수정한다.")
+  void modifyTotalBudget() {
+    // given
+    TotalBudgetDto totalBudgetDto = TotalBudgetDto.builder()
+        .totalBudget(1000000L)
+        .build();
+
+    given(weddingRepository.findById(1L))
+        .willReturn(Optional.ofNullable(wedding));
+
+    // when
+    weddingService.modifyTotalBudget(registeredMember, totalBudgetDto);
+
+    // then
+    Wedding savedWedding = weddingRepository.findById(1L).get();
+    assertEquals(savedWedding.getTotalBudget(), totalBudgetDto.getTotalBudget());
   }
 }

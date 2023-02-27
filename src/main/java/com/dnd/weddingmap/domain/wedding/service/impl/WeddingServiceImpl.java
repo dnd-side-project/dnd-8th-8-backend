@@ -3,6 +3,7 @@ package com.dnd.weddingmap.domain.wedding.service.impl;
 import com.dnd.weddingmap.domain.member.Member;
 import com.dnd.weddingmap.domain.member.MemberRepository;
 import com.dnd.weddingmap.domain.wedding.Wedding;
+import com.dnd.weddingmap.domain.wedding.dto.TotalBudgetDto;
 import com.dnd.weddingmap.domain.wedding.dto.WeddingDayDto;
 import com.dnd.weddingmap.domain.wedding.repository.WeddingRepository;
 import com.dnd.weddingmap.domain.wedding.service.WeddingService;
@@ -55,5 +56,17 @@ public class WeddingServiceImpl implements WeddingService {
     return WeddingDayDto.builder()
         .weddingDay(member.getWedding().getWeddingDay())
         .build();
+  }
+
+  @Override
+  @Transactional
+  public void modifyTotalBudget(Member member, TotalBudgetDto totalBudgetDto) {
+    if (member.getWedding() == null) {
+      throw new IllegalStateException("결혼식이 등록되어 있지 않습니다.");
+    }
+
+    Wedding wedding = member.getWedding();
+    wedding.setTotalBudget(totalBudgetDto.getTotalBudget());
+    weddingRepository.save(wedding);
   }
 }

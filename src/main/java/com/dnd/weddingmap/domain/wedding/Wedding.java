@@ -52,4 +52,8 @@ public class Wedding extends BaseTimeEntity {
   public void setWeddingDay(LocalDate weddingDay) {
     this.weddingDay = weddingDay;
   }
+
+  public void setTotalBudget(Long totalBudget) {
+    this.totalBudget = totalBudget;
+  }
 }

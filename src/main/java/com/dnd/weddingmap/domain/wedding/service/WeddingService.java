@@ -1,6 +1,7 @@
 package com.dnd.weddingmap.domain.wedding.service;
 
 import com.dnd.weddingmap.domain.member.Member;
+import com.dnd.weddingmap.domain.wedding.dto.TotalBudgetDto;
 import com.dnd.weddingmap.domain.wedding.dto.WeddingDayDto;
 
 public interface WeddingService {
@@ -29,4 +30,12 @@ public interface WeddingService {
    * @return 회원의 결혼식 날짜 정보를 담은 DTO
    */
   WeddingDayDto getWeddingDay(Member member);
+
+  /**
+   * 회원의 총예산을 수정한다.
+   *
+   * @param member 총예산을 수정할 회원
+   * @param totalBudgetDto 총예산 정보를 담은 DTO
+   */
+  void modifyTotalBudget(Member member, TotalBudgetDto totalBudgetDto);
 }
