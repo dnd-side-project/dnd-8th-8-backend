@@ -21,4 +21,12 @@ public interface WeddingService {
    * @param weddingDayDto 결혼식 날짜 정보를 담은 DTO
    */
   void modifyWeddingDay(Member member, WeddingDayDto weddingDayDto);
+
+  /**
+   * 회원의 결혼식 날짜를 조회한다.
+   *
+   * @param member 결혼식 날짜를 조회할 회원
+   * @return 회원의 결혼식 날짜 정보를 담은 DTO
+   */
+  WeddingDayDto getWeddingDay(Member member);
 }

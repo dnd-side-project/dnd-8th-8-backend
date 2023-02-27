@@ -44,4 +44,16 @@ public class WeddingServiceImpl implements WeddingService {
     wedding.setWeddingDay(weddingDayDto.getWeddingDay());
     weddingRepository.save(wedding);
   }
+
+  @Override
+  @Transactional
+  public WeddingDayDto getWeddingDay(Member member) {
+    if (member.getWedding() == null) {
+      throw new IllegalStateException("결혼식이 등록되어 있지 않습니다.");
+    }
+
+    return WeddingDayDto.builder()
+        .weddingDay(member.getWedding().getWeddingDay())
+        .build();
+  }
 }

@@ -100,4 +100,14 @@ class WeddingServiceTest {
     assertThrows(IllegalStateException.class,
         () -> weddingService.modifyWeddingDay(member, weddingDayDto));
   }
+
+  @Test
+  @DisplayName("결혼식 일정을 조회한다.")
+  void getWeddingDay() {
+    // when
+    WeddingDayDto savedWeddingDayDto = weddingService.getWeddingDay(registeredMember);
+
+    // then
+    assertEquals(savedWeddingDayDto.getWeddingDay(), weddingDay);
+  }
 }
