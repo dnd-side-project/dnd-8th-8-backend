@@ -44,4 +44,8 @@ public class Wedding extends BaseTimeEntity {
     this.weddingDay = weddingDay;
     this.totalBudget = totalBudget;
   }
+
+  public void removeMember(Member member) {
+    this.weddingMembers.remove(member);
+  }
 }

@@ -3,6 +3,7 @@ package com.dnd.weddingmap.domain.wedding.service.impl;
 import com.dnd.weddingmap.domain.member.Member;
 import com.dnd.weddingmap.domain.member.MemberRepository;
 import com.dnd.weddingmap.domain.wedding.Wedding;
+import com.dnd.weddingmap.domain.wedding.dto.WeddingDayDto;
 import com.dnd.weddingmap.domain.wedding.repository.WeddingRepository;
 import com.dnd.weddingmap.domain.wedding.service.WeddingService;
 import jakarta.transaction.Transactional;
@@ -19,13 +20,13 @@ public class WeddingServiceImpl implements WeddingService {
 
   @Override
   @Transactional
-  public Long registerWedding(Member member, LocalDate weddingDay) {
+  public Long registerWedding(Member member, WeddingDayDto weddingDayDto) {
 
     if (member.getWedding() != null) {
       throw new IllegalStateException("이미 예정된 결혼식이 있습니다.");
     }
 
-    Wedding wedding = weddingRepository.save(new Wedding(member, weddingDay));
+    Wedding wedding = weddingRepository.save(new Wedding(member, weddingDayDto.getWeddingDay()));
     member.setWedding(wedding);
     memberRepository.save(member);
 

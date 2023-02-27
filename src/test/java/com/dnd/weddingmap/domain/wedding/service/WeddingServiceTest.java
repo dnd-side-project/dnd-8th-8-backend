@@ -7,6 +7,7 @@ import static org.mockito.BDDMockito.given;
 import com.dnd.weddingmap.domain.member.Member;
 import com.dnd.weddingmap.domain.member.MemberRepository;
 import com.dnd.weddingmap.domain.wedding.Wedding;
+import com.dnd.weddingmap.domain.wedding.dto.WeddingDayDto;
 import com.dnd.weddingmap.domain.wedding.repository.WeddingRepository;
 import com.dnd.weddingmap.domain.wedding.service.impl.WeddingServiceImpl;
 import java.time.LocalDate;
@@ -39,6 +40,9 @@ class WeddingServiceTest {
         .member(member)
         .weddingDay(weddingDay)
         .build();
+    WeddingDayDto weddingDayDto = WeddingDayDto.builder()
+        .weddingDay(weddingDay)
+        .build();
 
     given(weddingRepository.save(any()))
         .willReturn(wedding);
@@ -48,7 +52,7 @@ class WeddingServiceTest {
         .willReturn(Optional.ofNullable(wedding));
 
     // when
-    Long weddingId = weddingService.registerWedding(member, weddingDay);
+    Long weddingId = weddingService.registerWedding(member, weddingDayDto);
 
     // then
     Wedding savedWedding = weddingRepository.findById(weddingId).get();
