@@ -34,6 +34,7 @@ class WeddingServiceTest {
   @Mock
   MemberRepository memberRepository;
 
+  Long memberId = 1L;
   Member member;
   Member registeredMember;
   LocalDate weddingDay;
@@ -42,7 +43,7 @@ class WeddingServiceTest {
 
   @BeforeEach
   void setUp() {
-    member = Member.builder().id(1L).build();
+    member = Member.builder().id(memberId).build();
     weddingDay = LocalDate.now();
     wedding = Wedding.builder()
         .id(1L)
@@ -66,11 +67,13 @@ class WeddingServiceTest {
         .willReturn(wedding);
     given(memberRepository.save(any()))
         .willReturn(registeredMember);
+    given(memberRepository.findById(memberId))
+        .willReturn(Optional.ofNullable(member));
     given(weddingRepository.findById(1L))
         .willReturn(Optional.ofNullable(wedding));
 
     // when
-    Long weddingId = weddingService.registerWedding(member, weddingDayDto);
+    Long weddingId = weddingService.registerWedding(memberId, weddingDayDto);
 
     // then
     Wedding savedWedding = weddingRepository.findById(weddingId).get();
@@ -83,11 +86,13 @@ class WeddingServiceTest {
   void modifyWeddingDay() {
 
     // given
+    given(memberRepository.findById(memberId))
+        .willReturn(Optional.ofNullable(registeredMember));
     given(weddingRepository.findById(1L))
         .willReturn(Optional.ofNullable(wedding));
 
     // when
-    weddingService.modifyWeddingDay(registeredMember, weddingDayDto);
+    weddingService.modifyWeddingDay(memberId, weddingDayDto);
 
     // then
     Wedding savedWedding = weddingRepository.findById(1L).get();
@@ -97,16 +102,24 @@ class WeddingServiceTest {
   @Test
   @DisplayName("결혼식이 등록되지 않은 경우 결혼식 일정 수정이 불가능하다.")
   void modifyWeddingDayWhenWeddingNotRegistered() {
+    // given
+    given(memberRepository.findById(memberId))
+        .willReturn(Optional.ofNullable(member));
+
     // then
     assertThrows(IllegalStateException.class,
-        () -> weddingService.modifyWeddingDay(member, weddingDayDto));
+        () -> weddingService.modifyWeddingDay(memberId, weddingDayDto));
   }
 
   @Test
   @DisplayName("결혼식 일정을 조회한다.")
   void getWeddingDay() {
+    // given
+    given(memberRepository.findById(memberId))
+        .willReturn(Optional.ofNullable(registeredMember));
+
     // when
-    WeddingDayDto savedWeddingDayDto = weddingService.getWeddingDay(registeredMember);
+    WeddingDayDto savedWeddingDayDto = weddingService.getWeddingDay(memberId);
 
     // then
     assertEquals(savedWeddingDayDto.getWeddingDay(), weddingDay);
@@ -120,11 +133,13 @@ class WeddingServiceTest {
         .totalBudget(1000000L)
         .build();
 
+    given(memberRepository.findById(memberId))
+        .willReturn(Optional.ofNullable(registeredMember));
     given(weddingRepository.findById(1L))
         .willReturn(Optional.ofNullable(wedding));
 
     // when
-    weddingService.modifyTotalBudget(registeredMember, totalBudgetDto);
+    weddingService.modifyTotalBudget(memberId, totalBudgetDto);
 
     // then
     Wedding savedWedding = weddingRepository.findById(1L).get();
@@ -135,14 +150,17 @@ class WeddingServiceTest {
   @DisplayName("총예산을 조회한다.")
   void getTotalBudget() {
     // given
+    given(memberRepository.findById(memberId))
+        .willReturn(Optional.ofNullable(registeredMember));
+
     TotalBudgetDto requestDto = TotalBudgetDto.builder()
         .totalBudget(1000000L)
         .build();
-    weddingService.modifyTotalBudget(registeredMember, requestDto);
+    weddingService.modifyTotalBudget(memberId, requestDto);
 
     // when
 
-    TotalBudgetDto responseDto = weddingService.getTotalBudget(registeredMember);
+    TotalBudgetDto responseDto = weddingService.getTotalBudget(memberId);
 
     // then
     assertEquals(responseDto.getTotalBudget(), requestDto.getTotalBudget());

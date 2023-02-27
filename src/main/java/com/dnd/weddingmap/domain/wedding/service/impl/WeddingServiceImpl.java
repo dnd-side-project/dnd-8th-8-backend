@@ -20,7 +20,10 @@ public class WeddingServiceImpl implements WeddingService {
 
   @Override
   @Transactional
-  public Long registerWedding(Member member, WeddingDayDto weddingDayDto) {
+  public Long registerWedding(Long memberId, WeddingDayDto weddingDayDto) {
+
+    Member member = memberRepository.findById(memberId)
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
     if (member.getWedding() != null) {
       throw new IllegalStateException("결혼정보가 이미 등록되어 있습니다.");
@@ -35,7 +38,10 @@ public class WeddingServiceImpl implements WeddingService {
 
   @Override
   @Transactional
-  public void modifyWeddingDay(Member member, WeddingDayDto weddingDayDto) {
+  public void modifyWeddingDay(Long memberId, WeddingDayDto weddingDayDto) {
+
+    Member member = memberRepository.findById(memberId)
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
     if (member.getWedding() == null) {
       throw new IllegalStateException("결혼정보가 등록되어 있지 않습니다.");
@@ -48,7 +54,11 @@ public class WeddingServiceImpl implements WeddingService {
 
   @Override
   @Transactional
-  public WeddingDayDto getWeddingDay(Member member) {
+  public WeddingDayDto getWeddingDay(Long memberId) {
+
+    Member member = memberRepository.findById(memberId)
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+
     if (member.getWedding() == null) {
       throw new IllegalStateException("결혼정보가 등록되어 있지 않습니다.");
     }
@@ -60,7 +70,11 @@ public class WeddingServiceImpl implements WeddingService {
 
   @Override
   @Transactional
-  public void modifyTotalBudget(Member member, TotalBudgetDto totalBudgetDto) {
+  public void modifyTotalBudget(Long memberId, TotalBudgetDto totalBudgetDto) {
+
+    Member member = memberRepository.findById(memberId)
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+
     if (member.getWedding() == null) {
       throw new IllegalStateException("결혼정보가 등록되어 있지 않습니다.");
     }
@@ -72,7 +86,11 @@ public class WeddingServiceImpl implements WeddingService {
 
   @Override
   @Transactional
-  public TotalBudgetDto getTotalBudget(Member member) {
+  public TotalBudgetDto getTotalBudget(Long memberId) {
+
+    Member member = memberRepository.findById(memberId)
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+
     if (member.getWedding() == null) {
       throw new IllegalStateException("결혼정보가 등록되어 있지 않습니다.");
     }
