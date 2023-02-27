@@ -13,7 +13,7 @@ public interface ContractService {
 
   Optional<Contract> findContractById(Long id);
 
-  boolean withdrawContract(Long contractId, Long memberId);
+  boolean withdrawContract(Long contractId);
 
   List<ContractListResponseDto> findContractList(Long memberId);
 

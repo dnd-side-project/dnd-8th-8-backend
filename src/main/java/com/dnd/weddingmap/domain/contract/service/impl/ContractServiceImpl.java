@@ -6,12 +6,10 @@ import com.dnd.weddingmap.domain.contract.dto.ContractListResponseDto;
 import com.dnd.weddingmap.domain.contract.repository.ContractRepository;
 import com.dnd.weddingmap.domain.contract.service.ContractService;
 import com.dnd.weddingmap.domain.member.Member;
-import com.dnd.weddingmap.global.exception.ForbiddenException;
 import com.dnd.weddingmap.global.exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,13 +40,11 @@ public class ContractServiceImpl implements ContractService {
     return contractRepository.findById(id);
   }
 
+  @Transactional
   @Override
-  public boolean withdrawContract(Long contractId, Long memberId) {
+  public boolean withdrawContract(Long contractId) {
     return contractRepository.findById(contractId)
         .map(contract -> {
-          if (!Objects.equals(contract.getMember().getId(), memberId)) {
-            throw new ForbiddenException("접근할 수 없는 계약서입니다.");
-          }
           contractRepository.delete(contract);
           return true;
         })

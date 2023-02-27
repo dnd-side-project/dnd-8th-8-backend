@@ -87,7 +87,7 @@ public class ContractController {
       throw new AmazonS3Exception("계약서 파일 삭제에 실패했습니다.");
     }
 
-    boolean result = contractService.withdrawContract(contractId, user.getId());
+    boolean result = contractService.withdrawContract(contractId);
     if (!result) {
       throw new NotFoundException(NOT_FOUND_CONTRACT_MESSAGE);
     }
