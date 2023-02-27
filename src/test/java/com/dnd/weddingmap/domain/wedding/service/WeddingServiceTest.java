@@ -130,4 +130,21 @@ class WeddingServiceTest {
     Wedding savedWedding = weddingRepository.findById(1L).get();
     assertEquals(savedWedding.getTotalBudget(), totalBudgetDto.getTotalBudget());
   }
+
+  @Test
+  @DisplayName("총예산을 조회한다.")
+  void getTotalBudget() {
+    // given
+    TotalBudgetDto requestDto = TotalBudgetDto.builder()
+        .totalBudget(1000000L)
+        .build();
+    weddingService.modifyTotalBudget(registeredMember, requestDto);
+
+    // when
+
+    TotalBudgetDto responseDto = weddingService.getTotalBudget(registeredMember);
+
+    // then
+    assertEquals(responseDto.getTotalBudget(), requestDto.getTotalBudget());
+  }
 }

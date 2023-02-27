@@ -38,4 +38,12 @@ public interface WeddingService {
    * @param totalBudgetDto 총예산 정보를 담은 DTO
    */
   void modifyTotalBudget(Member member, TotalBudgetDto totalBudgetDto);
+
+  /**
+   * 회원의 총예산을 조회한다.
+   *
+   * @param member 총예산을 조회할 회원
+   * @return 회원의 총예산 정보를 담은 DTO
+   */
+  TotalBudgetDto getTotalBudget(Member member);
 }

@@ -69,4 +69,16 @@ public class WeddingServiceImpl implements WeddingService {
     wedding.setTotalBudget(totalBudgetDto.getTotalBudget());
     weddingRepository.save(wedding);
   }
+
+  @Override
+  @Transactional
+  public TotalBudgetDto getTotalBudget(Member member) {
+    if (member.getWedding() == null) {
+      throw new IllegalStateException("결혼식이 등록되어 있지 않습니다.");
+    }
+
+    return TotalBudgetDto.builder()
+        .totalBudget(member.getWedding().getTotalBudget())
+        .build();
+  }
 }
