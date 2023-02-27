@@ -97,6 +97,7 @@ class WeddingServiceTest {
   @DisplayName("결혼식이 등록되지 않은 경우 결혼식 일정 수정이 불가능하다.")
   void modifyWeddingDayWhenWeddingNotRegistered() {
     // then
-    assertThrows(IllegalStateException.class, () -> weddingService.modifyWeddingDay(member, weddingDayDto));
+    assertThrows(IllegalStateException.class,
+        () -> weddingService.modifyWeddingDay(member, weddingDayDto));
   }
 }
