@@ -7,6 +7,7 @@ import com.dnd.weddingmap.domain.wedding.service.WeddingService;
 import com.dnd.weddingmap.global.response.SuccessResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +29,8 @@ public class WeddingController {
       @AuthenticationPrincipal CustomUserDetails user,
       @RequestBody @Valid WeddingDayDto weddingDayDto) {
     weddingService.registerWedding(user.getId(), weddingDayDto);
-    return ResponseEntity.ok().body(SuccessResponse.builder().message("결혼정보 등록 성공").build());
+    return ResponseEntity.status(HttpStatus.CREATED).body(
+        SuccessResponse.builder().message("결혼정보 등록 성공").httpStatus(HttpStatus.CREATED).build());
   }
 
   @GetMapping("/day")
