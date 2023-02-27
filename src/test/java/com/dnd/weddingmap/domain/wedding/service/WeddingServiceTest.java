@@ -58,6 +58,7 @@ class WeddingServiceTest {
   }
 
   @Test
+  @DisplayName("결혼식 일정을 등록한다.")
   void registerWedding() {
     // given
     given(weddingRepository.save(any()))
