@@ -1,6 +1,7 @@
 package com.dnd.weddingmap.domain.wedding.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -13,6 +14,7 @@ import com.dnd.weddingmap.domain.wedding.service.impl.WeddingServiceImpl;
 import java.time.LocalDate;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -72,5 +74,28 @@ class WeddingServiceTest {
     Wedding savedWedding = weddingRepository.findById(weddingId).get();
     assertEquals(savedWedding.getWeddingDay(), weddingDay);
     assertEquals(savedWedding.getWeddingMembers().get(0), member);
+  }
+
+  @Test
+  @DisplayName("결혼식 일정을 수정한다.")
+  void modifyWeddingDay() {
+
+    // given
+    given(weddingRepository.findById(1L))
+        .willReturn(Optional.ofNullable(wedding));
+
+    // when
+    weddingService.modifyWeddingDay(registeredMember, weddingDayDto);
+
+    // then
+    Wedding savedWedding = weddingRepository.findById(1L).get();
+    assertEquals(savedWedding.getWeddingDay(), weddingDay);
+  }
+
+  @Test
+  @DisplayName("결혼식이 등록되지 않은 경우 결혼식 일정 수정이 불가능하다.")
+  void modifyWeddingDayWhenWeddingNotRegistered() {
+    // then
+    assertThrows(IllegalStateException.class, () -> weddingService.modifyWeddingDay(member, weddingDayDto));
   }
 }

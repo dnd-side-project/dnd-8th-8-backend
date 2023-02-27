@@ -48,4 +48,8 @@ public class Wedding extends BaseTimeEntity {
   public void removeMember(Member member) {
     this.weddingMembers.remove(member);
   }
+
+  public void setWeddingDay(LocalDate weddingDay) {
+    this.weddingDay = weddingDay;
+  }
 }

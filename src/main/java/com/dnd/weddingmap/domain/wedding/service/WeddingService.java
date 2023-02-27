@@ -12,4 +12,11 @@ public interface WeddingService {
    */
   Long registerWedding(Member member, WeddingDayDto weddingDayDto);
 
+
+  /**
+   * 결혼식 날짜를 수정한다. 만약 회원의 결혼식이 등록되어 있지 않다면 예외를 발생시킨다.
+   * @param member 결혼식 날짜를 수정할 회원
+   * @param weddingDayDto 결혼식 날짜 정보를 담은 DTO
+   */
+  void modifyWeddingDay(Member member, WeddingDayDto weddingDayDto);
 }
