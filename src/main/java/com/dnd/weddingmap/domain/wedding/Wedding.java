@@ -9,7 +9,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -21,22 +23,25 @@ public class Wedding extends BaseTimeEntity {
   private Long id;
 
   @OneToMany(mappedBy = "wedding")
-  private List<Member> weddingMembers;
+  private List<Member> weddingMembers = new ArrayList<>();
 
   @Column(nullable = false)
   private LocalDate weddingDay;
 
   @Column(nullable = false)
   private Long totalBudget;
-
-  public Wedding() {
-    this.weddingDay = LocalDate.now();
-    this.totalBudget = 0L;
-  }
   
   public Wedding(Member member, LocalDate weddingDay) {
     this.weddingMembers.add(member);
     this.weddingDay = weddingDay;
     this.totalBudget = 0L;
+  }
+
+  @Builder
+  public Wedding(Long id, Member member, LocalDate weddingDay, Long totalBudget) {
+    this.id = id;
+    this.weddingMembers.add(member);
+    this.weddingDay = weddingDay;
+    this.totalBudget = totalBudget;
   }
 }
