@@ -30,7 +30,7 @@ public class WeddingController {
       @RequestBody @Valid WeddingDayDto weddingDayDto) {
     weddingService.registerWedding(user.getId(), weddingDayDto);
     return ResponseEntity.status(HttpStatus.CREATED).body(
-        SuccessResponse.builder().message("결혼정보 등록 성공").httpStatus(HttpStatus.CREATED).build());
+        SuccessResponse.builder().message("결혼 등록 성공").httpStatus(HttpStatus.CREATED).build());
   }
 
   @GetMapping("/day")

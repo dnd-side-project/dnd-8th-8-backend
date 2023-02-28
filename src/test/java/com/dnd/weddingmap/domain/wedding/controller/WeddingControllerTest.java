@@ -46,7 +46,7 @@ class WeddingControllerTest extends AbstractRestDocsTests {
   ObjectMapper objectMapper;
 
   @Test
-  @DisplayName("결혼 정보 등록 테스트")
+  @DisplayName("결혼 등록 테스트")
   @WithMockOAuth2User
   void registerWedding() throws Exception {
     // given
@@ -66,7 +66,7 @@ class WeddingControllerTest extends AbstractRestDocsTests {
         requestFields(fieldWithPath("weddingDay").description("결혼일")),
         responseFields(fieldWithPath("status").description("응답 상태 코드"),
             fieldWithPath("message").description("응답 메시지"),
-            fieldWithPath("data").description("결혼 정보 ID"))));
+            fieldWithPath("data").description("결혼 ID"))));
   }
 
   @Test

@@ -26,7 +26,7 @@ public class WeddingServiceImpl implements WeddingService {
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
     if (member.getWedding() != null) {
-      throw new IllegalStateException("결혼정보가 이미 등록되어 있습니다.");
+      throw new IllegalStateException("결혼이 이미 등록되어 있습니다.");
     }
 
     Wedding wedding = weddingRepository.save(new Wedding(member, weddingDayDto.getWeddingDay()));
@@ -44,7 +44,7 @@ public class WeddingServiceImpl implements WeddingService {
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
     if (member.getWedding() == null) {
-      throw new IllegalStateException("결혼정보가 등록되어 있지 않습니다.");
+      throw new IllegalStateException("결혼이 등록되어 있지 않습니다.");
     }
 
     Wedding wedding = member.getWedding();
@@ -60,7 +60,7 @@ public class WeddingServiceImpl implements WeddingService {
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
     if (member.getWedding() == null) {
-      throw new IllegalStateException("결혼정보가 등록되어 있지 않습니다.");
+      throw new IllegalStateException("결혼이 등록되어 있지 않습니다.");
     }
 
     return WeddingDayDto.builder()
@@ -76,7 +76,7 @@ public class WeddingServiceImpl implements WeddingService {
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
     if (member.getWedding() == null) {
-      throw new IllegalStateException("결혼정보가 등록되어 있지 않습니다.");
+      throw new IllegalStateException("결혼이 등록되어 있지 않습니다.");
     }
 
     Wedding wedding = member.getWedding();
@@ -92,7 +92,7 @@ public class WeddingServiceImpl implements WeddingService {
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
     if (member.getWedding() == null) {
-      throw new IllegalStateException("결혼정보가 등록되어 있지 않습니다.");
+      throw new IllegalStateException("결혼이 등록되어 있지 않습니다.");
     }
 
     return TotalBudgetDto.builder()
