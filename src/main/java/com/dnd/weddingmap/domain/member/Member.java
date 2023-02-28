@@ -2,13 +2,17 @@ package com.dnd.weddingmap.domain.member;
 
 import com.dnd.weddingmap.domain.common.BaseTimeEntity;
 import com.dnd.weddingmap.domain.oauth.OAuth2Provider;
+import com.dnd.weddingmap.domain.wedding.Wedding;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,6 +49,10 @@ public class Member extends BaseTimeEntity {
   @Enumerated(value = EnumType.STRING)
   private Gender gender;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "wedding_id")
+  private Wedding wedding;
+
   @Builder
   public Member(
       Long id,
@@ -52,7 +60,8 @@ public class Member extends BaseTimeEntity {
       String email,
       String profileImage,
       Role role,
-      OAuth2Provider oauth2Provider
+      OAuth2Provider oauth2Provider,
+      Wedding wedding
   ) {
     this.id = id;
     this.name = name;
@@ -60,6 +69,7 @@ public class Member extends BaseTimeEntity {
     this.profileImage = profileImage;
     this.role = role;
     this.oauth2Provider = oauth2Provider;
+    this.wedding = wedding;
   }
 
   public void setGender(Gender gender) {
@@ -68,6 +78,10 @@ public class Member extends BaseTimeEntity {
 
   public void setProfileImage(String profileImage) {
     this.profileImage = profileImage;
+  }
+
+  public void setWedding(Wedding wedding) {
+    this.wedding = wedding;
   }
 
   public Member update(String name, String profileImage) {
