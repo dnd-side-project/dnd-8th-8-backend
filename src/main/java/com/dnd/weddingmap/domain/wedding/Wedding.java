@@ -31,20 +31,20 @@ public class Wedding extends BaseTimeEntity {
   private LocalDate weddingDay;
 
   @Column(nullable = false)
-  private Long totalBudget;
+  private Long budget;
   
   public Wedding(Member member, LocalDate weddingDay) {
     this.weddingMembers.add(member);
     this.weddingDay = weddingDay;
-    this.totalBudget = 0L;
+    this.budget = 0L;
   }
 
   @Builder
-  public Wedding(Long id, Member member, LocalDate weddingDay, Long totalBudget) {
+  public Wedding(Long id, Member member, LocalDate weddingDay, Long budget) {
     this.id = id;
     this.weddingMembers.add(member);
     this.weddingDay = weddingDay;
-    this.totalBudget = totalBudget;
+    this.budget = budget;
   }
 
   public void removeMember(Member member) {
@@ -55,7 +55,7 @@ public class Wedding extends BaseTimeEntity {
     this.weddingDay = weddingDay;
   }
 
-  public void setTotalBudget(Long totalBudget) {
-    this.totalBudget = totalBudget;
+  public void setBudget(Long budget) {
+    this.budget = budget;
   }
 }

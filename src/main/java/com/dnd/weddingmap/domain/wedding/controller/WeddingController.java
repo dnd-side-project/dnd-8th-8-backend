@@ -1,7 +1,7 @@
 package com.dnd.weddingmap.domain.wedding.controller;
 
 import com.dnd.weddingmap.domain.oauth.CustomUserDetails;
-import com.dnd.weddingmap.domain.wedding.dto.TotalBudgetDto;
+import com.dnd.weddingmap.domain.wedding.dto.BudgetDto;
 import com.dnd.weddingmap.domain.wedding.dto.WeddingDayDto;
 import com.dnd.weddingmap.domain.wedding.service.WeddingService;
 import com.dnd.weddingmap.global.response.SuccessResponse;
@@ -50,18 +50,18 @@ public class WeddingController {
   }
 
   @GetMapping("/budget")
-  public ResponseEntity<SuccessResponse> getTotalBudget(
+  public ResponseEntity<SuccessResponse> getBudget(
       @AuthenticationPrincipal CustomUserDetails user) {
-    TotalBudgetDto totalBudgetDto = weddingService.getTotalBudget(user.getId());
+    BudgetDto budgetDto = weddingService.getBudget(user.getId());
     return ResponseEntity.ok()
-        .body(SuccessResponse.builder().message("총 예산 조회 성공").data(totalBudgetDto).build());
+        .body(SuccessResponse.builder().message("결혼 예산 조회 성공").data(budgetDto).build());
   }
 
   @PutMapping("/budget")
-  public ResponseEntity<SuccessResponse> modifyTotalBudget(
+  public ResponseEntity<SuccessResponse> modifyBudget(
       @AuthenticationPrincipal CustomUserDetails user,
-      @RequestBody @Valid TotalBudgetDto totalBudgetDto) {
-    weddingService.modifyTotalBudget(user.getId(), totalBudgetDto);
-    return ResponseEntity.ok().body(SuccessResponse.builder().message("총 예산 수정 성공").build());
+      @RequestBody @Valid BudgetDto budgetDto) {
+    weddingService.modifyBudget(user.getId(), budgetDto);
+    return ResponseEntity.ok().body(SuccessResponse.builder().message("결혼 예산 수정 성공").build());
   }
 }

@@ -1,6 +1,6 @@
 package com.dnd.weddingmap.domain.wedding.service;
 
-import com.dnd.weddingmap.domain.wedding.dto.TotalBudgetDto;
+import com.dnd.weddingmap.domain.wedding.dto.BudgetDto;
 import com.dnd.weddingmap.domain.wedding.dto.WeddingDayDto;
 
 public interface WeddingService {
@@ -35,20 +35,20 @@ public interface WeddingService {
   WeddingDayDto getWeddingDay(Long memberId);
 
   /**
-   * 회원의 총예산을 수정한다.
+   * 회원의 결혼 예산을 수정한다.
    *
-   * @param memberId 총예산을 수정할 회원 ID
-   * @param totalBudgetDto 총예산 정보를 담은 DTO
+   * @param memberId 결혼 예산을 수정할 회원 ID
+   * @param budgetDto 결혼 예산 정보를 담은 DTO
    * @Exception IllegalStateException 결혼이 존재하지 않는 경우 발생
    */
-  void modifyTotalBudget(Long memberId, TotalBudgetDto totalBudgetDto);
+  void modifyBudget(Long memberId, BudgetDto budgetDto);
 
   /**
-   * 회원의 총예산을 조회한다.
+   * 회원의 결혼 예산을 조회한다.
    *
-   * @param memberId 총예산을 조회할 회원 ID
-   * @return 회원의 총예산 정보를 담은 DTO
+   * @param memberId 결혼 예산을 조회할 회원 ID
+   * @return 회원의 결혼 예산 정보를 담은 DTO
    * @Exception IllegalStateException 결혼이 존재하지 않는 경우 발생
    */
-  TotalBudgetDto getTotalBudget(Long memberId);
+  BudgetDto getBudget(Long memberId);
 }

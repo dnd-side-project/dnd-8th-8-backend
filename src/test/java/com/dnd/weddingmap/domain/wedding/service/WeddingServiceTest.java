@@ -8,7 +8,7 @@ import static org.mockito.BDDMockito.given;
 import com.dnd.weddingmap.domain.member.Member;
 import com.dnd.weddingmap.domain.member.MemberRepository;
 import com.dnd.weddingmap.domain.wedding.Wedding;
-import com.dnd.weddingmap.domain.wedding.dto.TotalBudgetDto;
+import com.dnd.weddingmap.domain.wedding.dto.BudgetDto;
 import com.dnd.weddingmap.domain.wedding.dto.WeddingDayDto;
 import com.dnd.weddingmap.domain.wedding.repository.WeddingRepository;
 import com.dnd.weddingmap.domain.wedding.service.impl.WeddingServiceImpl;
@@ -126,11 +126,11 @@ class WeddingServiceTest {
   }
 
   @Test
-  @DisplayName("총예산을 수정한다.")
-  void modifyTotalBudget() {
+  @DisplayName("결혼 예산을 수정한다.")
+  void modifyBudget() {
     // given
-    TotalBudgetDto totalBudgetDto = TotalBudgetDto.builder()
-        .totalBudget(1000000L)
+    BudgetDto budgetDto = BudgetDto.builder()
+        .budget(1000000L)
         .build();
 
     given(memberRepository.findById(memberId))
@@ -139,30 +139,30 @@ class WeddingServiceTest {
         .willReturn(Optional.ofNullable(wedding));
 
     // when
-    weddingService.modifyTotalBudget(memberId, totalBudgetDto);
+    weddingService.modifyBudget(memberId, budgetDto);
 
     // then
     Wedding savedWedding = weddingRepository.findById(1L).get();
-    assertEquals(savedWedding.getTotalBudget(), totalBudgetDto.getTotalBudget());
+    assertEquals(savedWedding.getBudget(), budgetDto.getBudget());
   }
 
   @Test
-  @DisplayName("총예산을 조회한다.")
-  void getTotalBudget() {
+  @DisplayName("결혼 예산을 조회한다.")
+  void getBudget() {
     // given
     given(memberRepository.findById(memberId))
         .willReturn(Optional.ofNullable(registeredMember));
 
-    TotalBudgetDto requestDto = TotalBudgetDto.builder()
-        .totalBudget(1000000L)
+    BudgetDto requestDto = BudgetDto.builder()
+        .budget(1000000L)
         .build();
-    weddingService.modifyTotalBudget(memberId, requestDto);
+    weddingService.modifyBudget(memberId, requestDto);
 
     // when
 
-    TotalBudgetDto responseDto = weddingService.getTotalBudget(memberId);
+    BudgetDto responseDto = weddingService.getBudget(memberId);
 
     // then
-    assertEquals(responseDto.getTotalBudget(), requestDto.getTotalBudget());
+    assertEquals(responseDto.getBudget(), requestDto.getBudget());
   }
 }

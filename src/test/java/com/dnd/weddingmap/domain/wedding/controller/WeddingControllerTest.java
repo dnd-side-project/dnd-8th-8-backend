@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.dnd.weddingmap.docs.springrestdocs.AbstractRestDocsTests;
 import com.dnd.weddingmap.domain.jwt.JwtTokenProvider;
-import com.dnd.weddingmap.domain.wedding.dto.TotalBudgetDto;
+import com.dnd.weddingmap.domain.wedding.dto.BudgetDto;
 import com.dnd.weddingmap.domain.wedding.dto.WeddingDayDto;
 import com.dnd.weddingmap.domain.wedding.service.WeddingService;
 import com.dnd.weddingmap.global.WithMockOAuth2User;
@@ -114,11 +114,11 @@ class WeddingControllerTest extends AbstractRestDocsTests {
   }
 
   @Test
-  @DisplayName("총 예산 조회 테스트")
+  @DisplayName("결혼 예산 조회 테스트")
   @WithMockOAuth2User
-  void getTotalBudget() throws Exception {
+  void getBudget() throws Exception {
     // given
-    given(weddingService.getTotalBudget(any())).willReturn(new TotalBudgetDto(1000000L));
+    given(weddingService.getBudget(any())).willReturn(new BudgetDto(1000000L));
 
     // when
     ResultActions result = mockMvc.perform(
@@ -130,26 +130,26 @@ class WeddingControllerTest extends AbstractRestDocsTests {
         requestHeaders(headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")),
         responseFields(fieldWithPath("status").description("응답 상태 코드"),
             fieldWithPath("message").description("응답 메시지"),
-            fieldWithPath("data.totalBudget").description("총 예산"))));
+            fieldWithPath("data.budget").description("결혼 예산"))));
   }
 
   @Test
-  @DisplayName("총 예산 수정 테스트")
+  @DisplayName("결혼 예산 수정 테스트")
   @WithMockOAuth2User
-  void modifyTotalBudget() throws Exception {
+  void modifyBudget() throws Exception {
     // given
-    TotalBudgetDto totalBudgetDto = new TotalBudgetDto(1000000L);
+    BudgetDto budgetDto = new BudgetDto(1000000L);
 
     // when
     ResultActions result = mockMvc.perform(
         put("/api/v1/wedding/budget").contentType(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN")
-            .content(objectMapper.writeValueAsString(totalBudgetDto)));
+            .content(objectMapper.writeValueAsString(budgetDto)));
 
     // then
     result.andExpect(status().isOk()).andDo(document("wedding/modify-budget",
         requestHeaders(headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")),
-        requestFields(fieldWithPath("totalBudget").description("총 예산")),
+        requestFields(fieldWithPath("budget").description("결혼 예산")),
         responseFields(fieldWithPath("status").description("응답 상태 코드"),
             fieldWithPath("message").description("응답 메시지"),
             fieldWithPath("data").description("데이터").ignored())));

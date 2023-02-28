@@ -8,12 +8,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TotalBudgetDto {
+public class BudgetDto {
 
-  Long totalBudget;
+  Long budget;
 
   @Builder
-  public TotalBudgetDto(Long totalBudget) {
-    this.totalBudget = totalBudget;
+  public BudgetDto(Long budget) {
+    this.budget = budget;
   }
 }

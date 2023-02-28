@@ -3,7 +3,7 @@ package com.dnd.weddingmap.domain.wedding.service.impl;
 import com.dnd.weddingmap.domain.member.Member;
 import com.dnd.weddingmap.domain.member.MemberRepository;
 import com.dnd.weddingmap.domain.wedding.Wedding;
-import com.dnd.weddingmap.domain.wedding.dto.TotalBudgetDto;
+import com.dnd.weddingmap.domain.wedding.dto.BudgetDto;
 import com.dnd.weddingmap.domain.wedding.dto.WeddingDayDto;
 import com.dnd.weddingmap.domain.wedding.repository.WeddingRepository;
 import com.dnd.weddingmap.domain.wedding.service.WeddingService;
@@ -70,7 +70,7 @@ public class WeddingServiceImpl implements WeddingService {
 
   @Override
   @Transactional
-  public void modifyTotalBudget(Long memberId, TotalBudgetDto totalBudgetDto) {
+  public void modifyBudget(Long memberId, BudgetDto budgetDto) {
 
     Member member = memberRepository.findById(memberId)
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
@@ -80,13 +80,13 @@ public class WeddingServiceImpl implements WeddingService {
     }
 
     Wedding wedding = member.getWedding();
-    wedding.setTotalBudget(totalBudgetDto.getTotalBudget());
+    wedding.setBudget(budgetDto.getBudget());
     weddingRepository.save(wedding);
   }
 
   @Override
   @Transactional
-  public TotalBudgetDto getTotalBudget(Long memberId) {
+  public BudgetDto getBudget(Long memberId) {
 
     Member member = memberRepository.findById(memberId)
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
@@ -95,8 +95,8 @@ public class WeddingServiceImpl implements WeddingService {
       throw new IllegalStateException("결혼이 등록되어 있지 않습니다.");
     }
 
-    return TotalBudgetDto.builder()
-        .totalBudget(member.getWedding().getTotalBudget())
+    return BudgetDto.builder()
+        .budget(member.getWedding().getBudget())
         .build();
   }
 }
