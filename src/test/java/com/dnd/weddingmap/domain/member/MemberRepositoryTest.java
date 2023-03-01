@@ -70,7 +70,8 @@ class MemberRepositoryTest {
     assertTrue(member.isPresent());
     assertEquals(member.get().getCreatedAt(), member.get().getModifiedAt());
 
-    memberRepository.save(member.get().update("new name", "new image.png"));
+    member.get().setProfileImage("new image.png");
+    memberRepository.save(member.get());
 
     Optional<Member> updatedMember = memberRepository.findByEmail(email);
     assertTrue(updatedMember.isPresent());
