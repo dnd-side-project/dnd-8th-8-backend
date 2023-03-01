@@ -18,21 +18,6 @@ class MemberTest {
       .build();
 
   @Test
-  @DisplayName("회원 정보 수정")
-  void update() {
-    // given
-    String name = "new name";
-    String profileImage = "image2.png";
-
-    // when
-    member.update(name, profileImage);
-
-    // then
-    assertEquals(name, member.getName());
-    assertEquals(profileImage, member.getProfileImage());
-  }
-
-  @Test
   @DisplayName("회원 아이디 조회")
   void getId() {
     assertNull(member.getId());

@@ -7,6 +7,12 @@
 
 사용자의 정보를 조회하거나 수정할 수 있습니다. ``Header``의 ``Authorization``에 사용자의 ``액세스 토큰``을 포함시켜야 합니다.
 
+=== 사용자 이름 변경
+
+사용자의 이름을 변경합니다.
+
+operation::member/put-name[snippets='http-request,http-response,response-fields']
+
 === 사용자 탈퇴
 
 사용자의 탈퇴를 진행합니다. 요청이 완료된 사용자는 더 이상 로그인할 수 없습니다.
