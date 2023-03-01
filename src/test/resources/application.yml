@@ -1,5 +1,55 @@
 spring:
   jackson:
     default-property-inclusion: non_null
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: test-google-client-id
+            client-secret: test-google-client-secret
+            scope:
+              - profile
+              - email
+          kakao:
+            client-id: test-kakao-client-id
+            client-authentication-method: POST
+            client-name: Kakao
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            authorization-grant-type: authorization_code
+            scope:
+              - profile_nickname
+              - profile_image
+              - account_email
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: password
   flyway:
     enabled: false
+app:
+  auth:
+    token:
+      refresh-cookie-key: refresh
+      secret-key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+  oauth2:
+    authorized-redirect-uri: http://localhost:8080/oauth2/redirect
+  origin:
+    url: http://localhost:3000
+aws:
+  s3:
+    access-key: test-access-key
+    secret-key: test-secret-key
+    region: ap-northeast-2
+    bucket: test-bucket
+logging:
+  level:
+    org:
+      hibernate: info
