@@ -52,6 +52,7 @@ class WeddingServiceTest {
         .build();
     weddingDayDto = WeddingDayDto.builder()
         .weddingDay(weddingDay)
+        .preparing(true)
         .build();
     registeredMember = Member.builder()
         .id(1L)

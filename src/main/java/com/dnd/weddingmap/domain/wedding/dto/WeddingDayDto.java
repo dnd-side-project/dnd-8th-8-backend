@@ -12,9 +12,11 @@ import lombok.Setter;
 public class WeddingDayDto {
 
   LocalDate weddingDay;
+  boolean preparing;
 
   @Builder
-  public WeddingDayDto(LocalDate weddingDay) {
+  public WeddingDayDto(LocalDate weddingDay, boolean preparing) {
     this.weddingDay = weddingDay;
+    this.preparing = preparing;
   }
 }

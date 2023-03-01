@@ -52,7 +52,9 @@ class WeddingControllerTest extends AbstractRestDocsTests {
     // given
     given(weddingService.registerWedding(anyLong(), any(WeddingDayDto.class))).willReturn(1L);
     WeddingDayDto weddingDayDto = WeddingDayDto.builder()
-        .weddingDay(LocalDate.parse("2033-03-25")).build();
+        .weddingDay(LocalDate.parse("2033-03-25"))
+        .preparing(true)
+        .build();
 
     // when
     ResultActions result = mockMvc.perform(
@@ -63,10 +65,13 @@ class WeddingControllerTest extends AbstractRestDocsTests {
     // then
     result.andExpect(status().isCreated()).andDo(document("wedding/register-wedding",
         requestHeaders(headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")),
-        requestFields(fieldWithPath("weddingDay").description("결혼일")),
+        requestFields(
+            fieldWithPath("weddingDay").description("결혼일"),
+            fieldWithPath("preparing").description("결혼 준비중 여부")),
         responseFields(fieldWithPath("status").description("응답 상태 코드"),
             fieldWithPath("message").description("응답 메시지"),
-            fieldWithPath("data").description("결혼 ID"))));
+            fieldWithPath("data").description("데이터").ignored())
+    ));
   }
 
   @Test
@@ -75,7 +80,11 @@ class WeddingControllerTest extends AbstractRestDocsTests {
   void getWeddingDay() throws Exception {
     // given
     given(weddingService.getWeddingDay(any())).willReturn(
-        WeddingDayDto.builder().weddingDay(LocalDate.parse("2033-03-25")).build());
+        WeddingDayDto.builder()
+            .weddingDay(LocalDate.parse("2033-03-25"))
+            .preparing(true)
+            .build()
+    );
 
     // when
     ResultActions result = mockMvc.perform(
@@ -87,7 +96,9 @@ class WeddingControllerTest extends AbstractRestDocsTests {
         requestHeaders(headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")),
         responseFields(fieldWithPath("status").description("응답 상태 코드"),
             fieldWithPath("message").description("응답 메시지"),
-            fieldWithPath("data.weddingDay").description("결혼일"))));
+            fieldWithPath("data.weddingDay").description("결혼일"),
+            fieldWithPath("data.preparing").description("결혼 준비중 여부"))
+    ));
   }
 
   @Test
@@ -96,7 +107,9 @@ class WeddingControllerTest extends AbstractRestDocsTests {
   void modifyWeddingDay() throws Exception {
     // given
     WeddingDayDto weddingDayDto = WeddingDayDto.builder()
-        .weddingDay(LocalDate.parse("2033-03-25")).build();
+        .weddingDay(LocalDate.parse("2033-03-25"))
+        .preparing(true)
+        .build();
 
     // when
     ResultActions result = mockMvc.perform(
@@ -107,10 +120,13 @@ class WeddingControllerTest extends AbstractRestDocsTests {
     // then
     result.andExpect(status().isOk()).andDo(document("wedding/modify-wedding-day",
         requestHeaders(headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")),
-        requestFields(fieldWithPath("weddingDay").description("결혼일")),
+        requestFields(
+            fieldWithPath("weddingDay").description("결혼일"),
+            fieldWithPath("preparing").description("결혼 준비중 여부")),
         responseFields(fieldWithPath("status").description("응답 상태 코드"),
             fieldWithPath("message").description("응답 메시지"),
-            fieldWithPath("data").description("데이터").ignored())));
+            fieldWithPath("data").description("데이터").ignored())
+    ));
   }
 
   @Test

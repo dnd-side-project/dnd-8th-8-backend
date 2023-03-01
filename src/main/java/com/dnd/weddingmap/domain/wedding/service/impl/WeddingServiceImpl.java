@@ -29,7 +29,8 @@ public class WeddingServiceImpl implements WeddingService {
       throw new IllegalStateException("결혼이 이미 등록되어 있습니다.");
     }
 
-    Wedding wedding = weddingRepository.save(new Wedding(member, weddingDayDto.getWeddingDay()));
+    Wedding wedding = weddingRepository.save(
+        new Wedding(member, weddingDayDto.getWeddingDay(), weddingDayDto.isPreparing()));
     member.setWedding(wedding);
     memberRepository.save(member);
 
@@ -49,6 +50,7 @@ public class WeddingServiceImpl implements WeddingService {
 
     Wedding wedding = member.getWedding();
     wedding.setWeddingDay(weddingDayDto.getWeddingDay());
+    wedding.setPreparing(weddingDayDto.isPreparing());
     weddingRepository.save(wedding);
   }
 
@@ -65,6 +67,7 @@ public class WeddingServiceImpl implements WeddingService {
 
     return WeddingDayDto.builder()
         .weddingDay(member.getWedding().getWeddingDay())
+        .preparing(member.getWedding().isPreparing())
         .build();
   }
 

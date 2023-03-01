@@ -1,0 +1,1 @@
+ALTER TABLE `wedding` ADD `preparing` BOOLEAN NOT NULL;

@@ -10,7 +10,7 @@
 
 === 결혼 등록
 
-온보딩 과정에서 결혼을 등록합니다. 결혼일을 전달해야 하며 기본적으로 결혼 예산은 0원으로 설정됩니다.
+온보딩 과정에서 결혼을 등록합니다. 결혼 준비중인지에 대한 여부와 결혼일을 전달해야 합니다. 기본적으로 결혼 예산은 0원으로 설정됩니다.
 
 operation::wedding/register-wedding[snippets='http-request,request-fields,http-response,response-fields']
 
