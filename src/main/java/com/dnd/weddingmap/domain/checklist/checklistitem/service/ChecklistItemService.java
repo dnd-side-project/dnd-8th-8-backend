@@ -30,5 +30,5 @@ public interface ChecklistItemService {
 
   boolean withdrawChecklistItem(Long id);
 
-  ChecklistItem checkPermission(Long checklistItemId, Long memberId);
+  ChecklistItem findChecklistItem(Long checklistItemId, Long memberId);
 }

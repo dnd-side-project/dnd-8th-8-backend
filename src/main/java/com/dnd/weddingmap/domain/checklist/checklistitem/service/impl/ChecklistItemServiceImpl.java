@@ -129,7 +129,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
 
   @Transactional
   @Override
-  public ChecklistItem checkPermission(Long checklistItemId, Long memberId) {
+  public ChecklistItem findChecklistItem(Long checklistItemId, Long memberId) {
     ChecklistItem checklistItem = checklistItemRepository.findById(checklistItemId).orElseThrow(
         () -> new NotFoundException("존재하지 않는 체크리스트입니다."));
 

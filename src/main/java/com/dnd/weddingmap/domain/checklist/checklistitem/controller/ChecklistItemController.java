@@ -40,7 +40,7 @@ public class ChecklistItemController {
   public ResponseEntity<SuccessResponse> getChecklistItemDetail(
       @AuthenticationPrincipal CustomUserDetails user,
       @PathVariable("item-id") Long checklistItemId) {
-    ChecklistItem checklistItem = checklistItemService.checkPermission(checklistItemId,
+    ChecklistItem checklistItem = checklistItemService.findChecklistItem(checklistItemId,
         user.getId());
 
     List<ChecklistSubItemDto> checklistSubItemDtoList =
@@ -74,7 +74,7 @@ public class ChecklistItemController {
       @AuthenticationPrincipal CustomUserDetails user,
       @PathVariable("item-id") Long checklistItemId,
       @RequestBody @Valid ChecklistItemApiDto requestDto) {
-    ChecklistItem checklistItem = checklistItemService.checkPermission(checklistItemId,
+    ChecklistItem checklistItem = checklistItemService.findChecklistItem(checklistItemId,
         user.getId());
 
     ChecklistItemApiDto modifiedChecklistItem =
@@ -87,7 +87,7 @@ public class ChecklistItemController {
   public ResponseEntity<SuccessResponse> withdrawChecklistItem(
       @AuthenticationPrincipal CustomUserDetails user,
       @PathVariable("item-id") Long checklistItemId) {
-    ChecklistItem checklistItem = checklistItemService.checkPermission(checklistItemId,
+    ChecklistItem checklistItem = checklistItemService.findChecklistItem(checklistItemId,
         user.getId());
 
     boolean result = checklistItemService.withdrawChecklistItem(checklistItem.getId());

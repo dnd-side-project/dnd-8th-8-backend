@@ -38,7 +38,7 @@ public class ChecklistSubItemController {
       @AuthenticationPrincipal CustomUserDetails user,
       @PathVariable("item-id") Long checklistItemId,
       @RequestBody @Valid ChecklistSubItemDto checklistSubItemDto) {
-    ChecklistItem checklistItem = checklistItemService.checkPermission(checklistItemId,
+    ChecklistItem checklistItem = checklistItemService.findChecklistItem(checklistItemId,
         user.getId());
 
     ChecklistSubItem checklistSubItem = checklistSubItemService.saveChecklistSubItem(
@@ -56,7 +56,7 @@ public class ChecklistSubItemController {
       @AuthenticationPrincipal CustomUserDetails user,
       @PathVariable("item-id") Long checklistItemId,
       @PathVariable("sub-item-id") Long checklistSubItemId) {
-    ChecklistItem checklistItem = checklistItemService.checkPermission(checklistItemId,
+    ChecklistItem checklistItem = checklistItemService.findChecklistItem(checklistItemId,
         user.getId());
 
     boolean result = checklistSubItemService.withdrawChecklistSubItem(checklistSubItemId,
@@ -73,7 +73,7 @@ public class ChecklistSubItemController {
       @PathVariable("item-id") Long checklistItemId,
       @PathVariable("sub-item-id") Long checklistSubItemId,
       @RequestBody @Valid ChecklistSubItemStateDto checklistSubItemStateDto) {
-    ChecklistItem checklistItem = checklistItemService.checkPermission(checklistItemId,
+    ChecklistItem checklistItem = checklistItemService.findChecklistItem(checklistItemId,
         user.getId());
 
     ChecklistSubItem modifiedChecklistSubItem = checklistSubItemService.modifyChecklistSubItem(

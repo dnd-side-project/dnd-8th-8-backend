@@ -122,7 +122,7 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
     String url = "/api/v1/checklist/item/{item-id}";
 
     // given
-    given(checklistItemService.checkPermission(anyLong(), anyLong())).willReturn(checklistItem);
+    given(checklistItemService.findChecklistItem(anyLong(), anyLong())).willReturn(checklistItem);
     given(checklistSubItemService.findChecklistSubItems(anyLong())).willReturn(
         List.of(checklistSubItemDto1, checklistSubItemDto2));
 
@@ -276,7 +276,7 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
     String url = "/api/v1/checklist/item/{item-id}";
 
     // given
-    given(checklistItemService.checkPermission(anyLong(), anyLong())).willReturn(checklistItem);
+    given(checklistItemService.findChecklistItem(anyLong(), anyLong())).willReturn(checklistItem);
     given(checklistItemService.modifyChecklistItem(anyLong(),
         any(ChecklistItemApiDto.class))).willReturn(checklistItemApiDto);
 
@@ -357,7 +357,7 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
     String url = "/api/v1/checklist/item/{item-id}";
 
     // given
-    given(checklistItemService.checkPermission(anyLong(), anyLong())).willReturn(checklistItem);
+    given(checklistItemService.findChecklistItem(anyLong(), anyLong())).willReturn(checklistItem);
     given(checklistItemService.withdrawChecklistItem(anyLong())).willReturn(true);
 
     // when
