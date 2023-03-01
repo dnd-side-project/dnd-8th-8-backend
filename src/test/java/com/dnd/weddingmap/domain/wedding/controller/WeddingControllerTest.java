@@ -69,8 +69,8 @@ class WeddingControllerTest extends AbstractRestDocsTests {
             fieldWithPath("weddingDay").description("결혼일"),
             fieldWithPath("preparing").description("결혼 준비중 여부")),
         responseFields(fieldWithPath("status").description("응답 상태 코드"),
-            fieldWithPath("message").description("응답 메시지"),
-            fieldWithPath("data").description("데이터").ignored())
+            fieldWithPath("message").description("응답 메시지")
+        )
     ));
   }
 
@@ -124,8 +124,8 @@ class WeddingControllerTest extends AbstractRestDocsTests {
             fieldWithPath("weddingDay").description("결혼일"),
             fieldWithPath("preparing").description("결혼 준비중 여부")),
         responseFields(fieldWithPath("status").description("응답 상태 코드"),
-            fieldWithPath("message").description("응답 메시지"),
-            fieldWithPath("data").description("데이터").ignored())
+            fieldWithPath("message").description("응답 메시지")
+        )
     ));
   }
 
@@ -167,7 +167,8 @@ class WeddingControllerTest extends AbstractRestDocsTests {
         requestHeaders(headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")),
         requestFields(fieldWithPath("budget").description("결혼 예산")),
         responseFields(fieldWithPath("status").description("응답 상태 코드"),
-            fieldWithPath("message").description("응답 메시지"),
-            fieldWithPath("data").description("데이터").ignored())));
+            fieldWithPath("message").description("응답 메시지")
+        )
+    ));
   }
 }
