@@ -12,6 +12,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -23,6 +24,7 @@ import com.dnd.weddingmap.docs.springrestdocs.AbstractRestDocsTests;
 import com.dnd.weddingmap.domain.jwt.JwtTokenProvider;
 import com.dnd.weddingmap.domain.member.Gender;
 import com.dnd.weddingmap.domain.member.dto.GenderDto;
+import com.dnd.weddingmap.domain.member.dto.NameDto;
 import com.dnd.weddingmap.domain.member.service.MemberService;
 import com.dnd.weddingmap.global.WithMockOAuth2User;
 import com.dnd.weddingmap.global.service.S3Service;
@@ -55,6 +57,39 @@ class MemberControllerTest extends AbstractRestDocsTests {
 
   @Autowired
   ObjectMapper objectMapper;
+
+  @Test
+  @DisplayName("사용자 이름 변경")
+  @WithMockOAuth2User
+  void modifyName() throws Exception {
+
+    // given
+    NameDto dto = NameDto.builder()
+        .name("홍길동").build();
+
+    // when
+    ResultActions result = mockMvc.perform(put("/api/v1/user/name")
+        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN")
+        .content(objectMapper.writeValueAsString(dto))
+        .contentType(MediaType.APPLICATION_JSON)
+    );
+
+    // then
+    result.andExpect(status().isOk())
+        .andDo(document("member/put-name",
+            requestHeaders(
+                headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
+            ),
+            requestFields(
+                fieldWithPath("name").description("사용자 이름")
+            ),
+            responseFields(
+                fieldWithPath("status").description("응답 상태 코드"),
+                fieldWithPath("message").description("응답 메시지"),
+                fieldWithPath("data").description("응답 데이터").ignored()
+            )
+        ));
+  }
 
   @Test
   @DisplayName("성별 정보 조회 테스트")
