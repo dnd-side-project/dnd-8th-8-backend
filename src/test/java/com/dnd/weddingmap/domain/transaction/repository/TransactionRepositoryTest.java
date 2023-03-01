@@ -128,5 +128,4 @@ class TransactionRepositoryTest {
     assertEquals(accountNumber, transaction.get().getAccountNumber());
     assertEquals(memo, transaction.get().getMemo());
   }
-
 }
