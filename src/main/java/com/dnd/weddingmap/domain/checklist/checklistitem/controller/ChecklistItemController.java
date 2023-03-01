@@ -40,8 +40,8 @@ public class ChecklistItemController {
   public ResponseEntity<SuccessResponse> getChecklistItemDetail(
       @AuthenticationPrincipal CustomUserDetails user,
       @PathVariable("item-id") Long checklistItemId) {
-    ChecklistItem checklistItem = checklistItemService.findChecklistItemById(checklistItemId)
-        .orElseThrow(() -> new NotFoundException("not found checklist item"));
+    ChecklistItem checklistItem = checklistItemService.checkPermission(checklistItemId,
+        user.getId());
 
     List<ChecklistSubItemDto> checklistSubItemDtoList =
         checklistSubItemService.findChecklistSubItems(checklistItem.getId());
@@ -74,8 +74,8 @@ public class ChecklistItemController {
       @AuthenticationPrincipal CustomUserDetails user,
       @PathVariable("item-id") Long checklistItemId,
       @RequestBody @Valid ChecklistItemApiDto requestDto) {
-    ChecklistItem checklistItem = checklistItemService.findChecklistItemById(checklistItemId)
-        .orElseThrow(() -> new NotFoundException("존재하지 않는 체크리스트입니다."));
+    ChecklistItem checklistItem = checklistItemService.checkPermission(checklistItemId,
+        user.getId());
 
     ChecklistItemApiDto modifiedChecklistItem =
         checklistItemService.modifyChecklistItem(checklistItem.getId(), requestDto);
@@ -87,7 +87,10 @@ public class ChecklistItemController {
   public ResponseEntity<SuccessResponse> withdrawChecklistItem(
       @AuthenticationPrincipal CustomUserDetails user,
       @PathVariable("item-id") Long checklistItemId) {
-    boolean result = checklistItemService.withdrawChecklistItem(checklistItemId);
+    ChecklistItem checklistItem = checklistItemService.checkPermission(checklistItemId,
+        user.getId());
+
+    boolean result = checklistItemService.withdrawChecklistItem(checklistItem.getId());
     if (!result) {
       throw new NotFoundException("존재하지 않는 체크리스트입니다.");
     }

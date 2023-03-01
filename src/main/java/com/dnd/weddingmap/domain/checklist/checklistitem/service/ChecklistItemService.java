@@ -7,12 +7,8 @@ import com.dnd.weddingmap.domain.checklist.checklistsubitem.ChecklistSubItem;
 import com.dnd.weddingmap.domain.checklist.checklistsubitem.dto.ChecklistSubItemDto;
 import com.dnd.weddingmap.domain.member.Member;
 import java.util.List;
-import java.util.Optional;
-
 
 public interface ChecklistItemService {
-
-  Optional<ChecklistItem> findChecklistItemById(Long id);
 
   ChecklistItemApiDto createChecklistItem(ChecklistItemApiDto dto, Member member);
 
@@ -33,4 +29,6 @@ public interface ChecklistItemService {
   ChecklistSubItem updateChecklistSubItem(ChecklistSubItemDto checklistSubItemDto);
 
   boolean withdrawChecklistItem(Long id);
+
+  ChecklistItem checkPermission(Long checklistItemId, Long memberId);
 }

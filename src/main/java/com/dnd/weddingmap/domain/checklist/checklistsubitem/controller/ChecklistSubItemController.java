@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/checklist/item/{item-id}/sub-item")
 public class ChecklistSubItemController {
 
-  private static final String NOT_FOUND_CHECKLIST_MESSAGE = "존재하지 않는 체크리스트입니다.";
   private final ChecklistItemService checklistItemService;
   private final ChecklistSubItemService checklistSubItemService;
 
@@ -39,8 +38,8 @@ public class ChecklistSubItemController {
       @AuthenticationPrincipal CustomUserDetails user,
       @PathVariable("item-id") Long checklistItemId,
       @RequestBody @Valid ChecklistSubItemDto checklistSubItemDto) {
-    ChecklistItem checklistItem = checklistItemService.findChecklistItemById(checklistItemId)
-        .orElseThrow(() -> new NotFoundException(NOT_FOUND_CHECKLIST_MESSAGE));
+    ChecklistItem checklistItem = checklistItemService.checkPermission(checklistItemId,
+        user.getId());
 
     ChecklistSubItem checklistSubItem = checklistSubItemService.saveChecklistSubItem(
         checklistSubItemDto, checklistItem);
@@ -57,8 +56,8 @@ public class ChecklistSubItemController {
       @AuthenticationPrincipal CustomUserDetails user,
       @PathVariable("item-id") Long checklistItemId,
       @PathVariable("sub-item-id") Long checklistSubItemId) {
-    ChecklistItem checklistItem = checklistItemService.findChecklistItemById(checklistItemId)
-        .orElseThrow(() -> new NotFoundException(NOT_FOUND_CHECKLIST_MESSAGE));
+    ChecklistItem checklistItem = checklistItemService.checkPermission(checklistItemId,
+        user.getId());
 
     boolean result = checklistSubItemService.withdrawChecklistSubItem(checklistSubItemId,
         checklistItem.getId());
@@ -74,12 +73,11 @@ public class ChecklistSubItemController {
       @PathVariable("item-id") Long checklistItemId,
       @PathVariable("sub-item-id") Long checklistSubItemId,
       @RequestBody @Valid ChecklistSubItemStateDto checklistSubItemStateDto) {
-    ChecklistItem checklistItem = checklistItemService.findChecklistItemById(checklistItemId)
-        .orElseThrow(() -> new NotFoundException(NOT_FOUND_CHECKLIST_MESSAGE));
+    ChecklistItem checklistItem = checklistItemService.checkPermission(checklistItemId,
+        user.getId());
 
     ChecklistSubItem modifiedChecklistSubItem = checklistSubItemService.modifyChecklistSubItem(
-        checklistSubItemId,
-        checklistItem.getId(), checklistSubItemStateDto);
+        checklistSubItemId, checklistItem.getId(), checklistSubItemStateDto);
     if (modifiedChecklistSubItem == null) {
       throw new BadRequestException("체크리스트 아이템과 요청한 서브 아이템이 매칭되지 않습니다.");
     }

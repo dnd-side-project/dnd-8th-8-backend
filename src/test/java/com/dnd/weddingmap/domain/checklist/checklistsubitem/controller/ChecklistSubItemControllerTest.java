@@ -24,13 +24,15 @@ import com.dnd.weddingmap.domain.checklist.checklistsubitem.dto.ChecklistSubItem
 import com.dnd.weddingmap.domain.checklist.checklistsubitem.dto.ChecklistSubItemStateDto;
 import com.dnd.weddingmap.domain.checklist.checklistsubitem.service.ChecklistSubItemService;
 import com.dnd.weddingmap.domain.jwt.JwtTokenProvider;
+import com.dnd.weddingmap.domain.member.Member;
+import com.dnd.weddingmap.domain.member.Role;
 import com.dnd.weddingmap.domain.member.service.MemberService;
+import com.dnd.weddingmap.domain.oauth.OAuth2Provider;
 import com.dnd.weddingmap.global.WithMockOAuth2User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -59,6 +61,15 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
 
   private ObjectMapper objectMapper;
 
+  private final Member member = Member.builder()
+      .id(1L)
+      .name("test")
+      .email("test@example.com")
+      .profileImage("test.png")
+      .role(Role.USER)
+      .oauth2Provider(OAuth2Provider.GOOGLE)
+      .build();
+
   private final ChecklistItem checklistItem = ChecklistItem.builder()
       .id(1L)
       .title("title")
@@ -67,6 +78,7 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
       .endTime(LocalTime.MAX)
       .place("place")
       .memo("memo")
+      .member(member)
       .build();
 
   private final ChecklistSubItem checklistSubItem = ChecklistSubItem.builder()
@@ -92,8 +104,7 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
         .build();
 
     // given
-    given(checklistItemService.findChecklistItemById(anyLong())).willReturn(
-        Optional.ofNullable(checklistItem));
+    given(checklistItemService.checkPermission(anyLong(), anyLong())).willReturn(checklistItem);
     given(checklistSubItemService.saveChecklistSubItem(any(ChecklistSubItemDto.class),
         any(ChecklistItem.class))).willReturn(checklistSubItem);
 
@@ -141,8 +152,7 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
         .build();
 
     // given
-    given(checklistItemService.findChecklistItemById(anyLong())).willReturn(
-        Optional.ofNullable(checklistItem));
+    given(checklistItemService.checkPermission(anyLong(), anyLong())).willReturn(checklistItem);
     given(checklistSubItemService.modifyChecklistSubItem(anyLong(),
         anyLong(), any(ChecklistSubItemStateDto.class))).willReturn(checklistSubItem);
 
@@ -185,8 +195,7 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
     String url = "/api/v1/checklist/item/{item-id}/sub-item/{sub-item-id}";
 
     // given
-    given(checklistItemService.findChecklistItemById(anyLong())).willReturn(
-        Optional.ofNullable(checklistItem));
+    given(checklistItemService.checkPermission(anyLong(), anyLong())).willReturn(checklistItem);
     given(checklistSubItemService.withdrawChecklistSubItem(anyLong(), anyLong())).willReturn(true);
 
     // when

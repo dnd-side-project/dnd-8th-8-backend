@@ -63,6 +63,15 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
 
   private ObjectMapper objectMapper;
 
+  private final Member member = Member.builder()
+      .id(1L)
+      .name("test")
+      .email("test@example.com")
+      .profileImage("test.png")
+      .role(Role.USER)
+      .oauth2Provider(OAuth2Provider.GOOGLE)
+      .build();
+
   private final ChecklistItem checklistItem = ChecklistItem.builder()
       .id(1L)
       .title("title")
@@ -71,6 +80,7 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
       .endTime(LocalTime.of(12, 11, 14))
       .place("place")
       .memo("memo")
+      .member(member)
       .build();
 
   private final ChecklistItemDto checklistItemDto = ChecklistItemDto.builder()
@@ -112,8 +122,7 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
     String url = "/api/v1/checklist/item/{item-id}";
 
     // given
-    given(checklistItemService.findChecklistItemById(anyLong())).willReturn(
-        Optional.ofNullable(checklistItem));
+    given(checklistItemService.checkPermission(anyLong(), anyLong())).willReturn(checklistItem);
     given(checklistSubItemService.findChecklistSubItems(anyLong())).willReturn(
         List.of(checklistSubItemDto1, checklistSubItemDto2));
 
@@ -165,14 +174,6 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
   @DisplayName("체크리스트 아이템 생성")
   void createChecklistItem() throws Exception {
     String url = "/api/v1/checklist/item";
-
-    Member member = Member.builder()
-        .name("test")
-        .email("test@example.com")
-        .profileImage("test.png")
-        .role(Role.USER)
-        .oauth2Provider(OAuth2Provider.GOOGLE)
-        .build();
 
     ChecklistItemDto createChecklistItemDto = ChecklistItemDto.builder()
         .title("title")
@@ -275,8 +276,7 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
     String url = "/api/v1/checklist/item/{item-id}";
 
     // given
-    given(checklistItemService.findChecklistItemById(anyLong())).willReturn(
-        Optional.ofNullable(checklistItem));
+    given(checklistItemService.checkPermission(anyLong(), anyLong())).willReturn(checklistItem);
     given(checklistItemService.modifyChecklistItem(anyLong(),
         any(ChecklistItemApiDto.class))).willReturn(checklistItemApiDto);
 
@@ -357,6 +357,7 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
     String url = "/api/v1/checklist/item/{item-id}";
 
     // given
+    given(checklistItemService.checkPermission(anyLong(), anyLong())).willReturn(checklistItem);
     given(checklistItemService.withdrawChecklistItem(anyLong())).willReturn(true);
 
     // when
