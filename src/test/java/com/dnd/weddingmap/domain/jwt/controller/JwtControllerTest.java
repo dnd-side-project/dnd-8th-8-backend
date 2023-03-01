@@ -59,7 +59,6 @@ class JwtControllerTest extends AbstractRestDocsTests {
             requestHeaders(headerWithName(HttpHeaders.AUTHORIZATION).description("재발급할 액세스 토큰")),
             responseFields(
                 fieldWithPath("status").description("응답 상태 코드"),
-                fieldWithPath("message").description("응답 메시지"),
                 fieldWithPath("data").description("응답 데이터"),
                 fieldWithPath("data.accessToken").description("재발급한 액세스 토큰")
             )

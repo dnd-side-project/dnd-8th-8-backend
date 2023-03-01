@@ -85,8 +85,7 @@ class MemberControllerTest extends AbstractRestDocsTests {
             ),
             responseFields(
                 fieldWithPath("status").description("응답 상태 코드"),
-                fieldWithPath("message").description("응답 메시지"),
-                fieldWithPath("data").description("응답 데이터").ignored()
+                fieldWithPath("message").description("응답 메시지")
             )
         ));
   }
@@ -112,7 +111,6 @@ class MemberControllerTest extends AbstractRestDocsTests {
             ),
             responseFields(
                 fieldWithPath("status").description("응답 상태 코드"),
-                fieldWithPath("message").description("응답 메시지"),
                 fieldWithPath("data.gender").description("성별 정보")
             )
         ));
@@ -146,8 +144,7 @@ class MemberControllerTest extends AbstractRestDocsTests {
             ),
             responseFields(
                 fieldWithPath("status").description("응답 상태 코드"),
-                fieldWithPath("message").description("응답 메시지"),
-                fieldWithPath("data").description("응답 데이터")
+                fieldWithPath("message").description("응답 메시지")
             )
         ));
   }
@@ -173,7 +170,6 @@ class MemberControllerTest extends AbstractRestDocsTests {
             ),
             responseFields(
                 fieldWithPath("status").description("응답 상태 코드"),
-                fieldWithPath("message").description("응답 메시지"),
                 fieldWithPath("data.url").description("프로필 이미지 URL")
             )
         ));
@@ -209,7 +205,6 @@ class MemberControllerTest extends AbstractRestDocsTests {
             ),
             responseFields(
                 fieldWithPath("status").description("응답 상태 코드"),
-                fieldWithPath("message").description("응답 메시지"),
                 fieldWithPath("data.url").description("사용자 프로필 이미지 URL")
             )
         ));
@@ -235,8 +230,7 @@ class MemberControllerTest extends AbstractRestDocsTests {
             ),
             responseFields(
                 fieldWithPath("status").description("응답 상태 코드"),
-                fieldWithPath("message").description("응답 메시지"),
-                fieldWithPath("data").description("응답 데이터")
+                fieldWithPath("message").description("응답 메시지")
             )
         ));
   }

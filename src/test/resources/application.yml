@@ -1,3 +1,5 @@
 spring:
+  jackson:
+    default-property-inclusion: non_null
   flyway:
     enabled: false
