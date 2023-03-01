@@ -5,13 +5,12 @@ import com.dnd.weddingmap.domain.transaction.Transaction;
 import com.dnd.weddingmap.domain.transaction.dto.TransactionDto;
 import com.dnd.weddingmap.domain.transaction.dto.TransactionListResponseDto;
 import java.util.List;
-import java.util.Optional;
 
 public interface TransactionService {
 
   TransactionDto createTransaction(TransactionDto dto, Member member);
 
-  Optional<Transaction> findTransaction(Long id);
+  Transaction findTransaction(Long transactionId, Long memberId);
 
   TransactionDto modifyTransaction(Long id, TransactionDto transactionDto);
 
