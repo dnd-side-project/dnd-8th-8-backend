@@ -1,7 +1,6 @@
 package com.dnd.weddingmap.domain.transaction.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -146,11 +145,10 @@ class TransactionServiceTest {
         Optional.ofNullable(transaction));
 
     // when
-    Optional<Transaction> savedTransaction = transactionService.findTransaction(transactionId);
+    transactionService.findTransaction(transactionId, memberId);
 
     // then
     verify(transactionRepository, times(1)).findById(anyLong());
-    assertTrue(savedTransaction.isPresent());
   }
 
   @Test
