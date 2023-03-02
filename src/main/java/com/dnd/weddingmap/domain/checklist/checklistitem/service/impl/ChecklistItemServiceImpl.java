@@ -10,8 +10,11 @@ import com.dnd.weddingmap.domain.checklist.checklistsubitem.dto.ChecklistSubItem
 import com.dnd.weddingmap.domain.checklist.checklistsubitem.repository.ChecklistSubItemRepository;
 import com.dnd.weddingmap.domain.member.Member;
 import com.dnd.weddingmap.global.exception.BadRequestException;
+import com.dnd.weddingmap.global.exception.ForbiddenException;
+import com.dnd.weddingmap.global.exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,11 +25,6 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
 
   private final ChecklistItemRepository checklistItemRepository;
   private final ChecklistSubItemRepository checklistSubItemRepository;
-
-  @Override
-  public Optional<ChecklistItem> findChecklistItemById(Long id) {
-    return checklistItemRepository.findById(id);
-  }
 
   @Transactional
   @Override
@@ -127,5 +125,18 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
           return true;
         })
         .orElse(false);
+  }
+
+  @Transactional
+  @Override
+  public ChecklistItem findChecklistItem(Long checklistItemId, Long memberId) {
+    ChecklistItem checklistItem = checklistItemRepository.findById(checklistItemId).orElseThrow(
+        () -> new NotFoundException("존재하지 않는 체크리스트입니다."));
+
+    if (Objects.equals(checklistItem.getMember().getId(), memberId)) {
+      return checklistItem;
+    } else {
+      throw new ForbiddenException("접근할 수 없는 체크리스트입니다.");
+    }
   }
 }

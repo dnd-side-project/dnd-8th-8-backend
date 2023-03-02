@@ -2,7 +2,6 @@ package com.dnd.weddingmap.domain.checklist.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -187,12 +186,7 @@ class ChecklistControllerTest extends AbstractRestDocsTests {
                     fieldWithPath("id").description("등록된 체크리스트 아이템 아이디").type(
                         JsonFieldType.NUMBER),
                     fieldWithPath("title").description("등록된 체크리스트 아이템 제목").type(
-                        JsonFieldType.STRING),
-                    fieldWithPath("checkDate").ignored(),
-                    fieldWithPath("startTime").ignored(),
-                    fieldWithPath("endTime").ignored(),
-                    fieldWithPath("place").ignored(),
-                    fieldWithPath("memo").ignored()
+                        JsonFieldType.STRING)
                 )
             ));
   }

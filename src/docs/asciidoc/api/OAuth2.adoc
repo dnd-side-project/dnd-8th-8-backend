@@ -1,28 +1,29 @@
-== 소셜 로그인 API
+== OAuth2.0 API
 :doctype: book
 :source-highlighter: highlightjs
 :toc: left
 :toclevels: 2
 :seclinks:
 
-소셜 로그인 기능을 제공합니다.
+OAuth2.0 인증을 제공하는 Provider를 통해 사용자 로그인을 진행합니다.
+현재 지원하는 Provider는 다음과 같습니다.
 
 - Google
 - Kakao
 
-로그인 성공 후에는 요청 시 전달한 ``redirect uri`` path로 ``redirect``되며, 이때 ``JWT token``이 함께 전달됩니다.
-
-[cols=2*]
+.+JWT Token 전달 방식+
 |===
-|*Token 종류*
-|*Token 전달 방식*
+|Token|전달 방식
 
 | Access token
-| redirect path url의 query로 전달
+| 리다이렉트 URL의 Query Parameter로 전달
 
 | Refresh token
-| 쿠키로 전달
+| Set-Cookie를 통해 전달
 |===
+
+로그인 성공 후에는 요청 시 전달한 ``redirect uri`` 경로로 ``리다이렉트``되며, 이때 ``JWT token``이 함께 전달됩니다.
+
 
 === 구글 로그인
 
@@ -34,17 +35,14 @@ GET /oauth2/authorization/google?redirect_uri={redirect_uri} HTTP/1.1
 Host: localhost:8080
 ----
 
-==== Request Query
+==== Query parameters
 
-===== _Table 1. /oauth2/authorization/google?redirect_uri={redirect_uri}_
-
-[cols=2*]
+.+/oauth2/authorization/google?redirect_uri={redirect_uri}+
 |===
-|*Query*
-|*Description*
+|Parameter|Description
 
 |redirect_uri
-|로그인 성공 후 redirect될 path
+|로그인 성공 후 리다이렉트 되는 URL
 |===
 
 ==== HTTP response
@@ -66,17 +64,14 @@ GET /oauth2/authorization/kakao?redirect_uri={redirect_uri} HTTP/1.1
 Host: localhost:8080
 ----
 
-==== Request Query
+==== Query parameters
 
-===== _Table 1. /oauth2/authorization/kakao?redirect_uri={redirect_uri}_
-
-[cols=2*]
+.+/oauth2/authorization/kakao?redirect_uri={redirect_uri}+
 |===
-|*Query*
-|*Description*
+|Parameter|Description
 
 |redirect_uri
-|로그인 성공 후 redirect될 path
+|로그인 성공 후 리다이렉트 되는 URL
 |===
 
 ==== HTTP response

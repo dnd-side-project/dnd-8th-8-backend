@@ -1,5 +1,4 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:339286557484:task-definition/application-stack:2",
     "containerDefinitions": [
         {
             "name": "nginx",
@@ -20,13 +19,22 @@
             "essential": true,
             "environment": [],
             "mountPoints": [],
-            "volumesFrom": []
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "weddingmap-nginx",
+                    "awslogs-region": "ap-northeast-2",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            }
         },
         {
             "name": "application",
             "image": "339286557484.dkr.ecr.ap-northeast-2.amazonaws.com/weddingmap",
-            "cpu": 256,
-            "memory": 256,
+            "cpu": 768,
+            "memory": 768,
             "portMappings": [],
             "essential": true,
             "environment": [],
@@ -37,30 +45,21 @@
                 }
             ],
             "mountPoints": [],
-            "volumesFrom": []
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "weddingmap-application",
+                    "awslogs-region": "ap-northeast-2",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            }
         }
     ],
     "family": "application-stack",
     "executionRoleArn": "arn:aws:iam::339286557484:role/ecsTaskExecutionRole",
     "networkMode": "bridge",
-    "revision": 2,
     "volumes": [],
-    "status": "ACTIVE",
-    "requiresAttributes": [
-        {
-            "name": "com.amazonaws.ecs.capability.ecr-auth"
-        },
-        {
-            "name": "ecs.capability.env-files.s3"
-        },
-        {
-            "name": "ecs.capability.execution-role-ecr-pull"
-        }
-    ],
     "placementConstraints": [],
-    "compatibilities": [
-        "EC2"
-    ],
-    "registeredAt": "2023-02-21T21:51:39.331000+09:00",
-    "registeredBy": "arn:aws:iam::339286557484:root"
 }

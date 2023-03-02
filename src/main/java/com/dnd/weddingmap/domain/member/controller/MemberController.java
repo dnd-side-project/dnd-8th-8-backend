@@ -2,6 +2,7 @@ package com.dnd.weddingmap.domain.member.controller;
 
 import com.dnd.weddingmap.domain.member.Gender;
 import com.dnd.weddingmap.domain.member.dto.GenderDto;
+import com.dnd.weddingmap.domain.member.dto.NameDto;
 import com.dnd.weddingmap.domain.member.dto.ProfileImageDto;
 import com.dnd.weddingmap.domain.member.service.MemberService;
 import com.dnd.weddingmap.domain.oauth.CustomUserDetails;
@@ -16,6 +17,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +31,15 @@ public class MemberController {
 
   private final MemberService memberService;
   private final S3Service s3Service;
+
+  @PutMapping("/name")
+  public ResponseEntity<SuccessResponse> modifyName(
+      @AuthenticationPrincipal CustomUserDetails user,
+      @RequestBody @Valid NameDto nameDto) {
+
+    memberService.modifyName(user.getId(), nameDto);
+    return ResponseEntity.ok(SuccessResponse.builder().message("이름 수정 성공").build());
+  }
 
   @GetMapping("/gender")
   public ResponseEntity<SuccessResponse> getGender(

@@ -1,0 +1,39 @@
+== 결혼 API
+:doctype: book
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:seclinks:
+
+결혼을 등록하고 관련된 정보를 조회, 수정하는 API를 제공합니다.
+결혼 정보는 결혼일과 결혼 예산으로 구성되어 있습니다.
+
+=== 결혼 등록
+
+온보딩 과정에서 결혼을 등록합니다. 결혼 준비중인지에 대한 여부와 결혼일을 전달해야 합니다. 기본적으로 결혼 예산은 0원으로 설정됩니다.
+
+operation::wedding/register-wedding[snippets='http-request,request-fields,http-response,response-fields']
+
+=== 결혼일 조회
+
+사용자의 결혼일을 조회합니다.
+
+operation::wedding/get-wedding-day[snippets='http-request,http-response,response-fields']
+
+=== 결혼일 수정
+
+사용자의 결혼일을 수정합니다.
+
+operation::wedding/modify-wedding-day[snippets='http-request,request-fields,http-response,response-fields']
+
+=== 결혼 예산 조회
+
+사용자의 결혼 예산을 조회합니다.
+
+operation::wedding/get-budget[snippets='http-request,http-response,response-fields']
+
+=== 결혼 예산 수정
+
+사용자의 결혼 예산을 수정합니다.
+
+operation::wedding/modify-budget[snippets='http-request,request-fields,http-response,response-fields']

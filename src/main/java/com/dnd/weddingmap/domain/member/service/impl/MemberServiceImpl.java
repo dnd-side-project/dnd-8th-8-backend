@@ -3,6 +3,7 @@ package com.dnd.weddingmap.domain.member.service.impl;
 import com.dnd.weddingmap.domain.member.Gender;
 import com.dnd.weddingmap.domain.member.Member;
 import com.dnd.weddingmap.domain.member.MemberRepository;
+import com.dnd.weddingmap.domain.member.dto.NameDto;
 import com.dnd.weddingmap.domain.member.service.MemberService;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,16 @@ import org.springframework.stereotype.Service;
 public class MemberServiceImpl implements MemberService {
 
   private final MemberRepository memberRepository;
+
+  @Override
+  public void modifyName(Long id, NameDto nameDto) {
+    Optional<Member> member = memberRepository.findById(id);
+
+    member.ifPresent(m -> {
+      m.setName(nameDto.getName());
+      memberRepository.save(m);
+    });
+  }
 
   @Override
   public Optional<Gender> getGender(Long id) {

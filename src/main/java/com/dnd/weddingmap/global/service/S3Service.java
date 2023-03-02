@@ -1,7 +1,9 @@
 package com.dnd.weddingmap.global.service;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,10 @@ public class S3Service {
     amazonS3.putObject(bucket, saveFileName, multipartFile.getInputStream(), objectMetadata);
 
     return amazonS3.getUrl(bucket, saveFileName).toString();
+  }
+
+  public void delete(String filePath, String directory) throws AmazonS3Exception {
+    amazonS3.deleteObject(bucket, directory + "/" + new File(filePath).getName());
   }
 }
 
