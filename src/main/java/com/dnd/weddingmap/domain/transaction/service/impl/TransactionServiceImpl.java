@@ -9,12 +9,12 @@ import com.dnd.weddingmap.domain.transaction.service.TransactionService;
 import com.dnd.weddingmap.global.exception.BadRequestException;
 import com.dnd.weddingmap.global.exception.ForbiddenException;
 import com.dnd.weddingmap.global.exception.NotFoundException;
-import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -22,14 +22,14 @@ public class TransactionServiceImpl implements TransactionService {
 
   private final TransactionRepository transactionRepository;
 
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   @Override
   public TransactionDto createTransaction(TransactionDto dto, Member member) {
     Transaction savedTransaction = transactionRepository.save(dto.toEntity(member));
     return new TransactionDto(savedTransaction);
   }
 
-  @Transactional
+  @Transactional(readOnly = true)
   @Override
   public Transaction findTransaction(Long transactionId, Long memberId) {
     Transaction transaction = transactionRepository.findById(transactionId).orElseThrow(
@@ -43,7 +43,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
   }
 
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   @Override
   public TransactionDto modifyTransaction(Long id, TransactionDto transactionDto) {
     Transaction transaction = transactionRepository.findById(id).orElseThrow(
@@ -52,7 +52,7 @@ public class TransactionServiceImpl implements TransactionService {
     return new TransactionDto(transaction.update(transactionDto));
   }
 
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   @Override
   public boolean withdrawTransaction(Long id) {
     return transactionRepository.findById(id)
@@ -63,7 +63,7 @@ public class TransactionServiceImpl implements TransactionService {
         .orElse(false);
   }
 
-  @Transactional
+  @Transactional(readOnly = true)
   @Override
   public List<TransactionListResponseDto> findTransactionList(Long memberId) {
     List<Transaction> transactionList =

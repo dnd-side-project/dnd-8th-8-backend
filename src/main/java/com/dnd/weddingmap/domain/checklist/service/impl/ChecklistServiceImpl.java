@@ -10,11 +10,11 @@ import com.dnd.weddingmap.domain.checklist.checklistsubitem.repository.Checklist
 import com.dnd.weddingmap.domain.checklist.dto.PreChecklistItemListDto;
 import com.dnd.weddingmap.domain.checklist.service.ChecklistService;
 import com.dnd.weddingmap.domain.member.Member;
-import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -23,7 +23,7 @@ public class ChecklistServiceImpl implements ChecklistService {
   private final ChecklistItemRepository checklistItemRepository;
   private final ChecklistSubItemRepository checklistSubItemRepository;
 
-  @Transactional
+  @Transactional(readOnly = true)
   @Override
   public List<ChecklistItemApiDto> findChecklist(Long memberId) {
     List<ChecklistItem> checklistItemList = checklistItemRepository.findByMemberIdOrderByCheckDate(
@@ -34,7 +34,7 @@ public class ChecklistServiceImpl implements ChecklistService {
     return result;
   }
 
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   @Override
   public List<ChecklistItemDto> savePreChecklistItemList(Member member,
       PreChecklistItemListDto preChecklistItemListDto) {
@@ -46,6 +46,7 @@ public class ChecklistServiceImpl implements ChecklistService {
                 .build()))).toList();
   }
 
+  @Transactional(readOnly = true)
   public List<ChecklistSubItem> findChecklistSubItem(Long checklistItemId) {
     return checklistSubItemRepository.findAllByChecklistItemId(checklistItemId);
   }

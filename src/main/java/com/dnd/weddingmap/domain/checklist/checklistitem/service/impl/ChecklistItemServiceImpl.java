@@ -12,12 +12,12 @@ import com.dnd.weddingmap.domain.member.Member;
 import com.dnd.weddingmap.global.exception.BadRequestException;
 import com.dnd.weddingmap.global.exception.ForbiddenException;
 import com.dnd.weddingmap.global.exception.NotFoundException;
-import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -26,7 +26,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
   private final ChecklistItemRepository checklistItemRepository;
   private final ChecklistSubItemRepository checklistSubItemRepository;
 
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   @Override
   public ChecklistItemApiDto createChecklistItem(ChecklistItemApiDto dto, Member member) {
     ChecklistItem savedChecklistItem = saveChecklistItem(dto.getChecklistItem(), member);
@@ -47,13 +47,13 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
         .build();
   }
 
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   @Override
   public ChecklistItem saveChecklistItem(ChecklistItemDto checklistItemDto, Member member) {
     return checklistItemRepository.save(checklistItemDto.toEntity(member));
   }
 
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   @Override
   public List<ChecklistSubItem> saveChecklistSubItemList(
       List<ChecklistSubItemDto> checklistSubItemDtoList,
@@ -63,7 +63,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
     return checklistSubItemRepository.saveAll(checklistSubItems);
   }
 
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   @Override
   public ChecklistItemApiDto modifyChecklistItem(Long checklistItemId,
       ChecklistItemApiDto dto) {
@@ -84,7 +84,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
         .build();
   }
 
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   @Override
   public ChecklistItem updateChecklistItem(Long checklistItemId,
       ChecklistItemDto checklistItemDto) {
@@ -97,14 +97,14 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
     return checklistItem.get().update(checklistItemDto);
   }
 
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   @Override
   public List<ChecklistSubItem> updateChecklistSubItemList(
       List<ChecklistSubItemDto> checklistSubItemDtoList) {
     return checklistSubItemDtoList.stream().map(this::updateChecklistSubItem).toList();
   }
 
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   @Override
   public ChecklistSubItem updateChecklistSubItem(ChecklistSubItemDto checklistSubItemDto) {
     Optional<ChecklistSubItem> checklistSubItem = checklistSubItemRepository.findById(
@@ -116,7 +116,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
     return checklistSubItem.get().update(checklistSubItemDto);
   }
 
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   @Override
   public boolean withdrawChecklistItem(Long id) {
     return checklistItemRepository.findById(id)
@@ -127,7 +127,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
         .orElse(false);
   }
 
-  @Transactional
+  @Transactional(readOnly = true)
   @Override
   public ChecklistItem findChecklistItem(Long checklistItemId, Long memberId) {
     ChecklistItem checklistItem = checklistItemRepository.findById(checklistItemId).orElseThrow(
