@@ -9,12 +9,12 @@ import com.dnd.weddingmap.domain.transaction.service.TransactionService;
 import com.dnd.weddingmap.global.exception.BadRequestException;
 import com.dnd.weddingmap.global.exception.ForbiddenException;
 import com.dnd.weddingmap.global.exception.NotFoundException;
-import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service

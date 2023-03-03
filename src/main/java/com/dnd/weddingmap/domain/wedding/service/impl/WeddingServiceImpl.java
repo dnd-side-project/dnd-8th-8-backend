@@ -7,9 +7,9 @@ import com.dnd.weddingmap.domain.wedding.dto.BudgetDto;
 import com.dnd.weddingmap.domain.wedding.dto.WeddingDayDto;
 import com.dnd.weddingmap.domain.wedding.repository.WeddingRepository;
 import com.dnd.weddingmap.domain.wedding.service.WeddingService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor

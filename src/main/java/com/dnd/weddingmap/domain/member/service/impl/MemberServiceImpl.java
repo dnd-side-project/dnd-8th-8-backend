@@ -5,10 +5,10 @@ import com.dnd.weddingmap.domain.member.Member;
 import com.dnd.weddingmap.domain.member.MemberRepository;
 import com.dnd.weddingmap.domain.member.dto.NameDto;
 import com.dnd.weddingmap.domain.member.service.MemberService;
-import jakarta.transaction.Transactional;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor

@@ -7,12 +7,12 @@ import com.dnd.weddingmap.domain.contract.repository.ContractRepository;
 import com.dnd.weddingmap.domain.contract.service.ContractService;
 import com.dnd.weddingmap.domain.member.Member;
 import com.dnd.weddingmap.global.exception.NotFoundException;
-import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service

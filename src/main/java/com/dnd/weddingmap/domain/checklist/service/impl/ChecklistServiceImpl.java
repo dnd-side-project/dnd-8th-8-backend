@@ -10,11 +10,11 @@ import com.dnd.weddingmap.domain.checklist.checklistsubitem.repository.Checklist
 import com.dnd.weddingmap.domain.checklist.dto.PreChecklistItemListDto;
 import com.dnd.weddingmap.domain.checklist.service.ChecklistService;
 import com.dnd.weddingmap.domain.member.Member;
-import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
