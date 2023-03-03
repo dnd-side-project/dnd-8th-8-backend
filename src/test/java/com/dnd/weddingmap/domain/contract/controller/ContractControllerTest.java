@@ -347,7 +347,7 @@ class ContractControllerTest extends AbstractRestDocsTests {
 
   @Test
   @WithMockOAuth2User
-  @DisplayName("계약서 내용 수정")
+  @DisplayName("계약서 리스트 조회")
   void getContractList() throws Exception {
     String url = "/api/v1/contract";
 
