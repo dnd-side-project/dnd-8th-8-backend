@@ -20,7 +20,7 @@ public class ContractServiceImpl implements ContractService {
 
   private final ContractRepository contractRepository;
 
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   @Override
   public ContractDto createContract(ContractDto contractDto, Member member) {
     Contract contract = Contract.builder()
@@ -42,7 +42,7 @@ public class ContractServiceImpl implements ContractService {
     return contractRepository.findById(id);
   }
 
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   @Override
   public boolean withdrawContract(Long contractId) {
     return contractRepository.findById(contractId)
@@ -69,7 +69,7 @@ public class ContractServiceImpl implements ContractService {
     return result;
   }
 
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   @Override
   public ContractDto modifyContractFile(Long contractId, String fileUrl) {
     Contract contract = contractRepository.findById(contractId).orElseThrow(
@@ -78,7 +78,7 @@ public class ContractServiceImpl implements ContractService {
     return new ContractDto(contract.updateFile(fileUrl));
   }
 
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   @Override
   public ContractDto modifyContract(Long contractId, ContractDto contractDto) {
     Contract contract = contractRepository.findById(contractId).orElseThrow(

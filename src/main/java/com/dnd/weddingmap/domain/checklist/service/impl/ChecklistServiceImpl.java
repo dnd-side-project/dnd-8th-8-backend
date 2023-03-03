@@ -34,7 +34,7 @@ public class ChecklistServiceImpl implements ChecklistService {
     return result;
   }
 
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   @Override
   public List<ChecklistItemDto> savePreChecklistItemList(Member member,
       PreChecklistItemListDto preChecklistItemListDto) {

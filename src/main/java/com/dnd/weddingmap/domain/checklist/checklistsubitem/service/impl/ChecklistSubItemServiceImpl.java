@@ -27,14 +27,14 @@ public class ChecklistSubItemServiceImpl implements ChecklistSubItemService {
     return checklistSubItems.stream().map(ChecklistSubItemDto::new).toList();
   }
 
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   @Override
   public ChecklistSubItem saveChecklistSubItem(ChecklistSubItemDto checklistSubItemDto,
       ChecklistItem checklistItem) {
     return checklistSubItemRepository.save(checklistSubItemDto.toEntity(checklistItem));
   }
 
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   @Override
   public boolean withdrawChecklistSubItem(Long subItemId, Long itemId) {
     ChecklistSubItem checklistSubItem = checklistSubItemRepository.findById(subItemId)
@@ -47,7 +47,7 @@ public class ChecklistSubItemServiceImpl implements ChecklistSubItemService {
     return true;
   }
 
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   @Override
   public ChecklistSubItem modifyChecklistSubItem(Long subItemId, Long itemId,
       ChecklistSubItemStateDto checklistSubItemStateDto) {
