@@ -30,14 +30,13 @@ import com.dnd.weddingmap.domain.member.service.MemberService;
 import com.dnd.weddingmap.domain.oauth.OAuth2Provider;
 import com.dnd.weddingmap.global.WithMockOAuth2User;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
@@ -60,6 +59,7 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
   @MockBean
   JwtTokenProvider jwtTokenProvider;
 
+  @Autowired
   private ObjectMapper objectMapper;
 
   private final Member member = Member.builder()
@@ -74,9 +74,9 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
   private final ChecklistItem checklistItem = ChecklistItem.builder()
       .id(1L)
       .title("title")
-      .checkDate(LocalDate.now())
-      .startTime(LocalTime.of(1, 1, 1))
-      .endTime(LocalTime.of(12, 11, 14))
+      .checkDate(LocalDate.parse("2020-10-10"))
+      .startTime(LocalTime.parse("10:10:10"))
+      .endTime(LocalTime.parse("12:12:12"))
       .place("place")
       .memo("memo")
       .member(member)
@@ -85,9 +85,9 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
   private final ChecklistItemDto checklistItemDto = ChecklistItemDto.builder()
       .id(1L)
       .title("title")
-      .checkDate(LocalDate.now())
-      .startTime(LocalTime.of(1, 1, 1))
-      .endTime(LocalTime.of(12, 11, 14))
+      .checkDate(LocalDate.parse("2020-10-10"))
+      .startTime(LocalTime.parse("10:10:10"))
+      .endTime(LocalTime.parse("12:12:12"))
       .place("place")
       .memo("memo")
       .build();
@@ -108,11 +108,14 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
       .checklistSubItems(List.of(checklistSubItemDto1, checklistSubItemDto2))
       .build();
 
-  @BeforeEach
-  void init() {
-    objectMapper = new ObjectMapper();
-    objectMapper.registerModule(new JavaTimeModule());
-  }
+  private final ChecklistItemDto requestChecklistItemDto = ChecklistItemDto.builder()
+      .title("title")
+      .checkDate(LocalDate.parse("2020-10-10"))
+      .startTime(LocalTime.parse("10:10:10"))
+      .endTime(LocalTime.parse("12:12:12"))
+      .place("place")
+      .memo("memo")
+      .build();
 
   @Test
   @WithMockOAuth2User
@@ -143,13 +146,13 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
                     fieldWithPath("checklistItem.title").description("체크리스트 아이템 제목").type(
                         JsonFieldType.STRING),
                     fieldWithPath("checklistItem.checkDate").description(
-                        "체크리스트 아이템 일정 날짜 (yyyy-mm-dd)").type(
+                        "체크리스트 아이템 일정 날짜").type(
                         JsonFieldType.STRING),
                     fieldWithPath("checklistItem.startTime").description(
-                        "체크리스트 아이템 일정 시작 시간 (hh:mm:ss)").type(
+                        "체크리스트 아이템 일정 시작 시간").type(
                         JsonFieldType.STRING),
                     fieldWithPath("checklistItem.endTime").description(
-                        "체크리스트 아이템 일정 종료 시간 (hh:mm:ss)").type(
+                        "체크리스트 아이템 일정 종료 시간").type(
                         JsonFieldType.STRING),
                     fieldWithPath("checklistItem.place").description("체크리스트 아이템 일정 장소").type(
                         JsonFieldType.STRING),
@@ -174,15 +177,6 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
   void createChecklistItem() throws Exception {
     String url = "/api/v1/checklist/item";
 
-    ChecklistItemDto createChecklistItemDto = ChecklistItemDto.builder()
-        .title("title")
-        .checkDate(LocalDate.now())
-        .startTime(LocalTime.of(1, 1, 1))
-        .endTime(LocalTime.of(12, 11, 14))
-        .place("place")
-        .memo("memo")
-        .build();
-
     ChecklistSubItemDto createChecklistSubItemDto1 = ChecklistSubItemDto.builder()
         .contents("contents 1")
         .build();
@@ -191,7 +185,7 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
         .build();
 
     ChecklistItemApiDto createChecklistItemApiDto = ChecklistItemApiDto.builder()
-        .checklistItem(createChecklistItemDto)
+        .checklistItem(requestChecklistItemDto)
         .checklistSubItems(List.of(createChecklistSubItemDto1, createChecklistSubItemDto2))
         .build();
 
@@ -211,28 +205,25 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
         .andDo(
             document("checklist/item/checklist-item-create",
                 requestFields(
-                    fieldWithPath("checklistItem.id").ignored(),
                     fieldWithPath("checklistItem.title").description(
                         "등록할 체크리스트 아이템 제목 (* required)").type(
                         JsonFieldType.STRING).optional(),
                     fieldWithPath("checklistItem.checkDate").description(
-                        "등록할 체크리스트 아이템 일정 날짜 ex: [yyyy,mm,dd] ").type(
-                        JsonFieldType.ARRAY),
+                        "등록할 체크리스트 아이템 일정 날짜").type(
+                        JsonFieldType.STRING),
                     fieldWithPath("checklistItem.startTime").description(
-                        "등록할 체크리스트 아이템 일정 시작 시간 ex: [hh,mm,ss] ").type(
-                        JsonFieldType.ARRAY),
+                        "등록할 체크리스트 아이템 일정 시작 시간").type(
+                        JsonFieldType.STRING),
                     fieldWithPath("checklistItem.endTime").description(
-                        "등록할 체크리스트 아이템 일정 종료 시간 ex: [hh,mm,ss] ").type(
-                        JsonFieldType.ARRAY),
+                        "등록할 체크리스트 아이템 일정 종료 시간").type(
+                        JsonFieldType.STRING),
                     fieldWithPath("checklistItem.place").description("등록할 체크리스트 아이템 일정 장소").type(
                         JsonFieldType.STRING),
                     fieldWithPath("checklistItem.memo").description("등록할 체크리스트 아이템 메모").type(
                         JsonFieldType.STRING),
-                    fieldWithPath("checklistSubItems[].id").ignored(),
                     fieldWithPath("checklistSubItems[].contents").description("등록할 체크리스트 서브 아이템 내용")
                         .type(
-                            JsonFieldType.STRING),
-                    fieldWithPath("checklistSubItems[].isChecked").ignored()
+                            JsonFieldType.STRING)
                 ),
                 responseFields(
                     beneathPath("data").withSubsectionId("data"),
@@ -241,13 +232,13 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
                     fieldWithPath("checklistItem.title").description("등록된 체크리스트 아이템 제목").type(
                         JsonFieldType.STRING),
                     fieldWithPath("checklistItem.checkDate").description(
-                        "등록된 체크리스트 아이템 일정 날짜 (yyyy-mm-dd)").type(
+                        "등록된 체크리스트 아이템 일정 날짜").type(
                         JsonFieldType.STRING),
                     fieldWithPath("checklistItem.startTime").description(
-                        "등록된 체크리스트 아이템 일정 시작 시간 (hh:mm:ss)").type(
+                        "등록된 체크리스트 아이템 일정 시작 시간").type(
                         JsonFieldType.STRING),
                     fieldWithPath("checklistItem.endTime").description(
-                        "등록된 체크리스트 아이템 일정 종료 시간 (hh:mm:ss)").type(
+                        "등록된 체크리스트 아이템 일정 종료 시간").type(
                         JsonFieldType.STRING),
                     fieldWithPath("checklistItem.place").description("등록된 체크리스트 아이템 일정 장소").type(
                         JsonFieldType.STRING),
@@ -273,6 +264,11 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
     String url = "/api/v1/checklist/item/{item-id}";
 
     // given
+    ChecklistItemApiDto requestChecklistItemApiDto = ChecklistItemApiDto.builder()
+        .checklistItem(requestChecklistItemDto)
+        .checklistSubItems(List.of(checklistSubItemDto1, checklistSubItemDto2))
+        .build();
+
     given(checklistItemService.findChecklistItem(anyLong(), anyLong())).willReturn(checklistItem);
     given(checklistItemService.modifyChecklistItem(anyLong(),
         any(ChecklistItemApiDto.class))).willReturn(checklistItemApiDto);
@@ -281,7 +277,7 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
     ResultActions result = mockMvc.perform(put(url, CHECKLIST_ITEM_ID)
         .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN")
         .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(checklistItemApiDto)));
+        .content(objectMapper.writeValueAsString(requestChecklistItemApiDto)));
 
     // then
     result.andExpect(status().isOk())
@@ -290,18 +286,17 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
                 pathParameters(
                     parameterWithName("item-id").description("체크리스트 아이템 아이디")
                 ), requestFields(
-                    fieldWithPath("checklistItem.id").ignored(),
                     fieldWithPath("checklistItem.title").description("수정할 체크리스트 아이템 제목").type(
                         JsonFieldType.STRING),
                     fieldWithPath("checklistItem.checkDate").description(
-                        "수정할 체크리스트 아이템 일정 날짜 ex: [yyyy,mm,dd] ").type(
-                        JsonFieldType.ARRAY),
+                        "수정할 체크리스트 아이템 일정 날짜").type(
+                        JsonFieldType.STRING),
                     fieldWithPath("checklistItem.startTime").description(
-                        "수정할 체크리스트 아이템 일정 시작 시간 ex: [hh,mm,ss] ").type(
-                        JsonFieldType.ARRAY).optional(),
+                        "수정할 체크리스트 아이템 일정 시작 시간").type(
+                        JsonFieldType.STRING).optional(),
                     fieldWithPath("checklistItem.endTime").description(
-                        "수정할 체크리스트 아이템 일정 종료 시간 ex: [hh,mm,ss] ").type(
-                        JsonFieldType.ARRAY).optional(),
+                        "수정할 체크리스트 아이템 일정 종료 시간").type(
+                        JsonFieldType.STRING).optional(),
                     fieldWithPath("checklistItem.place").description("수정할 체크리스트 아이템 일정 장소").type(
                         JsonFieldType.STRING).optional(),
                     fieldWithPath("checklistItem.memo").description("수정할 체크리스트 아이템 메모").type(
@@ -320,13 +315,13 @@ class ChecklistItemControllerTest extends AbstractRestDocsTests {
                     fieldWithPath("checklistItem.title").description("수정된 체크리스트 아이템 제목").type(
                         JsonFieldType.STRING),
                     fieldWithPath("checklistItem.checkDate").description(
-                        "수정된 체크리스트 아이템 일정 날짜 (yyyy-mm-dd)").type(
+                        "수정된 체크리스트 아이템 일정 날짜").type(
                         JsonFieldType.STRING),
                     fieldWithPath("checklistItem.startTime").description(
-                        "수정된 체크리스트 아이템 일정 시작 시간 (hh:mm:ss)").type(
+                        "수정된 체크리스트 아이템 일정 시작 시간").type(
                         JsonFieldType.STRING),
                     fieldWithPath("checklistItem.endTime").description(
-                        "수정된 체크리스트 아이템 일정 종료 시간 (hh:mm:ss)").type(
+                        "수정된 체크리스트 아이템 일정 종료 시간").type(
                         JsonFieldType.STRING),
                     fieldWithPath("checklistItem.place").description("수정된 체크리스트 아이템 일정 장소").type(
                         JsonFieldType.STRING),

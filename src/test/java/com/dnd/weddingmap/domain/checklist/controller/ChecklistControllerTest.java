@@ -117,13 +117,13 @@ class ChecklistControllerTest extends AbstractRestDocsTests {
                     fieldWithPath("checklistItem.title").description("체크리스트 아이템 제목").type(
                         JsonFieldType.STRING),
                     fieldWithPath("checklistItem.checkDate").description(
-                        "체크리스트 아이템 일정 날짜 (yyyy-mm-dd)").type(
+                        "체크리스트 아이템 일정 날짜").type(
                         JsonFieldType.STRING),
                     fieldWithPath("checklistItem.startTime").description(
-                        "체크리스트 아이템 일정 시작 시간 (hh:mm:ss)").type(
+                        "체크리스트 아이템 일정 시작 시간").type(
                         JsonFieldType.STRING),
                     fieldWithPath("checklistItem.endTime").description(
-                        "체크리스트 아이템 일정 종료 시간 (hh:mm:ss)").type(
+                        "체크리스트 아이템 일정 종료 시간").type(
                         JsonFieldType.STRING),
                     fieldWithPath("checklistItem.place").description("체크리스트 아이템 일정 장소").type(
                         JsonFieldType.STRING),
