@@ -7,10 +7,12 @@ import com.dnd.weddingmap.domain.transaction.dto.TransactionListResponseDto;
 import com.dnd.weddingmap.domain.transaction.repository.TransactionRepository;
 import com.dnd.weddingmap.domain.transaction.service.TransactionService;
 import com.dnd.weddingmap.global.exception.BadRequestException;
+import com.dnd.weddingmap.global.exception.ForbiddenException;
+import com.dnd.weddingmap.global.exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +31,16 @@ public class TransactionServiceImpl implements TransactionService {
 
   @Transactional
   @Override
-  public Optional<Transaction> findTransaction(Long id) {
-    return transactionRepository.findById(id);
+  public Transaction findTransaction(Long transactionId, Long memberId) {
+    Transaction transaction = transactionRepository.findById(transactionId).orElseThrow(
+        () -> new NotFoundException("존재하지 않는 예산표입니다.")
+    );
+
+    if (Objects.equals(transaction.getMember().getId(), memberId)) {
+      return transaction;
+    } else {
+      throw new ForbiddenException("접근할 수 없는 예산표입니다.");
+    }
   }
 
   @Transactional

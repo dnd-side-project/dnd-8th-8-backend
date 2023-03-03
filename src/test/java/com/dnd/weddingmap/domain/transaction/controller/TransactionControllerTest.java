@@ -168,8 +168,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
     String url = "/api/v1/budget/transaction/{transaction-id}";
 
     // given
-    given(transactionService.findTransaction(anyLong())).willReturn(
-        Optional.ofNullable(transaction));
+    given(transactionService.findTransaction(anyLong(), anyLong())).willReturn(transaction);
 
     // when
     ResultActions result = mockMvc.perform(get(url, TRANSACTION_ID)
@@ -212,6 +211,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
     String url = "/api/v1/budget/transaction/{transaction-id}";
 
     // given
+    given(transactionService.findTransaction(anyLong(), anyLong())).willReturn(transaction);
     given(transactionService.modifyTransaction(anyLong(), any(TransactionDto.class))).willReturn(
         new TransactionDto(transaction));
 
@@ -275,6 +275,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
     String url = "/api/v1/budget/transaction/{transaction-id}";
 
     // given
+    given(transactionService.findTransaction(anyLong(), anyLong())).willReturn(transaction);
     given(transactionService.withdrawTransaction(anyLong())).willReturn(true);
 
     // when

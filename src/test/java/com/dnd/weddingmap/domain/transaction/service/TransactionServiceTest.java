@@ -1,7 +1,7 @@
 package com.dnd.weddingmap.domain.transaction.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -17,6 +17,7 @@ import com.dnd.weddingmap.domain.transaction.dto.TransactionDto;
 import com.dnd.weddingmap.domain.transaction.dto.TransactionListResponseDto;
 import com.dnd.weddingmap.domain.transaction.repository.TransactionRepository;
 import com.dnd.weddingmap.domain.transaction.service.impl.TransactionServiceImpl;
+import com.dnd.weddingmap.global.exception.ForbiddenException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -146,11 +147,22 @@ class TransactionServiceTest {
         Optional.ofNullable(transaction));
 
     // when
-    Optional<Transaction> savedTransaction = transactionService.findTransaction(transactionId);
+    transactionService.findTransaction(transactionId, memberId);
 
     // then
     verify(transactionRepository, times(1)).findById(anyLong());
-    assertTrue(savedTransaction.isPresent());
+  }
+
+  @Test
+  @DisplayName("접근 권한이 없는 거래 내역을 조회하면 ForbiddenException이 발생한다.")
+  void throwForbiddenExceptionByNotMatchingTransaction() {
+    // given
+    given(transactionRepository.findById(transactionId)).willReturn(
+        Optional.ofNullable(transaction));
+
+    // when & then
+    assertThrows(ForbiddenException.class,
+        () -> transactionService.findTransaction(transactionId, 2L));
   }
 
   @Test
