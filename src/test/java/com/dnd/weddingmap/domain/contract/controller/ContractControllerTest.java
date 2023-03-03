@@ -303,7 +303,6 @@ class ContractControllerTest extends AbstractRestDocsTests {
     // when
     ResultActions result = mockMvc.perform(put(url, CONTRACT_ID)
         .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN")
-        .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(contractDto)));
 

@@ -10,7 +10,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.beneathP
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.dnd.weddingmap.docs.springrestdocs.AbstractRestDocsTests;
@@ -168,8 +167,6 @@ class ChecklistControllerTest extends AbstractRestDocsTests {
     // when
     ResultActions result = mockMvc.perform(post(url)
         .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN")
-        .with(csrf())
-        .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(preChecklistItemListDto)));
 
