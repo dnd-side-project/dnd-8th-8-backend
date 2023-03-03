@@ -101,7 +101,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
 
   @Test
   @WithMockOAuth2User
-  @DisplayName("예산표 등록")
+  @DisplayName("거래 내역 등록")
   void createTransaction() throws Exception {
     String url = "/api/v1/budget/transaction";
 
@@ -140,7 +140,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
             ), responseFields(
                 beneathPath("data").withSubsectionId("data"),
                 fieldWithPath("id").description(
-                    "등록된 예산표 아이디").type(
+                    "등록된 거래 내역 아이디").type(
                     JsonFieldType.NUMBER),
                 fieldWithPath("title").description(
                     "제목").type(
@@ -163,7 +163,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
 
   @Test
   @WithMockOAuth2User
-  @DisplayName("예산표 상세 조회")
+  @DisplayName("거래 내역 상세 조회")
   void getTransaction() throws Exception {
     String url = "/api/v1/budget/transaction/{transaction-id}";
 
@@ -179,12 +179,12 @@ class TransactionControllerTest extends AbstractRestDocsTests {
     result.andExpect(status().isOk()).andDo(
         document("budget/transaction/transaction-detail",
             pathParameters(
-                parameterWithName("transaction-id").description("예산표 아이디")
+                parameterWithName("transaction-id").description("거래 내역 아이디")
             ),
             responseFields(
                 beneathPath("data").withSubsectionId("data"),
                 fieldWithPath("id").description(
-                    "예산표 아이디").type(
+                    "거래 내역 아이디").type(
                     JsonFieldType.NUMBER),
                 fieldWithPath("title").description(
                     "제목").type(
@@ -207,7 +207,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
 
   @Test
   @WithMockOAuth2User
-  @DisplayName("예산표 수정")
+  @DisplayName("거래 내역 수정")
   void modifyTransaction() throws Exception {
     String url = "/api/v1/budget/transaction/{transaction-id}";
 
@@ -228,7 +228,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
         .andDo(
             document("budget/transaction/modify-transaction",
                 pathParameters(
-                    parameterWithName("transaction-id").description("수정할 예산표 아이디")
+                    parameterWithName("transaction-id").description("수정할 거래 내역 아이디")
                 ), requestFields(
                     fieldWithPath("id").ignored(),
                     fieldWithPath("title").description(
@@ -248,7 +248,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
                 ), responseFields(
                     beneathPath("data").withSubsectionId("data"),
                     fieldWithPath("id").description(
-                        "수정된 예산표 아이디").type(
+                        "수정된 거래 내역 아이디").type(
                         JsonFieldType.NUMBER),
                     fieldWithPath("title").description(
                         "제목").type(
@@ -270,7 +270,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
 
   @Test
   @WithMockOAuth2User
-  @DisplayName("예산표 삭제")
+  @DisplayName("거래 내역 삭제")
   void withdrawTransaction() throws Exception {
     String url = "/api/v1/budget/transaction/{transaction-id}";
 
@@ -287,14 +287,14 @@ class TransactionControllerTest extends AbstractRestDocsTests {
         .andDo(
             document("budget/transaction/withdraw-transaction",
                 pathParameters(
-                    parameterWithName("transaction-id").description("삭제할 예산표 아이디")
+                    parameterWithName("transaction-id").description("삭제할 거래 내역 아이디")
                 )
             ));
   }
 
   @Test
   @WithMockOAuth2User
-  @DisplayName("예산표 리스트 조회")
+  @DisplayName("거래 내역 리스트 조회")
   void getTransactionList() throws Exception {
     String url = "/api/v1/budget/transaction";
 
@@ -332,7 +332,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
             document("budget/transaction/get-transaction-list",
                 responseFields(
                     beneathPath("data").withSubsectionId("data"),
-                    fieldWithPath("id").description("예산표 아이디").type(
+                    fieldWithPath("id").description("거래 내역 아이디").type(
                         JsonFieldType.NUMBER),
                     fieldWithPath("title").description("제목").type(
                         JsonFieldType.STRING),
