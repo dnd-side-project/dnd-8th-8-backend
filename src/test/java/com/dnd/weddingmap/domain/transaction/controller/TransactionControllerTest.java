@@ -29,13 +29,12 @@ import com.dnd.weddingmap.domain.transaction.dto.TransactionListResponseDto;
 import com.dnd.weddingmap.domain.transaction.service.TransactionService;
 import com.dnd.weddingmap.global.WithMockOAuth2User;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
@@ -55,6 +54,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
   @MockBean
   JwtTokenProvider jwtTokenProvider;
 
+  @Autowired
   private ObjectMapper objectMapper;
 
   private final Member member = Member.builder()
@@ -92,11 +92,6 @@ class TransactionControllerTest extends AbstractRestDocsTests {
       .memo("test memo")
       .build();
 
-  @BeforeEach
-  void init() {
-    objectMapper = new ObjectMapper();
-    objectMapper.registerModule(new JavaTimeModule());
-  }
 
   @Test
   @WithMockOAuth2User
@@ -119,14 +114,13 @@ class TransactionControllerTest extends AbstractRestDocsTests {
     result.andExpect(status().isCreated()).andDo(
         document("budget/transaction/create-transaction",
             requestFields(
-                fieldWithPath("id").ignored(),
                 fieldWithPath("title").description(
                     "제목 (* required)").type(
                     JsonFieldType.STRING),
                 fieldWithPath("agency").description("계약 업체 (* required)")
                     .type(JsonFieldType.STRING),
                 fieldWithPath("transactionDate").description("계약 날짜 (* required)")
-                    .type(JsonFieldType.ARRAY),
+                    .type(JsonFieldType.STRING),
                 fieldWithPath("payment").description("계약금 (* required)").type(JsonFieldType.NUMBER),
                 fieldWithPath("balance").description("잔금").type(JsonFieldType.NUMBER),
                 fieldWithPath("paymentType").description("거래 구분 (* required)")
@@ -144,7 +138,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
                     JsonFieldType.STRING),
                 fieldWithPath("agency").description("계약 업체")
                     .type(JsonFieldType.STRING),
-                fieldWithPath("transactionDate").description("계약 날짜 (yyyy-mm-dd)")
+                fieldWithPath("transactionDate").description("계약 날짜")
                     .type(JsonFieldType.STRING),
                 fieldWithPath("payment").description("계약금").type(JsonFieldType.NUMBER),
                 fieldWithPath("balance").description("잔금").type(JsonFieldType.NUMBER),
@@ -187,7 +181,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
                     JsonFieldType.STRING),
                 fieldWithPath("agency").description("계약 업체")
                     .type(JsonFieldType.STRING),
-                fieldWithPath("transactionDate").description("계약 날짜 (yyyy-mm-dd)")
+                fieldWithPath("transactionDate").description("계약 날짜")
                     .type(JsonFieldType.STRING),
                 fieldWithPath("payment").description("계약금").type(JsonFieldType.NUMBER),
                 fieldWithPath("balance").description("잔금").type(JsonFieldType.NUMBER),
@@ -225,14 +219,13 @@ class TransactionControllerTest extends AbstractRestDocsTests {
                 pathParameters(
                     parameterWithName("transaction-id").description("수정할 거래 내역 아이디")
                 ), requestFields(
-                    fieldWithPath("id").ignored(),
                     fieldWithPath("title").description(
                         "제목").type(
                         JsonFieldType.STRING),
                     fieldWithPath("agency").description("계약 업체")
                         .type(JsonFieldType.STRING),
                     fieldWithPath("transactionDate").description("계약 날짜")
-                        .type(JsonFieldType.ARRAY),
+                        .type(JsonFieldType.STRING),
                     fieldWithPath("payment").description("계약금").type(JsonFieldType.NUMBER),
                     fieldWithPath("balance").description("잔금").type(JsonFieldType.NUMBER),
                     fieldWithPath("paymentType").description("거래 구분")
@@ -250,7 +243,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
                         JsonFieldType.STRING),
                     fieldWithPath("agency").description("계약 업체")
                         .type(JsonFieldType.STRING),
-                    fieldWithPath("transactionDate").description("계약 날짜 (yyyy-mm-dd)")
+                    fieldWithPath("transactionDate").description("계약 날짜")
                         .type(JsonFieldType.STRING),
                     fieldWithPath("payment").description("계약금").type(JsonFieldType.NUMBER),
                     fieldWithPath("balance").description("잔금").type(JsonFieldType.NUMBER),
@@ -333,7 +326,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
                         JsonFieldType.STRING),
                     fieldWithPath("agency").description("계약 업체")
                         .type(JsonFieldType.STRING),
-                    fieldWithPath("transactionDate").description("계약 날짜 (yyyy-mm-dd)")
+                    fieldWithPath("transactionDate").description("계약 날짜")
                         .type(JsonFieldType.STRING),
                     fieldWithPath("payment").description("계약금").type(JsonFieldType.NUMBER),
                     fieldWithPath("paymentType").description("거래 구분 (CARD / CASH)")
