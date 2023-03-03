@@ -46,6 +46,7 @@ public class ChecklistServiceImpl implements ChecklistService {
                 .build()))).toList();
   }
 
+  @Transactional
   public List<ChecklistSubItem> findChecklistSubItem(Long checklistItemId) {
     return checklistSubItemRepository.findAllByChecklistItemId(checklistItemId);
   }

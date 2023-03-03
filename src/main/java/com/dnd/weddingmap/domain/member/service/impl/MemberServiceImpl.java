@@ -5,6 +5,7 @@ import com.dnd.weddingmap.domain.member.Member;
 import com.dnd.weddingmap.domain.member.MemberRepository;
 import com.dnd.weddingmap.domain.member.dto.NameDto;
 import com.dnd.weddingmap.domain.member.service.MemberService;
+import jakarta.transaction.Transactional;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ public class MemberServiceImpl implements MemberService {
   private final MemberRepository memberRepository;
 
   @Override
+  @Transactional
   public void modifyName(Long id, NameDto nameDto) {
     Optional<Member> member = memberRepository.findById(id);
 
@@ -26,11 +28,13 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
+  @Transactional
   public Optional<Gender> getGender(Long id) {
     return memberRepository.findById(id).map(Member::getGender);
   }
 
   @Override
+  @Transactional
   public void postGender(Long id, Gender gender) {
     Optional<Member> member = memberRepository.findById(id);
 
@@ -41,11 +45,13 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
+  @Transactional
   public Optional<String> getProfileImage(Long id) {
     return memberRepository.findById(id).map(Member::getProfileImage);
   }
 
   @Override
+  @Transactional
   public void putProfileImage(Long id, String url) {
     Optional<Member> member = memberRepository.findById(id);
 
@@ -56,6 +62,7 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
+  @Transactional
   public boolean withdraw(Long id) {
     return memberRepository.findById(id)
         .map(member -> {
@@ -66,6 +73,7 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
+  @Transactional
   public Optional<Member> findMember(Long id) {
     return memberRepository.findById(id);
   }

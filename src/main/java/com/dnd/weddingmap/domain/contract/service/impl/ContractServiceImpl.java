@@ -20,6 +20,7 @@ public class ContractServiceImpl implements ContractService {
 
   private final ContractRepository contractRepository;
 
+  @Transactional
   @Override
   public ContractDto createContract(ContractDto contractDto, Member member) {
     Contract contract = Contract.builder()
@@ -35,6 +36,7 @@ public class ContractServiceImpl implements ContractService {
     return new ContractDto(contractRepository.save(contract));
   }
 
+  @Transactional
   @Override
   public Optional<Contract> findContractById(Long id) {
     return contractRepository.findById(id);
@@ -51,6 +53,7 @@ public class ContractServiceImpl implements ContractService {
         .orElse(false);
   }
 
+  @Transactional
   @Override
   public List<ContractListResponseDto> findContractList(Long memberId) {
     List<ContractListResponseDto> result = new ArrayList<>();
