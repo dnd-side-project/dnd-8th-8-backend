@@ -13,7 +13,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.dnd.weddingmap.docs.springrestdocs.AbstractRestDocsTests;
@@ -111,8 +110,6 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
     // when
     ResultActions result = mockMvc.perform(post(url, CHECKLIST_ITEM_ID)
         .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN")
-        .with(csrf())
-        .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(createChecklistSubItemDto)));
 
@@ -159,8 +156,6 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
     // when
     ResultActions result = mockMvc.perform(put(url, CHECKLIST_ITEM_ID, CHECKLIST_SUB_ITEM_ID)
         .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN")
-        .with(csrf())
-        .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(checklistSubItemStateDto)));
 
@@ -200,8 +195,7 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
 
     // when
     ResultActions result = mockMvc.perform(delete(url, CHECKLIST_ITEM_ID, CHECKLIST_SUB_ITEM_ID)
-        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN")
-        .with(csrf()));
+        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN"));
 
     // then
     result.andExpect(status().isOk())
