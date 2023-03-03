@@ -127,7 +127,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
         .orElse(false);
   }
 
-  @Transactional
+  @Transactional(readOnly = true)
   @Override
   public ChecklistItem findChecklistItem(Long checklistItemId, Long memberId) {
     ChecklistItem checklistItem = checklistItemRepository.findById(checklistItemId).orElseThrow(

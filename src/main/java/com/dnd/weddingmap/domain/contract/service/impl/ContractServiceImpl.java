@@ -36,7 +36,7 @@ public class ContractServiceImpl implements ContractService {
     return new ContractDto(contractRepository.save(contract));
   }
 
-  @Transactional
+  @Transactional(readOnly = true)
   @Override
   public Optional<Contract> findContractById(Long id) {
     return contractRepository.findById(id);
@@ -53,7 +53,7 @@ public class ContractServiceImpl implements ContractService {
         .orElse(false);
   }
 
-  @Transactional
+  @Transactional(readOnly = true)
   @Override
   public List<ContractListResponseDto> findContractList(Long memberId) {
     List<ContractListResponseDto> result = new ArrayList<>();

@@ -55,7 +55,7 @@ public class WeddingServiceImpl implements WeddingService {
   }
 
   @Override
-  @Transactional
+  @Transactional(readOnly = true)
   public WeddingDayDto getWeddingDay(Long memberId) {
 
     Member member = memberRepository.findById(memberId)
@@ -88,7 +88,7 @@ public class WeddingServiceImpl implements WeddingService {
   }
 
   @Override
-  @Transactional
+  @Transactional(readOnly = true)
   public BudgetDto getBudget(Long memberId) {
 
     Member member = memberRepository.findById(memberId)

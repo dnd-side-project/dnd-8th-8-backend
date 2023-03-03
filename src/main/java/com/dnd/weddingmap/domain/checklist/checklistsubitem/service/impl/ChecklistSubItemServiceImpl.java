@@ -19,7 +19,7 @@ public class ChecklistSubItemServiceImpl implements ChecklistSubItemService {
 
   private final ChecklistSubItemRepository checklistSubItemRepository;
 
-  @Transactional
+  @Transactional(readOnly = true)
   @Override
   public List<ChecklistSubItemDto> findChecklistSubItems(Long checklistItemId) {
     List<ChecklistSubItem> checklistSubItems = checklistSubItemRepository.findAllByChecklistItemId(

@@ -28,7 +28,7 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
-  @Transactional
+  @Transactional(readOnly = true)
   public Optional<Gender> getGender(Long id) {
     return memberRepository.findById(id).map(Member::getGender);
   }
@@ -45,7 +45,7 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
-  @Transactional
+  @Transactional(readOnly = true)
   public Optional<String> getProfileImage(Long id) {
     return memberRepository.findById(id).map(Member::getProfileImage);
   }
@@ -73,7 +73,7 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
-  @Transactional
+  @Transactional(readOnly = true)
   public Optional<Member> findMember(Long id) {
     return memberRepository.findById(id);
   }

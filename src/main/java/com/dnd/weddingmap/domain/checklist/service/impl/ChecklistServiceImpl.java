@@ -23,7 +23,7 @@ public class ChecklistServiceImpl implements ChecklistService {
   private final ChecklistItemRepository checklistItemRepository;
   private final ChecklistSubItemRepository checklistSubItemRepository;
 
-  @Transactional
+  @Transactional(readOnly = true)
   @Override
   public List<ChecklistItemApiDto> findChecklist(Long memberId) {
     List<ChecklistItem> checklistItemList = checklistItemRepository.findByMemberIdOrderByCheckDate(
@@ -46,7 +46,7 @@ public class ChecklistServiceImpl implements ChecklistService {
                 .build()))).toList();
   }
 
-  @Transactional
+  @Transactional(readOnly = true)
   public List<ChecklistSubItem> findChecklistSubItem(Long checklistItemId) {
     return checklistSubItemRepository.findAllByChecklistItemId(checklistItemId);
   }

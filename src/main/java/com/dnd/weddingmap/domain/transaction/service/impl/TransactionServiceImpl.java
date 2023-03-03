@@ -29,7 +29,7 @@ public class TransactionServiceImpl implements TransactionService {
     return new TransactionDto(savedTransaction);
   }
 
-  @Transactional
+  @Transactional(readOnly = true)
   @Override
   public Transaction findTransaction(Long transactionId, Long memberId) {
     Transaction transaction = transactionRepository.findById(transactionId).orElseThrow(
@@ -63,7 +63,7 @@ public class TransactionServiceImpl implements TransactionService {
         .orElse(false);
   }
 
-  @Transactional
+  @Transactional(readOnly = true)
   @Override
   public List<TransactionListResponseDto> findTransactionList(Long memberId) {
     List<Transaction> transactionList =
