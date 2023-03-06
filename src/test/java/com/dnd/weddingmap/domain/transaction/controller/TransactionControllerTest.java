@@ -97,7 +97,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
   @WithMockOAuth2User
   @DisplayName("거래 내역 등록")
   void createTransaction() throws Exception {
-    String url = "/api/v1/budget/transaction";
+    String url = "/api/v1/transaction";
 
     // given
     given(memberService.findMember(anyLong())).willReturn(Optional.ofNullable(member));
@@ -156,7 +156,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
   @WithMockOAuth2User
   @DisplayName("거래 내역 상세 조회")
   void getTransaction() throws Exception {
-    String url = "/api/v1/budget/transaction/{transaction-id}";
+    String url = "/api/v1/transaction/{transaction-id}";
 
     // given
     given(transactionService.findTransaction(anyLong(), anyLong())).willReturn(transaction);
@@ -199,7 +199,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
   @WithMockOAuth2User
   @DisplayName("거래 내역 수정")
   void modifyTransaction() throws Exception {
-    String url = "/api/v1/budget/transaction/{transaction-id}";
+    String url = "/api/v1/transaction/{transaction-id}";
 
     // given
     given(transactionService.findTransaction(anyLong(), anyLong())).willReturn(transaction);
@@ -260,7 +260,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
   @WithMockOAuth2User
   @DisplayName("거래 내역 삭제")
   void withdrawTransaction() throws Exception {
-    String url = "/api/v1/budget/transaction/{transaction-id}";
+    String url = "/api/v1/transaction/{transaction-id}";
 
     // given
     given(transactionService.findTransaction(anyLong(), anyLong())).willReturn(transaction);
@@ -284,7 +284,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
   @WithMockOAuth2User
   @DisplayName("거래 내역 리스트 조회")
   void getTransactionList() throws Exception {
-    String url = "/api/v1/budget/transaction";
+    String url = "/api/v1/transaction";
 
     TransactionListResponseDto transactionListResponseDto1 = TransactionListResponseDto.builder()
         .id(1L)
