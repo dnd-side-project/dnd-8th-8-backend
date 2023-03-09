@@ -3,8 +3,8 @@
         {
             "name": "nginx",
             "image": "339286557484.dkr.ecr.ap-northeast-2.amazonaws.com/reverse-proxy",
-            "cpu": 256,
-            "memory": 256,
+            "cpu": 204,
+            "memory": 204,
             "links": [
                 "application"
             ],
@@ -61,5 +61,5 @@
     "executionRoleArn": "arn:aws:iam::339286557484:role/ecsTaskExecutionRole",
     "networkMode": "bridge",
     "volumes": [],
-    "placementConstraints": [],
+    "placementConstraints": []
 }
