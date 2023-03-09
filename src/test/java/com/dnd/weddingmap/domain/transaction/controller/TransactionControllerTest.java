@@ -14,7 +14,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.dnd.weddingmap.docs.springrestdocs.AbstractRestDocsTests;
@@ -30,13 +29,12 @@ import com.dnd.weddingmap.domain.transaction.dto.TransactionListResponseDto;
 import com.dnd.weddingmap.domain.transaction.service.TransactionService;
 import com.dnd.weddingmap.global.WithMockOAuth2User;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
@@ -56,6 +54,7 @@ class TransactionControllerTest extends AbstractRestDocsTests {
   @MockBean
   JwtTokenProvider jwtTokenProvider;
 
+  @Autowired
   private ObjectMapper objectMapper;
 
   private final Member member = Member.builder()
@@ -93,17 +92,12 @@ class TransactionControllerTest extends AbstractRestDocsTests {
       .memo("test memo")
       .build();
 
-  @BeforeEach
-  void init() {
-    objectMapper = new ObjectMapper();
-    objectMapper.registerModule(new JavaTimeModule());
-  }
 
   @Test
   @WithMockOAuth2User
-  @DisplayName("예산표 등록")
+  @DisplayName("거래 내역 등록")
   void createTransaction() throws Exception {
-    String url = "/api/v1/budget/transaction";
+    String url = "/api/v1/transaction";
 
     // given
     given(memberService.findMember(anyLong())).willReturn(Optional.ofNullable(member));
@@ -113,23 +107,20 @@ class TransactionControllerTest extends AbstractRestDocsTests {
     // when
     ResultActions result = mockMvc.perform(post(url)
         .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN")
-        .with(csrf())
-        .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(transactionDto)));
 
     // then
     result.andExpect(status().isCreated()).andDo(
-        document("budget/transaction/create-transaction",
+        document("transaction/create-transaction",
             requestFields(
-                fieldWithPath("id").ignored(),
                 fieldWithPath("title").description(
                     "제목 (* required)").type(
                     JsonFieldType.STRING),
                 fieldWithPath("agency").description("계약 업체 (* required)")
                     .type(JsonFieldType.STRING),
                 fieldWithPath("transactionDate").description("계약 날짜 (* required)")
-                    .type(JsonFieldType.ARRAY),
+                    .type(JsonFieldType.STRING),
                 fieldWithPath("payment").description("계약금 (* required)").type(JsonFieldType.NUMBER),
                 fieldWithPath("balance").description("잔금").type(JsonFieldType.NUMBER),
                 fieldWithPath("paymentType").description("거래 구분 (* required)")
@@ -140,14 +131,14 @@ class TransactionControllerTest extends AbstractRestDocsTests {
             ), responseFields(
                 beneathPath("data").withSubsectionId("data"),
                 fieldWithPath("id").description(
-                    "등록된 예산표 아이디").type(
+                    "등록된 거래 내역 아이디").type(
                     JsonFieldType.NUMBER),
                 fieldWithPath("title").description(
                     "제목").type(
                     JsonFieldType.STRING),
                 fieldWithPath("agency").description("계약 업체")
                     .type(JsonFieldType.STRING),
-                fieldWithPath("transactionDate").description("계약 날짜 (yyyy-mm-dd)")
+                fieldWithPath("transactionDate").description("계약 날짜")
                     .type(JsonFieldType.STRING),
                 fieldWithPath("payment").description("계약금").type(JsonFieldType.NUMBER),
                 fieldWithPath("balance").description("잔금").type(JsonFieldType.NUMBER),
@@ -163,13 +154,12 @@ class TransactionControllerTest extends AbstractRestDocsTests {
 
   @Test
   @WithMockOAuth2User
-  @DisplayName("예산표 상세 조회")
+  @DisplayName("거래 내역 상세 조회")
   void getTransaction() throws Exception {
-    String url = "/api/v1/budget/transaction/{transaction-id}";
+    String url = "/api/v1/transaction/{transaction-id}";
 
     // given
-    given(transactionService.findTransaction(anyLong())).willReturn(
-        Optional.ofNullable(transaction));
+    given(transactionService.findTransaction(anyLong(), anyLong())).willReturn(transaction);
 
     // when
     ResultActions result = mockMvc.perform(get(url, TRANSACTION_ID)
@@ -177,21 +167,21 @@ class TransactionControllerTest extends AbstractRestDocsTests {
 
     // then
     result.andExpect(status().isOk()).andDo(
-        document("budget/transaction/transaction-detail",
+        document("transaction/transaction-detail",
             pathParameters(
-                parameterWithName("transaction-id").description("예산표 아이디")
+                parameterWithName("transaction-id").description("거래 내역 아이디")
             ),
             responseFields(
                 beneathPath("data").withSubsectionId("data"),
                 fieldWithPath("id").description(
-                    "예산표 아이디").type(
+                    "거래 내역 아이디").type(
                     JsonFieldType.NUMBER),
                 fieldWithPath("title").description(
                     "제목").type(
                     JsonFieldType.STRING),
                 fieldWithPath("agency").description("계약 업체")
                     .type(JsonFieldType.STRING),
-                fieldWithPath("transactionDate").description("계약 날짜 (yyyy-mm-dd)")
+                fieldWithPath("transactionDate").description("계약 날짜")
                     .type(JsonFieldType.STRING),
                 fieldWithPath("payment").description("계약금").type(JsonFieldType.NUMBER),
                 fieldWithPath("balance").description("잔금").type(JsonFieldType.NUMBER),
@@ -207,37 +197,35 @@ class TransactionControllerTest extends AbstractRestDocsTests {
 
   @Test
   @WithMockOAuth2User
-  @DisplayName("예산표 수정")
+  @DisplayName("거래 내역 수정")
   void modifyTransaction() throws Exception {
-    String url = "/api/v1/budget/transaction/{transaction-id}";
+    String url = "/api/v1/transaction/{transaction-id}";
 
     // given
+    given(transactionService.findTransaction(anyLong(), anyLong())).willReturn(transaction);
     given(transactionService.modifyTransaction(anyLong(), any(TransactionDto.class))).willReturn(
         new TransactionDto(transaction));
 
     // when
     ResultActions result = mockMvc.perform(put(url, TRANSACTION_ID)
         .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN")
-        .with(csrf())
-        .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(transactionDto)));
 
     // then
     result.andExpect(status().isOk())
         .andDo(
-            document("budget/transaction/modify-transaction",
+            document("transaction/modify-transaction",
                 pathParameters(
-                    parameterWithName("transaction-id").description("수정할 예산표 아이디")
+                    parameterWithName("transaction-id").description("수정할 거래 내역 아이디")
                 ), requestFields(
-                    fieldWithPath("id").ignored(),
                     fieldWithPath("title").description(
                         "제목").type(
                         JsonFieldType.STRING),
                     fieldWithPath("agency").description("계약 업체")
                         .type(JsonFieldType.STRING),
                     fieldWithPath("transactionDate").description("계약 날짜")
-                        .type(JsonFieldType.ARRAY),
+                        .type(JsonFieldType.STRING),
                     fieldWithPath("payment").description("계약금").type(JsonFieldType.NUMBER),
                     fieldWithPath("balance").description("잔금").type(JsonFieldType.NUMBER),
                     fieldWithPath("paymentType").description("거래 구분")
@@ -248,14 +236,14 @@ class TransactionControllerTest extends AbstractRestDocsTests {
                 ), responseFields(
                     beneathPath("data").withSubsectionId("data"),
                     fieldWithPath("id").description(
-                        "수정된 예산표 아이디").type(
+                        "수정된 거래 내역 아이디").type(
                         JsonFieldType.NUMBER),
                     fieldWithPath("title").description(
                         "제목").type(
                         JsonFieldType.STRING),
                     fieldWithPath("agency").description("계약 업체")
                         .type(JsonFieldType.STRING),
-                    fieldWithPath("transactionDate").description("계약 날짜 (yyyy-mm-dd)")
+                    fieldWithPath("transactionDate").description("계약 날짜")
                         .type(JsonFieldType.STRING),
                     fieldWithPath("payment").description("계약금").type(JsonFieldType.NUMBER),
                     fieldWithPath("balance").description("잔금").type(JsonFieldType.NUMBER),
@@ -270,33 +258,33 @@ class TransactionControllerTest extends AbstractRestDocsTests {
 
   @Test
   @WithMockOAuth2User
-  @DisplayName("예산표 삭제")
+  @DisplayName("거래 내역 삭제")
   void withdrawTransaction() throws Exception {
-    String url = "/api/v1/budget/transaction/{transaction-id}";
+    String url = "/api/v1/transaction/{transaction-id}";
 
     // given
+    given(transactionService.findTransaction(anyLong(), anyLong())).willReturn(transaction);
     given(transactionService.withdrawTransaction(anyLong())).willReturn(true);
 
     // when
     ResultActions result = mockMvc.perform(delete(url, TRANSACTION_ID)
-        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN")
-        .with(csrf()));
+        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN"));
 
     // then
     result.andExpect(status().isOk())
         .andDo(
-            document("budget/transaction/withdraw-transaction",
+            document("transaction/withdraw-transaction",
                 pathParameters(
-                    parameterWithName("transaction-id").description("삭제할 예산표 아이디")
+                    parameterWithName("transaction-id").description("삭제할 거래 내역 아이디")
                 )
             ));
   }
 
   @Test
   @WithMockOAuth2User
-  @DisplayName("예산표 리스트 조회")
+  @DisplayName("거래 내역 리스트 조회")
   void getTransactionList() throws Exception {
-    String url = "/api/v1/budget/transaction";
+    String url = "/api/v1/transaction";
 
     TransactionListResponseDto transactionListResponseDto1 = TransactionListResponseDto.builder()
         .id(1L)
@@ -329,16 +317,16 @@ class TransactionControllerTest extends AbstractRestDocsTests {
     // then
     result.andExpect(status().isOk())
         .andDo(
-            document("budget/transaction/get-transaction-list",
+            document("transaction/get-transaction-list",
                 responseFields(
                     beneathPath("data").withSubsectionId("data"),
-                    fieldWithPath("id").description("예산표 아이디").type(
+                    fieldWithPath("id").description("거래 내역 아이디").type(
                         JsonFieldType.NUMBER),
                     fieldWithPath("title").description("제목").type(
                         JsonFieldType.STRING),
                     fieldWithPath("agency").description("계약 업체")
                         .type(JsonFieldType.STRING),
-                    fieldWithPath("transactionDate").description("계약 날짜 (yyyy-mm-dd)")
+                    fieldWithPath("transactionDate").description("계약 날짜")
                         .type(JsonFieldType.STRING),
                     fieldWithPath("payment").description("계약금").type(JsonFieldType.NUMBER),
                     fieldWithPath("paymentType").description("거래 구분 (CARD / CASH)")

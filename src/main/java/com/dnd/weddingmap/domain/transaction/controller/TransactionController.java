@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/budget/transaction")
+@RequestMapping("/api/v1/transaction")
 public class TransactionController {
 
   private final MemberService memberService;
@@ -54,8 +54,7 @@ public class TransactionController {
   public ResponseEntity<SuccessResponse> getTransaction(
       @AuthenticationPrincipal CustomUserDetails user,
       @PathVariable("transaction-id") Long transactionId) {
-    Transaction transaction = transactionService.findTransaction(transactionId)
-        .orElseThrow(() -> new NotFoundException("존재하지 않는 예산표입니다."));
+    Transaction transaction = transactionService.findTransaction(transactionId, user.getId());
 
     return ResponseEntity.ok()
         .body(SuccessResponse.builder().data(new TransactionDto(transaction)).build());
@@ -66,7 +65,8 @@ public class TransactionController {
       @AuthenticationPrincipal CustomUserDetails user,
       @PathVariable("transaction-id") Long transactionId,
       @RequestBody @Valid TransactionDto requestDto) {
-    TransactionDto result = transactionService.modifyTransaction(transactionId, requestDto);
+    Transaction transaction = transactionService.findTransaction(transactionId, user.getId());
+    TransactionDto result = transactionService.modifyTransaction(transaction.getId(), requestDto);
 
     return ResponseEntity.ok()
         .body(SuccessResponse.builder().data(result).build());
@@ -76,7 +76,9 @@ public class TransactionController {
   public ResponseEntity<SuccessResponse> withdrawTransaction(
       @AuthenticationPrincipal CustomUserDetails user,
       @PathVariable("transaction-id") Long transactionId) {
-    boolean result = transactionService.withdrawTransaction(transactionId);
+    Transaction transaction = transactionService.findTransaction(transactionId, user.getId());
+
+    boolean result = transactionService.withdrawTransaction(transaction.getId());
     if (!result) {
       throw new NotFoundException("존재하지 않는 예산표입니다.");
     }

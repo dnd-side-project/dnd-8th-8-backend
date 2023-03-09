@@ -7,9 +7,9 @@ import com.dnd.weddingmap.domain.wedding.dto.BudgetDto;
 import com.dnd.weddingmap.domain.wedding.dto.WeddingDayDto;
 import com.dnd.weddingmap.domain.wedding.repository.WeddingRepository;
 import com.dnd.weddingmap.domain.wedding.service.WeddingService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +19,7 @@ public class WeddingServiceImpl implements WeddingService {
   private final MemberRepository memberRepository;
 
   @Override
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   public Long registerWedding(Long memberId, WeddingDayDto weddingDayDto) {
 
     Member member = memberRepository.findById(memberId)
@@ -38,7 +38,7 @@ public class WeddingServiceImpl implements WeddingService {
   }
 
   @Override
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   public void modifyWeddingDay(Long memberId, WeddingDayDto weddingDayDto) {
 
     Member member = memberRepository.findById(memberId)
@@ -55,7 +55,7 @@ public class WeddingServiceImpl implements WeddingService {
   }
 
   @Override
-  @Transactional
+  @Transactional(readOnly = true)
   public WeddingDayDto getWeddingDay(Long memberId) {
 
     Member member = memberRepository.findById(memberId)
@@ -72,7 +72,7 @@ public class WeddingServiceImpl implements WeddingService {
   }
 
   @Override
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   public void modifyBudget(Long memberId, BudgetDto budgetDto) {
 
     Member member = memberRepository.findById(memberId)
@@ -88,7 +88,7 @@ public class WeddingServiceImpl implements WeddingService {
   }
 
   @Override
-  @Transactional
+  @Transactional(readOnly = true)
   public BudgetDto getBudget(Long memberId) {
 
     Member member = memberRepository.findById(memberId)

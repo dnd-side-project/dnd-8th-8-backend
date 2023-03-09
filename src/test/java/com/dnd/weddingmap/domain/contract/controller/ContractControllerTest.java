@@ -36,14 +36,13 @@ import com.dnd.weddingmap.domain.oauth.OAuth2Provider;
 import com.dnd.weddingmap.global.WithMockOAuth2User;
 import com.dnd.weddingmap.global.service.S3Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
@@ -96,13 +95,8 @@ class ContractControllerTest extends AbstractRestDocsTests {
   @MockBean
   JwtTokenProvider jwtTokenProvider;
 
+  @Autowired
   ObjectMapper objectMapper;
-
-  @BeforeEach
-  void init() {
-    objectMapper = new ObjectMapper();
-    objectMapper.registerModule(new JavaTimeModule());
-  }
 
   @Test
   @WithMockOAuth2User
@@ -140,17 +134,15 @@ class ContractControllerTest extends AbstractRestDocsTests {
                 partWithName("data").description("계약서 전체 내용")
             ),
             requestPartFields("data",
-                fieldWithPath("id").ignored(),
                 fieldWithPath("title").description("계약서 제목 (* required)")
                     .type(JsonFieldType.STRING),
                 fieldWithPath("contents").description("계약 내용 (* required)")
                     .type(JsonFieldType.STRING),
                 fieldWithPath("contractDate").description("계약 날짜 (* required)")
-                    .type(JsonFieldType.ARRAY),
+                    .type(JsonFieldType.STRING),
                 fieldWithPath("contractStatus").description("계약 상태 (* required)")
                     .type(JsonFieldType.STRING),
-                fieldWithPath("memo").description("메모").type(JsonFieldType.STRING),
-                fieldWithPath("file").ignored()),
+                fieldWithPath("memo").description("메모").type(JsonFieldType.STRING)),
             responseFields(
                 beneathPath("data").withSubsectionId("data"),
                 fieldWithPath("id").description("등록된 계약서 아이디").type(
@@ -159,8 +151,7 @@ class ContractControllerTest extends AbstractRestDocsTests {
                     JsonFieldType.STRING),
                 fieldWithPath("contents").description("계약 내용").type(
                     JsonFieldType.STRING),
-                fieldWithPath("contractDate").description(
-                    "계약 날짜 (yyyy-mm-dd)").type(
+                fieldWithPath("contractDate").description("계약 날짜").type(
                     JsonFieldType.STRING),
                 fieldWithPath("contractStatus").description("계약 상태").type(
                     JsonFieldType.STRING),
@@ -200,8 +191,7 @@ class ContractControllerTest extends AbstractRestDocsTests {
                         JsonFieldType.STRING),
                     fieldWithPath("contents").description("계약 내용").type(
                         JsonFieldType.STRING),
-                    fieldWithPath("contractDate").description(
-                        "계약 날짜 (yyyy-mm-dd)").type(
+                    fieldWithPath("contractDate").description("계약 날짜").type(
                         JsonFieldType.STRING),
                     fieldWithPath("contractStatus").description("계약 상태").type(
                         JsonFieldType.STRING),
@@ -277,8 +267,7 @@ class ContractControllerTest extends AbstractRestDocsTests {
                     JsonFieldType.STRING),
                 fieldWithPath("contents").description("계약 내용").type(
                     JsonFieldType.STRING),
-                fieldWithPath("contractDate").description(
-                    "계약 날짜 (yyyy-mm-dd)").type(
+                fieldWithPath("contractDate").description("계약 날짜").type(
                     JsonFieldType.STRING),
                 fieldWithPath("contractStatus").description("계약 상태").type(
                     JsonFieldType.STRING),
@@ -296,6 +285,7 @@ class ContractControllerTest extends AbstractRestDocsTests {
     String url = "/api/v1/contract/{contract-id}";
 
     // given
+
     given(contractService.findContractById(anyLong())).willReturn(Optional.ofNullable(contract));
     given(contractService.modifyContract(anyLong(), any(ContractDto.class))).willReturn(
         new ContractDto(contract));
@@ -303,7 +293,6 @@ class ContractControllerTest extends AbstractRestDocsTests {
     // when
     ResultActions result = mockMvc.perform(put(url, CONTRACT_ID)
         .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN")
-        .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(contractDto)));
 
@@ -314,17 +303,15 @@ class ContractControllerTest extends AbstractRestDocsTests {
                 pathParameters(
                     parameterWithName("contract-id").description("계약서 아이디")
                 ), requestFields(
-                    fieldWithPath("id").ignored(),
                     fieldWithPath("title").description("계약서 제목")
                         .type(JsonFieldType.STRING),
                     fieldWithPath("contents").description("계약 내용")
                         .type(JsonFieldType.STRING),
                     fieldWithPath("contractDate").description("계약 날짜")
-                        .type(JsonFieldType.ARRAY),
+                        .type(JsonFieldType.STRING),
                     fieldWithPath("contractStatus").description("계약 상태")
                         .type(JsonFieldType.STRING),
-                    fieldWithPath("memo").description("메모").type(JsonFieldType.STRING),
-                    fieldWithPath("file").ignored()),
+                    fieldWithPath("memo").description("메모").type(JsonFieldType.STRING)),
                 responseFields(
                     beneathPath("data").withSubsectionId("data"),
                     fieldWithPath("id").description("수정된 계약서 아이디").type(
@@ -333,8 +320,7 @@ class ContractControllerTest extends AbstractRestDocsTests {
                         JsonFieldType.STRING),
                     fieldWithPath("contents").description("계약 내용").type(
                         JsonFieldType.STRING),
-                    fieldWithPath("contractDate").description(
-                        "계약 날짜 (yyyy-mm-dd)").type(
+                    fieldWithPath("contractDate").description("계약 날짜").type(
                         JsonFieldType.STRING),
                     fieldWithPath("contractStatus").description("계약 상태").type(
                         JsonFieldType.STRING),
@@ -347,7 +333,7 @@ class ContractControllerTest extends AbstractRestDocsTests {
 
   @Test
   @WithMockOAuth2User
-  @DisplayName("계약서 내용 수정")
+  @DisplayName("계약서 리스트 조회")
   void getContractList() throws Exception {
     String url = "/api/v1/contract";
 
@@ -384,8 +370,7 @@ class ContractControllerTest extends AbstractRestDocsTests {
                         JsonFieldType.NUMBER),
                     fieldWithPath("title").description("계약서 제목").type(
                         JsonFieldType.STRING),
-                    fieldWithPath("contractDate").description(
-                        "계약 날짜 (yyyy-mm-dd)").type(
+                    fieldWithPath("contractDate").description("계약 날짜").type(
                         JsonFieldType.STRING),
                     fieldWithPath("contractStatus").description("계약 상태").type(
                         JsonFieldType.STRING)

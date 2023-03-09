@@ -1,0 +1,43 @@
+== 거래 내역 API
+:doctype: book
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:seclinks:
+
+사용자 거래 내역 등록, 조회, 삭제, 수정이 가능합니다.
+이를 위해서는 ``Header``의 ``Authorization``에 사용자의 ``액세스 토큰``을 포함시켜야 합니다.
+
+=== 거래 내역 상세 조회
+
+거래 내역 상세 내용을 조회할 수 있습니다.
+
+operation::transaction/transaction-detail/[snippets="http-request,path-parameters,http-response,response-fields-data"]
+
+=== 거래 내역 전체 리스트 조회
+
+사용자의 전체 거래 내역 리스트를 조회할 수 있습니다.
+거래 일자 순으로 정렬된 데이터가 전달됩니다.
+
+operation::transaction/get-transaction-list/[snippets="http-request,http-response,response-fields-data"]
+
+=== 거래 내역 등록
+
+거래 내역 등록이 가능합니다.
+거래 구분 데이터는 ``CARD`` 와 ``CASH`` 만 가능합니다.
+
+operation::transaction/create-transaction/[snippets="http-request,request-fields,http-response,response-fields-data"]
+
+=== 거래 내역 수정
+
+거래 내역 수정이 가능합니다.
+
+``PUT`` 메소드를 사용하기 때문에 수정을 원하는 거래 내역의 ``전체 데이터``를 모두 포함하여 요청해야 합니다.
+
+operation::transaction/modify-transaction/[snippets="http-request,path-parameters,request-fields,http-response,response-fields-data"]
+
+=== 거래 내역 삭제
+
+거래 내역 삭제가 가능합니다.
+
+operation::transaction/withdraw-transaction/[snippets="http-request,path-parameters,http-response"]
