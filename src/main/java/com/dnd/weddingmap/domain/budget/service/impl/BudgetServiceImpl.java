@@ -32,8 +32,7 @@ public class BudgetServiceImpl implements BudgetService {
     Long budget = member.getWedding().getBudget();
     Long totalPayment = 0L;
 
-    List<Transaction> transactionList = transactionRepository.findByMemberIdOrderByTransactionDate(
-        memberId);
+    List<Transaction> transactionList = transactionRepository.findByMemberId(memberId);
     for (Transaction transaction : transactionList) {
       totalPayment += transaction.getPayment();
     }

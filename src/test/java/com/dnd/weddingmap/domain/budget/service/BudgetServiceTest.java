@@ -74,7 +74,7 @@ class BudgetServiceTest {
 
     given(memberRepository.findById(memberId))
         .willReturn(Optional.ofNullable(registeredMember));
-    given(transactionRepository.findByMemberIdOrderByTransactionDate(memberId))
+    given(transactionRepository.findByMemberId(memberId))
         .willReturn(List.of(transaction1, transaction2));
 
     // when
@@ -82,7 +82,7 @@ class BudgetServiceTest {
 
     // then
     verify(memberRepository, times(1)).findById(anyLong());
-    verify(transactionRepository, times(1)).findByMemberIdOrderByTransactionDate(anyLong());
+    verify(transactionRepository, times(1)).findByMemberId(anyLong());
     assertEquals(budget + payment1 + payment2, budgetDto.getBudget());
   }
 
