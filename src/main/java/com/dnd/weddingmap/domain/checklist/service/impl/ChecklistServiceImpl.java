@@ -16,15 +16,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class ChecklistServiceImpl implements ChecklistService {
 
   private final ChecklistItemRepository checklistItemRepository;
   private final ChecklistSubItemRepository checklistSubItemRepository;
 
-  @Transactional(readOnly = true)
   @Override
+  @Transactional(readOnly = true)
   public List<ChecklistItemApiDto> findChecklist(Long memberId) {
     List<ChecklistItem> checklistItemList = checklistItemRepository.findByMemberIdOrderByCheckDate(
         memberId);
@@ -34,8 +34,8 @@ public class ChecklistServiceImpl implements ChecklistService {
     return result;
   }
 
-  @Transactional(rollbackFor = Exception.class)
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public List<ChecklistItemDto> savePreChecklistItemList(Member member,
       PreChecklistItemListDto preChecklistItemListDto) {
     return preChecklistItemListDto.getPreChecklistItems().stream()
