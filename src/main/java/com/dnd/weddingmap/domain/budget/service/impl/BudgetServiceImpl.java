@@ -6,6 +6,7 @@ import com.dnd.weddingmap.domain.member.MemberRepository;
 import com.dnd.weddingmap.domain.transaction.Transaction;
 import com.dnd.weddingmap.domain.transaction.repository.TransactionRepository;
 import com.dnd.weddingmap.domain.wedding.dto.BudgetDto;
+import com.dnd.weddingmap.global.exception.NotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class BudgetServiceImpl implements BudgetService {
   @Transactional(readOnly = true)
   public BudgetDto getCurrentBudget(Long memberId) {
     Member member = memberRepository.findById(memberId)
-        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        .orElseThrow(() -> new NotFoundException("존재하지 않는 회원입니다."));
 
     if (member.getWedding() == null) {
       throw new IllegalStateException("결혼이 등록되어 있지 않습니다.");

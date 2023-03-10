@@ -14,6 +14,7 @@ import com.dnd.weddingmap.domain.transaction.Transaction;
 import com.dnd.weddingmap.domain.transaction.repository.TransactionRepository;
 import com.dnd.weddingmap.domain.wedding.Wedding;
 import com.dnd.weddingmap.domain.wedding.dto.BudgetDto;
+import com.dnd.weddingmap.global.exception.NotFoundException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -98,10 +99,10 @@ class BudgetServiceTest {
   }
 
   @Test
-  @DisplayName("존재하지 않는 회원의 현재 예산을 조회하면 IllegalArgumentException이 발생한다.")
-  void throwIllegalArgumentExceptionByNotExistedMember() {
+  @DisplayName("존재하지 않는 회원의 현재 예산을 조회하면 NotFoundException이 발생한다.")
+  void throwNotFoundExceptionByNotExistedMember() {
     // when & then
-    assertThrows(IllegalArgumentException.class,
+    assertThrows(NotFoundException.class,
         () -> budgetService.getCurrentBudget(memberId));
   }
 }
