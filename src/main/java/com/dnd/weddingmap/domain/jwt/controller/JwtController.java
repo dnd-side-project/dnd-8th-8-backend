@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("api/v1/jwt")
+@RequiredArgsConstructor
 public class JwtController {
 
   private final JwtService jwtService;
