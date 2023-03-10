@@ -18,10 +18,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @Entity
-@NoArgsConstructor
 @Table(name = "MEMBER")
+@Getter
+@NoArgsConstructor
 public class Member extends BaseTimeEntity {
 
   @Id
