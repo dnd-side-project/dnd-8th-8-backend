@@ -19,23 +19,23 @@ public class ChecklistSubItemServiceImpl implements ChecklistSubItemService {
 
   private final ChecklistSubItemRepository checklistSubItemRepository;
 
-  @Transactional(readOnly = true)
   @Override
+  @Transactional(readOnly = true)
   public List<ChecklistSubItemDto> findChecklistSubItems(Long checklistItemId) {
     List<ChecklistSubItem> checklistSubItems = checklistSubItemRepository.findAllByChecklistItemId(
         checklistItemId);
     return checklistSubItems.stream().map(ChecklistSubItemDto::new).toList();
   }
 
-  @Transactional(rollbackFor = Exception.class)
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public ChecklistSubItem saveChecklistSubItem(ChecklistSubItemDto checklistSubItemDto,
       ChecklistItem checklistItem) {
     return checklistSubItemRepository.save(checklistSubItemDto.toEntity(checklistItem));
   }
 
-  @Transactional(rollbackFor = Exception.class)
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public boolean withdrawChecklistSubItem(Long subItemId, Long itemId) {
     ChecklistSubItem checklistSubItem = checklistSubItemRepository.findById(subItemId)
         .orElseThrow(() -> new NotFoundException("존재하지 않는 체크리스트 서브 아이템입니다."));
@@ -47,8 +47,8 @@ public class ChecklistSubItemServiceImpl implements ChecklistSubItemService {
     return true;
   }
 
-  @Transactional(rollbackFor = Exception.class)
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public ChecklistSubItem modifyChecklistSubItem(Long subItemId, Long itemId,
       ChecklistSubItemStateDto checklistSubItemStateDto) {
     ChecklistSubItem checklistSubItem = checklistSubItemRepository.findById(subItemId)

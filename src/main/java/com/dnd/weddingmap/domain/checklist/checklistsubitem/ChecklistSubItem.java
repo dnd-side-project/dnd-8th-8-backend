@@ -17,10 +17,10 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 
+@Entity
 @DynamicInsert
 @Getter
 @RequiredArgsConstructor
-@Entity
 public class ChecklistSubItem extends BaseTimeEntity {
 
   @Id

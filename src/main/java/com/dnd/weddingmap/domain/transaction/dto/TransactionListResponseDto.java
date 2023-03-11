@@ -6,8 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 public class TransactionListResponseDto {
 
   private Long id;

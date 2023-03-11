@@ -32,9 +32,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 
-@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/contract")
+@RequiredArgsConstructor
 public class ContractController {
 
   private static final String NOT_FOUND_CONTRACT_MESSAGE = "존재하지 않는 계약서입니다.";
