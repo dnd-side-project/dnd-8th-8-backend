@@ -1,0 +1,14 @@
+== 예산 API
+:doctype: book
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:seclinks:
+
+
+=== 예산 조회
+
+현재 남아있는 예산 조회가 가능합니다.
+사용자 정보 식별을 위해 ``Header``의 ``Authorization``에 사용자의 ``액세스 토큰``을 포함시켜야 합니다.
+
+operation::budget/get-current-budget/[snippets="http-request,http-response,response-fields-data"]

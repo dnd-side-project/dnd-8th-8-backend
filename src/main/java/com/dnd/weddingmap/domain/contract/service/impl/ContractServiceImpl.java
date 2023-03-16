@@ -14,14 +14,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class ContractServiceImpl implements ContractService {
 
   private final ContractRepository contractRepository;
 
-  @Transactional(rollbackFor = Exception.class)
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public ContractDto createContract(ContractDto contractDto, Member member) {
     Contract contract = Contract.builder()
         .title(contractDto.getTitle())
@@ -36,14 +36,14 @@ public class ContractServiceImpl implements ContractService {
     return new ContractDto(contractRepository.save(contract));
   }
 
-  @Transactional(readOnly = true)
   @Override
+  @Transactional(readOnly = true)
   public Optional<Contract> findContractById(Long id) {
     return contractRepository.findById(id);
   }
 
-  @Transactional(rollbackFor = Exception.class)
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public boolean withdrawContract(Long contractId) {
     return contractRepository.findById(contractId)
         .map(contract -> {
@@ -53,8 +53,8 @@ public class ContractServiceImpl implements ContractService {
         .orElse(false);
   }
 
-  @Transactional(readOnly = true)
   @Override
+  @Transactional(readOnly = true)
   public List<ContractListResponseDto> findContractList(Long memberId) {
     List<ContractListResponseDto> result = new ArrayList<>();
 
@@ -69,8 +69,8 @@ public class ContractServiceImpl implements ContractService {
     return result;
   }
 
-  @Transactional(rollbackFor = Exception.class)
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public ContractDto modifyContractFile(Long contractId, String fileUrl) {
     Contract contract = contractRepository.findById(contractId).orElseThrow(
         () -> new NotFoundException("존재하지 않는 계약서입니다.")
@@ -78,8 +78,8 @@ public class ContractServiceImpl implements ContractService {
     return new ContractDto(contract.updateFile(fileUrl));
   }
 
-  @Transactional(rollbackFor = Exception.class)
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public ContractDto modifyContract(Long contractId, ContractDto contractDto) {
     Contract contract = contractRepository.findById(contractId).orElseThrow(
         () -> new NotFoundException("존재하지 않는 계약서입니다.")

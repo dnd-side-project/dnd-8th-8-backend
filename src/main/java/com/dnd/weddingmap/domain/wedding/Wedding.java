@@ -15,8 +15,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @Entity
+@Getter
 @NoArgsConstructor
 public class Wedding extends BaseTimeEntity {
 

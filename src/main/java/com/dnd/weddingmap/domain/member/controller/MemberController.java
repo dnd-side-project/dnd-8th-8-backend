@@ -25,8 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/v1/user")
+@RequiredArgsConstructor
 public class MemberController {
 
   private final MemberService memberService;

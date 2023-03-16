@@ -18,9 +18,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
-@Getter
 @Entity
+@Getter
+@RequiredArgsConstructor
 public class Contract extends BaseTimeEntity {
 
   @Id

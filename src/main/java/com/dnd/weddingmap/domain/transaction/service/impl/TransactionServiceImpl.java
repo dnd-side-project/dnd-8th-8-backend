@@ -16,21 +16,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
 
   private final TransactionRepository transactionRepository;
 
-  @Transactional(rollbackFor = Exception.class)
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public TransactionDto createTransaction(TransactionDto dto, Member member) {
     Transaction savedTransaction = transactionRepository.save(dto.toEntity(member));
     return new TransactionDto(savedTransaction);
   }
 
-  @Transactional(readOnly = true)
   @Override
+  @Transactional(readOnly = true)
   public Transaction findTransaction(Long transactionId, Long memberId) {
     Transaction transaction = transactionRepository.findById(transactionId).orElseThrow(
         () -> new NotFoundException("존재하지 않는 예산표입니다.")
@@ -43,8 +43,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
   }
 
-  @Transactional(rollbackFor = Exception.class)
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public TransactionDto modifyTransaction(Long id, TransactionDto transactionDto) {
     Transaction transaction = transactionRepository.findById(id).orElseThrow(
         () -> new BadRequestException("존재하지 않는 예산표입니다."));
@@ -52,8 +52,8 @@ public class TransactionServiceImpl implements TransactionService {
     return new TransactionDto(transaction.update(transactionDto));
   }
 
-  @Transactional(rollbackFor = Exception.class)
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public boolean withdrawTransaction(Long id) {
     return transactionRepository.findById(id)
         .map(transaction -> {
@@ -63,8 +63,8 @@ public class TransactionServiceImpl implements TransactionService {
         .orElse(false);
   }
 
-  @Transactional(readOnly = true)
   @Override
+  @Transactional(readOnly = true)
   public List<TransactionListResponseDto> findTransactionList(Long memberId) {
     List<Transaction> transactionList =
         transactionRepository.findByMemberIdOrderByTransactionDate(memberId);

@@ -21,9 +21,9 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-@Slf4j
-@RequiredArgsConstructor
 @Component
+@RequiredArgsConstructor
+@Slf4j
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
   @Value("${app.oauth2.authorized-redirect-uri}")

@@ -17,9 +17,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Entity
 @Getter
 @RequiredArgsConstructor
-@Entity
 public class ChecklistItem extends BaseTimeEntity {
 
   @Id

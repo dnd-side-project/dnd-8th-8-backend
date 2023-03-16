@@ -21,9 +21,11 @@ public class S3Service {
   private final AmazonS3 amazonS3;
 
   public String upload(MultipartFile multipartFile, String directory) throws IOException {
+    String pathDelimiter = "/";
+
     String fileName = multipartFile.getOriginalFilename();
     String uuid = UUID.randomUUID().toString();
-    String saveFileName = directory + "/" + uuid + "_" + fileName;
+    String saveFileName = directory + pathDelimiter + uuid + "_" + fileName;
 
     ObjectMetadata objectMetadata = new ObjectMetadata();
     objectMetadata.setContentType(multipartFile.getContentType());
