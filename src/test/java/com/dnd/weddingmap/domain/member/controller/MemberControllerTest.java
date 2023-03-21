@@ -28,13 +28,16 @@ import com.dnd.weddingmap.domain.member.dto.NameDto;
 import com.dnd.weddingmap.domain.member.service.MemberService;
 import com.dnd.weddingmap.global.WithMockOAuth2User;
 import com.dnd.weddingmap.global.service.S3Service;
+import com.dnd.weddingmap.global.util.MessageUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
@@ -57,6 +60,14 @@ class MemberControllerTest extends AbstractRestDocsTests {
 
   @Autowired
   ObjectMapper objectMapper;
+
+  @Autowired
+  MessageSource messageSource;
+
+  @BeforeEach
+  void init() {
+    MessageUtil.setMessageSource(messageSource);
+  }
 
   @Test
   @DisplayName("사용자 이름 변경")
