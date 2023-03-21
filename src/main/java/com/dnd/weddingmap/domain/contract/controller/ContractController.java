@@ -13,6 +13,7 @@ import com.dnd.weddingmap.global.exception.NotFoundException;
 import com.dnd.weddingmap.global.exception.RequestTimeoutException;
 import com.dnd.weddingmap.global.response.SuccessResponse;
 import com.dnd.weddingmap.global.service.S3Service;
+import com.dnd.weddingmap.global.util.MessageUtil;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Objects;
@@ -61,7 +62,8 @@ public class ContractController {
     ContractDto savedContract = contractService.createContract(requestDto, member);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(
-        SuccessResponse.builder().httpStatus(HttpStatus.CREATED).message("계약서 등록 성공")
+        SuccessResponse.builder().httpStatus(HttpStatus.CREATED)
+            .message(MessageUtil.getMessage("success.createContract.msg"))
             .data(savedContract).build());
   }
 
@@ -91,7 +93,9 @@ public class ContractController {
     if (!result) {
       throw new NotFoundException(NOT_FOUND_CONTRACT_MESSAGE);
     }
-    return ResponseEntity.ok(SuccessResponse.builder().message("계약서 삭제 성공").build());
+    return ResponseEntity.ok(
+        SuccessResponse.builder().message(MessageUtil.getMessage("success.withdrawContract.msg"))
+            .build());
   }
 
   @GetMapping
@@ -128,7 +132,10 @@ public class ContractController {
 
     ContractDto result = contractService.modifyContractFile(contractId, fileUrl);
     return ResponseEntity.ok()
-        .body(SuccessResponse.builder().message("계약서 파일 수정 성공").data(result).build());
+        .body(
+            SuccessResponse.builder()
+                .message(MessageUtil.getMessage("success.modifyContractFile.msg"))
+                .data(result).build());
   }
 
   @PutMapping("/{contract-id}")
@@ -140,7 +147,9 @@ public class ContractController {
 
     ContractDto result = contractService.modifyContract(contract.getId(), requestDto);
     return ResponseEntity.ok()
-        .body(SuccessResponse.builder().message("계약서 수정 성공").data(result).build());
+        .body(
+            SuccessResponse.builder().message(MessageUtil.getMessage("success.modifyContract.msg"))
+                .data(result).build());
   }
 
   private Contract checkPermission(Long contractId, Long memberId) {

@@ -12,6 +12,7 @@ import com.dnd.weddingmap.domain.oauth.CustomUserDetails;
 import com.dnd.weddingmap.global.exception.InternalServerErrorException;
 import com.dnd.weddingmap.global.exception.NotFoundException;
 import com.dnd.weddingmap.global.response.SuccessResponse;
+import com.dnd.weddingmap.global.util.MessageUtil;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -65,7 +66,8 @@ public class ChecklistItemController {
       throw new InternalServerErrorException("체크리스트 아이템 등록에 실패하였습니다.");
     }
     return ResponseEntity.status(HttpStatus.CREATED).body(
-        SuccessResponse.builder().httpStatus(HttpStatus.CREATED).message("체크리스트 아이템 등록 성공")
+        SuccessResponse.builder().httpStatus(HttpStatus.CREATED)
+            .message(MessageUtil.getMessage("success.createChecklistItem.msg"))
             .data(savedChecklistItem).build());
   }
 
@@ -80,7 +82,8 @@ public class ChecklistItemController {
     ChecklistItemApiDto modifiedChecklistItem =
         checklistItemService.modifyChecklistItem(checklistItem.getId(), requestDto);
     return ResponseEntity.ok().body(
-        SuccessResponse.builder().message("체크리스트 아이템 수정 성공").data(modifiedChecklistItem).build());
+        SuccessResponse.builder().message(MessageUtil.getMessage("success.modifyChecklistItem.msg"))
+            .data(modifiedChecklistItem).build());
   }
 
   @DeleteMapping("/{item-id}")
@@ -94,6 +97,7 @@ public class ChecklistItemController {
     if (!result) {
       throw new NotFoundException("존재하지 않는 체크리스트입니다.");
     }
-    return ResponseEntity.ok(SuccessResponse.builder().message("체크리스트 삭제 성공").build());
+    return ResponseEntity.ok(SuccessResponse.builder()
+        .message(MessageUtil.getMessage("success.withdrawChecklistItem.msg")).build());
   }
 }

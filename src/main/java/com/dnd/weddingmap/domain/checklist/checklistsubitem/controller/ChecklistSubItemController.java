@@ -12,6 +12,7 @@ import com.dnd.weddingmap.global.exception.BadRequestException;
 import com.dnd.weddingmap.global.exception.InternalServerErrorException;
 import com.dnd.weddingmap.global.exception.NotFoundException;
 import com.dnd.weddingmap.global.response.SuccessResponse;
+import com.dnd.weddingmap.global.util.MessageUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -47,7 +48,8 @@ public class ChecklistSubItemController {
       throw new InternalServerErrorException("체크리스트 서브 아이템 등록에 실패하였습니다.");
     }
     return ResponseEntity.status(HttpStatus.CREATED)
-        .body(SuccessResponse.builder().httpStatus(HttpStatus.CREATED).message("체크리스트 서브 아이템 등록 성공")
+        .body(SuccessResponse.builder().httpStatus(HttpStatus.CREATED)
+            .message(MessageUtil.getMessage("success.createChecklistSubItem.msg"))
             .data(new ChecklistSubItemDto(checklistSubItem)).build());
   }
 
@@ -64,7 +66,8 @@ public class ChecklistSubItemController {
     if (!result) {
       throw new NotFoundException("체크리스트 서브 아이템 삭제에 실패하였습니다.");
     }
-    return ResponseEntity.ok(SuccessResponse.builder().message("체크리스트 서브 아이템 삭제 성공").build());
+    return ResponseEntity.ok(SuccessResponse.builder()
+        .message(MessageUtil.getMessage("success.withdrawChecklistSubItem.msg")).build());
   }
 
   @PutMapping("/{sub-item-id}")
@@ -82,7 +85,8 @@ public class ChecklistSubItemController {
       throw new BadRequestException("체크리스트 아이템과 요청한 서브 아이템이 매칭되지 않습니다.");
     }
     return ResponseEntity.ok(
-        SuccessResponse.builder().message("체크리스트 서브 아이템 체크 여부 수정 성공")
+        SuccessResponse.builder()
+            .message(MessageUtil.getMessage("success.modifyChecklistSubItem.msg"))
             .data(new ChecklistSubItemDto(modifiedChecklistSubItem)).build());
   }
 }

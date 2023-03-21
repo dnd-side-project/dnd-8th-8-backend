@@ -10,6 +10,7 @@ import com.dnd.weddingmap.domain.transaction.service.TransactionService;
 import com.dnd.weddingmap.global.exception.InternalServerErrorException;
 import com.dnd.weddingmap.global.exception.NotFoundException;
 import com.dnd.weddingmap.global.response.SuccessResponse;
+import com.dnd.weddingmap.global.util.MessageUtil;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +47,8 @@ public class TransactionController {
       throw new InternalServerErrorException("예산표 등록에 실패하였습니다.");
     }
     return ResponseEntity.status(HttpStatus.CREATED).body(
-        SuccessResponse.builder().httpStatus(HttpStatus.CREATED).message("예산표 등록 성공")
+        SuccessResponse.builder().httpStatus(HttpStatus.CREATED)
+            .message(MessageUtil.getMessage("success.createTransaction.msg"))
             .data(savedTransaction).build());
   }
 
@@ -82,7 +84,9 @@ public class TransactionController {
     if (!result) {
       throw new NotFoundException("존재하지 않는 예산표입니다.");
     }
-    return ResponseEntity.ok(SuccessResponse.builder().message("예산표 삭제 성공").build());
+    return ResponseEntity.ok(
+        SuccessResponse.builder().message(MessageUtil.getMessage("success.withdrawTransaction.msg")
+        ).build());
   }
 
   @GetMapping
