@@ -49,7 +49,8 @@ public class MemberController {
       @AuthenticationPrincipal CustomUserDetails user) {
 
     Gender gender = memberService.getGender(user.getId())
-        .orElseThrow(() -> new NotFoundException("성별 정보가 존재하지 않습니다."));
+        .orElseThrow(
+            () -> new NotFoundException(MessageUtil.getMessage("notFound.gender.exception.msg")));
 
     return ResponseEntity.ok(SuccessResponse.builder()
         .data(new GenderDto(gender))
@@ -72,7 +73,8 @@ public class MemberController {
       @AuthenticationPrincipal CustomUserDetails user) {
 
     String profileImage = memberService.getProfileImage(user.getId())
-        .orElseThrow(() -> new NotFoundException("프로필 이미지가 존재하지 않습니다."));
+        .orElseThrow(() -> new NotFoundException(
+            MessageUtil.getMessage("notFound.profileImage.exception.msg")));
 
     return ResponseEntity.ok(SuccessResponse.builder()
         .data(new ProfileImageDto(profileImage))
@@ -89,7 +91,8 @@ public class MemberController {
     try {
       imageUrl = s3Service.upload(imageFile, "profile");
     } catch (Exception e) {
-      throw new RequestTimeoutException("이미지 업로드에 실패했습니다.");
+      throw new RequestTimeoutException(
+          MessageUtil.getMessage("failure.uploadProfileImage.exception.msg"));
     }
     memberService.putProfileImage(user.getId(), imageUrl);
 
@@ -105,7 +108,7 @@ public class MemberController {
     boolean result = memberService.withdraw(user.getId());
 
     if (!result) {
-      throw new NotFoundException("회원 정보가 존재하지 않습니다.");
+      throw new NotFoundException(MessageUtil.getMessage("notFound.userInfo.exception.msg"));
     }
     return ResponseEntity.ok(
         SuccessResponse.builder().message(MessageUtil.getMessage("success.withdrawUser.msg"))

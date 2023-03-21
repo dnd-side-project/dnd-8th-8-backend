@@ -45,7 +45,8 @@ public class ChecklistSubItemController {
     ChecklistSubItem checklistSubItem = checklistSubItemService.saveChecklistSubItem(
         checklistSubItemDto, checklistItem);
     if (checklistSubItem == null) {
-      throw new InternalServerErrorException("체크리스트 서브 아이템 등록에 실패하였습니다.");
+      throw new InternalServerErrorException(
+          MessageUtil.getMessage("failure.createChecklistSubItem.exception.msg"));
     }
     return ResponseEntity.status(HttpStatus.CREATED)
         .body(SuccessResponse.builder().httpStatus(HttpStatus.CREATED)
@@ -64,7 +65,8 @@ public class ChecklistSubItemController {
     boolean result = checklistSubItemService.withdrawChecklistSubItem(checklistSubItemId,
         checklistItem.getId());
     if (!result) {
-      throw new NotFoundException("체크리스트 서브 아이템 삭제에 실패하였습니다.");
+      throw new NotFoundException(
+          MessageUtil.getMessage("failure.withdrawChecklistSubItem.exception.msg"));
     }
     return ResponseEntity.ok(SuccessResponse.builder()
         .message(MessageUtil.getMessage("success.withdrawChecklistSubItem.msg")).build());
@@ -82,7 +84,8 @@ public class ChecklistSubItemController {
     ChecklistSubItem modifiedChecklistSubItem = checklistSubItemService.modifyChecklistSubItem(
         checklistSubItemId, checklistItem.getId(), checklistSubItemStateDto);
     if (modifiedChecklistSubItem == null) {
-      throw new BadRequestException("체크리스트 아이템과 요청한 서브 아이템이 매칭되지 않습니다.");
+      throw new BadRequestException(
+          MessageUtil.getMessage("notMatching.checklistItem.exception.msg"));
     }
     return ResponseEntity.ok(
         SuccessResponse.builder()

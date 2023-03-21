@@ -38,7 +38,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class ContractController {
 
-  private static final String NOT_FOUND_CONTRACT_MESSAGE = "존재하지 않는 계약서입니다.";
   private static final String CONTRACT_DIRECTORY = "contract";
   private final MemberService memberService;
   private final ContractService contractService;
@@ -50,13 +49,15 @@ public class ContractController {
       @RequestPart("data") @Valid ContractDto requestDto,
       @RequestPart("file") MultipartFile file) {
     Member member = memberService.findMember(user.getId())
-        .orElseThrow(() -> new NotFoundException("존재하지 않는 사용자입니다."));
+        .orElseThrow(
+            () -> new NotFoundException(MessageUtil.getMessage("notFound.user.exception.msg")));
 
     String fileUrl;
     try {
       fileUrl = s3Service.upload(file, CONTRACT_DIRECTORY);
     } catch (Exception e) {
-      throw new RequestTimeoutException("계약서 파일 업로드에 실패했습니다.");
+      throw new RequestTimeoutException(
+          MessageUtil.getMessage("failure.uploadContractFile.exception.msg"));
     }
     requestDto.setFile(fileUrl);
     ContractDto savedContract = contractService.createContract(requestDto, member);
@@ -86,12 +87,13 @@ public class ContractController {
     try {
       s3Service.delete(contract.getFile(), CONTRACT_DIRECTORY);
     } catch (Exception e) {
-      throw new AmazonS3Exception("계약서 파일 삭제에 실패했습니다.");
+      throw new AmazonS3Exception(
+          MessageUtil.getMessage("failure.withdrawContractFile.exception.msg"));
     }
 
     boolean result = contractService.withdrawContract(contractId);
     if (!result) {
-      throw new NotFoundException(NOT_FOUND_CONTRACT_MESSAGE);
+      throw new NotFoundException(MessageUtil.getMessage("notFound.contract.exception.msg"));
     }
     return ResponseEntity.ok(
         SuccessResponse.builder().message(MessageUtil.getMessage("success.withdrawContract.msg"))
@@ -102,7 +104,8 @@ public class ContractController {
   public ResponseEntity<SuccessResponse> getContractList(
       @AuthenticationPrincipal CustomUserDetails user) {
     Member member = memberService.findMember(user.getId())
-        .orElseThrow(() -> new NotFoundException("존재하지 않는 사용자입니다."));
+        .orElseThrow(
+            () -> new NotFoundException(MessageUtil.getMessage("notFound.user.exception.msg")));
 
     List<ContractListResponseDto> contractList = contractService.findContractList(member.getId());
 
@@ -120,14 +123,16 @@ public class ContractController {
     try {
       s3Service.delete(contract.getFile(), CONTRACT_DIRECTORY);
     } catch (Exception e) {
-      throw new AmazonS3Exception("계약서 파일 삭제에 실패했습니다.");
+      throw new AmazonS3Exception(
+          MessageUtil.getMessage("failure.withdrawContractFile.exception.msg"));
     }
 
     String fileUrl;
     try {
       fileUrl = s3Service.upload(file, CONTRACT_DIRECTORY);
     } catch (Exception e) {
-      throw new RequestTimeoutException("계약서 파일 수정에 실패했습니다.");
+      throw new RequestTimeoutException(
+          MessageUtil.getMessage("failure.modifyContractFile.exception.msg"));
     }
 
     ContractDto result = contractService.modifyContractFile(contractId, fileUrl);
@@ -154,12 +159,13 @@ public class ContractController {
 
   private Contract checkPermission(Long contractId, Long memberId) {
     Contract contract = contractService.findContractById(contractId)
-        .orElseThrow(() -> new NotFoundException(NOT_FOUND_CONTRACT_MESSAGE));
+        .orElseThrow(
+            () -> new NotFoundException(MessageUtil.getMessage("notFound.contract.exception.msg")));
 
     if (Objects.equals(contract.getMember().getId(), memberId)) {
       return contract;
     } else {
-      throw new ForbiddenException("접근할 수 없는 계약서입니다.");
+      throw new ForbiddenException(MessageUtil.getMessage("inaccessible.contract.exception.msg"));
     }
   }
 }

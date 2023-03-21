@@ -7,6 +7,7 @@ import com.dnd.weddingmap.domain.checklist.checklistsubitem.dto.ChecklistSubItem
 import com.dnd.weddingmap.domain.checklist.checklistsubitem.repository.ChecklistSubItemRepository;
 import com.dnd.weddingmap.domain.checklist.checklistsubitem.service.ChecklistSubItemService;
 import com.dnd.weddingmap.global.exception.NotFoundException;
+import com.dnd.weddingmap.global.util.MessageUtil;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,8 @@ public class ChecklistSubItemServiceImpl implements ChecklistSubItemService {
   @Transactional(rollbackFor = Exception.class)
   public boolean withdrawChecklistSubItem(Long subItemId, Long itemId) {
     ChecklistSubItem checklistSubItem = checklistSubItemRepository.findById(subItemId)
-        .orElseThrow(() -> new NotFoundException("존재하지 않는 체크리스트 서브 아이템입니다."));
+        .orElseThrow(() -> new NotFoundException(
+            MessageUtil.getMessage("notFound.checklistSubItem.exception.msg")));
 
     if (!Objects.equals(checklistSubItem.getChecklistItem().getId(), itemId)) {
       return false;
@@ -52,7 +54,8 @@ public class ChecklistSubItemServiceImpl implements ChecklistSubItemService {
   public ChecklistSubItem modifyChecklistSubItem(Long subItemId, Long itemId,
       ChecklistSubItemStateDto checklistSubItemStateDto) {
     ChecklistSubItem checklistSubItem = checklistSubItemRepository.findById(subItemId)
-        .orElseThrow(() -> new NotFoundException("존재하지 않는 체크리스트 서브 아이템입니다."));
+        .orElseThrow(() -> new NotFoundException(
+            MessageUtil.getMessage("notFound.checklistSubItem.exception.msg")));
 
     if (!Objects.equals(checklistSubItem.getChecklistItem().getId(), itemId)) {
       return null;

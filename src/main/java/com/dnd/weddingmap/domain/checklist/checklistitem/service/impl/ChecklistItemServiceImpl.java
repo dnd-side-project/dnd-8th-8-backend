@@ -12,6 +12,7 @@ import com.dnd.weddingmap.domain.member.Member;
 import com.dnd.weddingmap.global.exception.BadRequestException;
 import com.dnd.weddingmap.global.exception.ForbiddenException;
 import com.dnd.weddingmap.global.exception.NotFoundException;
+import com.dnd.weddingmap.global.util.MessageUtil;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -92,7 +93,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
         checklistItemId);
 
     if (checklistItem.isEmpty()) {
-      throw new BadRequestException("not existed checklist item");
+      throw new BadRequestException(MessageUtil.getMessage("notFound.checklistItem.exception.msg"));
     }
     return checklistItem.get().update(checklistItemDto);
   }
@@ -111,7 +112,8 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
         checklistSubItemDto.getId());
 
     if (checklistSubItem.isEmpty()) {
-      throw new BadRequestException("not existed checklist sub-item");
+      throw new BadRequestException(
+          MessageUtil.getMessage("notFound.checklistSubItem.exception.msg"));
     }
     return checklistSubItem.get().update(checklistSubItemDto);
   }
@@ -131,12 +133,14 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
   @Transactional(readOnly = true)
   public ChecklistItem findChecklistItem(Long checklistItemId, Long memberId) {
     ChecklistItem checklistItem = checklistItemRepository.findById(checklistItemId).orElseThrow(
-        () -> new NotFoundException("존재하지 않는 체크리스트입니다."));
+        () -> new NotFoundException(
+            MessageUtil.getMessage("notFound.checklistItem.exception.msg")));
 
     if (Objects.equals(checklistItem.getMember().getId(), memberId)) {
       return checklistItem;
     } else {
-      throw new ForbiddenException("접근할 수 없는 체크리스트입니다.");
+      throw new ForbiddenException(
+          MessageUtil.getMessage("inaccessible.checklistItem.exception.msg"));
     }
   }
 }

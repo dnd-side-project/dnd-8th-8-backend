@@ -58,12 +58,14 @@ public class ChecklistItemController {
       @AuthenticationPrincipal CustomUserDetails user,
       @RequestBody @Valid ChecklistItemApiDto requestDto) {
     Member member = memberService.findMember(user.getId())
-        .orElseThrow(() -> new NotFoundException("not found user"));
+        .orElseThrow(
+            () -> new NotFoundException(MessageUtil.getMessage("notFound.user.exception.msg")));
     ChecklistItemApiDto savedChecklistItem = checklistItemService.createChecklistItem(
         requestDto, member);
 
     if (savedChecklistItem == null) {
-      throw new InternalServerErrorException("체크리스트 아이템 등록에 실패하였습니다.");
+      throw new InternalServerErrorException(
+          MessageUtil.getMessage("failure.createChecklistItem.exception.msg"));
     }
     return ResponseEntity.status(HttpStatus.CREATED).body(
         SuccessResponse.builder().httpStatus(HttpStatus.CREATED)
@@ -95,7 +97,7 @@ public class ChecklistItemController {
 
     boolean result = checklistItemService.withdrawChecklistItem(checklistItem.getId());
     if (!result) {
-      throw new NotFoundException("존재하지 않는 체크리스트입니다.");
+      throw new NotFoundException(MessageUtil.getMessage("notFound.checklistItem.exception.msg"));
     }
     return ResponseEntity.ok(SuccessResponse.builder()
         .message(MessageUtil.getMessage("success.withdrawChecklistItem.msg")).build());

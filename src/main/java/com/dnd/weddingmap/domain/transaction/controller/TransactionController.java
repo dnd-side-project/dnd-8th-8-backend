@@ -39,12 +39,14 @@ public class TransactionController {
       @AuthenticationPrincipal CustomUserDetails user,
       @RequestBody @Valid TransactionDto requestDto) {
     Member member = memberService.findMember(user.getId())
-        .orElseThrow(() -> new NotFoundException("존재하지 않는 사용자입니다."));
+        .orElseThrow(
+            () -> new NotFoundException(MessageUtil.getMessage("notFound.user.exception.msg")));
     TransactionDto savedTransaction = transactionService.createTransaction(
         requestDto, member);
 
     if (savedTransaction == null) {
-      throw new InternalServerErrorException("예산표 등록에 실패하였습니다.");
+      throw new InternalServerErrorException(
+          MessageUtil.getMessage("failure.createTransaction.exception.msg"));
     }
     return ResponseEntity.status(HttpStatus.CREATED).body(
         SuccessResponse.builder().httpStatus(HttpStatus.CREATED)
@@ -82,7 +84,7 @@ public class TransactionController {
 
     boolean result = transactionService.withdrawTransaction(transaction.getId());
     if (!result) {
-      throw new NotFoundException("존재하지 않는 예산표입니다.");
+      throw new NotFoundException(MessageUtil.getMessage("notFound.transaction.exception.msg"));
     }
     return ResponseEntity.ok(
         SuccessResponse.builder().message(MessageUtil.getMessage("success.withdrawTransaction.msg")
@@ -93,7 +95,8 @@ public class TransactionController {
   public ResponseEntity<SuccessResponse> getTransactionList(
       @AuthenticationPrincipal CustomUserDetails user) {
     Member member = memberService.findMember(user.getId())
-        .orElseThrow(() -> new NotFoundException("존재하지 않는 사용자입니다."));
+        .orElseThrow(
+            () -> new NotFoundException(MessageUtil.getMessage("notFound.user.exception.msg")));
     List<TransactionListResponseDto> transactionList = transactionService.findTransactionList(
         member.getId());
 
