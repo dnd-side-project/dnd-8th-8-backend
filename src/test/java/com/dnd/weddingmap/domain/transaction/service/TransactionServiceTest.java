@@ -18,6 +18,7 @@ import com.dnd.weddingmap.domain.transaction.dto.TransactionListResponseDto;
 import com.dnd.weddingmap.domain.transaction.repository.TransactionRepository;
 import com.dnd.weddingmap.domain.transaction.service.impl.TransactionServiceImpl;
 import com.dnd.weddingmap.global.exception.ForbiddenException;
+import com.dnd.weddingmap.global.util.MessageUtil;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +29,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 
 @ExtendWith(MockitoExtension.class)
 class TransactionServiceTest {
@@ -36,6 +38,8 @@ class TransactionServiceTest {
   TransactionServiceImpl transactionService;
   @Mock
   TransactionRepository transactionRepository;
+  @Mock
+  MessageSource messageSource;
 
   Long transactionId = 1L;
   Long memberId = 1L;
@@ -79,6 +83,8 @@ class TransactionServiceTest {
         .memo("test memo")
         .member(member)
         .build();
+
+    MessageUtil.setMessageSource(messageSource);
   }
 
   @Test

@@ -19,6 +19,7 @@ import com.dnd.weddingmap.domain.member.Member;
 import com.dnd.weddingmap.domain.member.Role;
 import com.dnd.weddingmap.domain.oauth.OAuth2Provider;
 import com.dnd.weddingmap.global.exception.NotFoundException;
+import com.dnd.weddingmap.global.util.MessageUtil;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +30,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 
 @ExtendWith(MockitoExtension.class)
 class ContractServiceTest {
@@ -43,6 +45,9 @@ class ContractServiceTest {
   ContractServiceImpl contractService;
   @Mock
   ContractRepository contractRepository;
+
+  @Mock
+  MessageSource messageSource;
 
   @BeforeEach
   void init() {
@@ -74,6 +79,7 @@ class ContractServiceTest {
         .file("test_file_url")
         .memo("test_memo")
         .build();
+    MessageUtil.setMessageSource(messageSource);
   }
 
   @Test
