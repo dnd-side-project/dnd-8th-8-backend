@@ -9,6 +9,7 @@ import com.dnd.weddingmap.domain.transaction.service.TransactionService;
 import com.dnd.weddingmap.global.exception.BadRequestException;
 import com.dnd.weddingmap.global.exception.ForbiddenException;
 import com.dnd.weddingmap.global.exception.NotFoundException;
+import com.dnd.weddingmap.global.util.MessageUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -33,13 +34,14 @@ public class TransactionServiceImpl implements TransactionService {
   @Transactional(readOnly = true)
   public Transaction findTransaction(Long transactionId, Long memberId) {
     Transaction transaction = transactionRepository.findById(transactionId).orElseThrow(
-        () -> new NotFoundException("존재하지 않는 예산표입니다.")
+        () -> new NotFoundException(MessageUtil.getMessage("transaction.notFound.exception"))
     );
 
     if (Objects.equals(transaction.getMember().getId(), memberId)) {
       return transaction;
     } else {
-      throw new ForbiddenException("접근할 수 없는 예산표입니다.");
+      throw new ForbiddenException(
+          MessageUtil.getMessage("transaction.forbidden.exception"));
     }
   }
 
@@ -47,7 +49,8 @@ public class TransactionServiceImpl implements TransactionService {
   @Transactional(rollbackFor = Exception.class)
   public TransactionDto modifyTransaction(Long id, TransactionDto transactionDto) {
     Transaction transaction = transactionRepository.findById(id).orElseThrow(
-        () -> new BadRequestException("존재하지 않는 예산표입니다."));
+        () -> new BadRequestException(
+            MessageUtil.getMessage("transaction.notFound.exception")));
 
     return new TransactionDto(transaction.update(transactionDto));
   }

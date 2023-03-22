@@ -27,15 +27,19 @@ import com.dnd.weddingmap.domain.member.Role;
 import com.dnd.weddingmap.domain.member.service.MemberService;
 import com.dnd.weddingmap.domain.oauth.OAuth2Provider;
 import com.dnd.weddingmap.global.WithMockOAuth2User;
+import com.dnd.weddingmap.global.util.MessageUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -56,7 +60,8 @@ class ChecklistControllerTest extends AbstractRestDocsTests {
   MemberService memberService;
   @MockBean
   JwtTokenProvider jwtTokenProvider;
-
+  @Autowired
+  MessageSource messageSource;
   private final ChecklistItemDto checklistItemDto = ChecklistItemDto.builder()
       .id(1L)
       .title("title")
@@ -91,6 +96,11 @@ class ChecklistControllerTest extends AbstractRestDocsTests {
       .role(Role.USER)
       .oauth2Provider(OAuth2Provider.GOOGLE)
       .build();
+
+  @BeforeEach
+  void init() {
+    MessageUtil.setMessageSource(messageSource);
+  }
 
   @Test
   @WithMockOAuth2User

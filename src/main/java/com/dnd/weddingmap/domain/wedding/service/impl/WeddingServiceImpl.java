@@ -7,6 +7,7 @@ import com.dnd.weddingmap.domain.wedding.dto.BudgetDto;
 import com.dnd.weddingmap.domain.wedding.dto.WeddingDayDto;
 import com.dnd.weddingmap.domain.wedding.repository.WeddingRepository;
 import com.dnd.weddingmap.domain.wedding.service.WeddingService;
+import com.dnd.weddingmap.global.util.MessageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,10 +24,12 @@ public class WeddingServiceImpl implements WeddingService {
   public Long registerWedding(Long memberId, WeddingDayDto weddingDayDto) {
 
     Member member = memberRepository.findById(memberId)
-        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        .orElseThrow(() -> new IllegalArgumentException(
+            MessageUtil.getMessage("member.notFound.exception")));
 
     if (member.getWedding() != null) {
-      throw new IllegalStateException("결혼이 이미 등록되어 있습니다.");
+      throw new IllegalStateException(
+          MessageUtil.getMessage("wedding.alreadyRegistered.exception"));
     }
 
     Wedding wedding = weddingRepository.save(
@@ -42,10 +45,12 @@ public class WeddingServiceImpl implements WeddingService {
   public void modifyWeddingDay(Long memberId, WeddingDayDto weddingDayDto) {
 
     Member member = memberRepository.findById(memberId)
-        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        .orElseThrow(() -> new IllegalArgumentException(
+            MessageUtil.getMessage("member.notFound.exception")));
 
     if (member.getWedding() == null) {
-      throw new IllegalStateException("결혼이 등록되어 있지 않습니다.");
+      throw new IllegalStateException(
+          MessageUtil.getMessage("wedding.notRegistered.exception"));
     }
 
     Wedding wedding = member.getWedding();
@@ -59,10 +64,12 @@ public class WeddingServiceImpl implements WeddingService {
   public WeddingDayDto getWeddingDay(Long memberId) {
 
     Member member = memberRepository.findById(memberId)
-        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        .orElseThrow(() -> new IllegalArgumentException(
+            MessageUtil.getMessage("member.notFound.exception")));
 
     if (member.getWedding() == null) {
-      throw new IllegalStateException("결혼이 등록되어 있지 않습니다.");
+      throw new IllegalStateException(
+          MessageUtil.getMessage("wedding.notRegistered.exception"));
     }
 
     return WeddingDayDto.builder()
@@ -76,10 +83,12 @@ public class WeddingServiceImpl implements WeddingService {
   public void modifyBudget(Long memberId, BudgetDto budgetDto) {
 
     Member member = memberRepository.findById(memberId)
-        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        .orElseThrow(() -> new IllegalArgumentException(
+            MessageUtil.getMessage("member.notFound.exception")));
 
     if (member.getWedding() == null) {
-      throw new IllegalStateException("결혼이 등록되어 있지 않습니다.");
+      throw new IllegalStateException(
+          MessageUtil.getMessage("wedding.notRegistered.exception"));
     }
 
     Wedding wedding = member.getWedding();
@@ -92,10 +101,12 @@ public class WeddingServiceImpl implements WeddingService {
   public BudgetDto getBudget(Long memberId) {
 
     Member member = memberRepository.findById(memberId)
-        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        .orElseThrow(() -> new IllegalArgumentException(
+            MessageUtil.getMessage("member.notFound.exception")));
 
     if (member.getWedding() == null) {
-      throw new IllegalStateException("결혼이 등록되어 있지 않습니다.");
+      throw new IllegalStateException(
+          MessageUtil.getMessage("wedding.notRegistered.exception"));
     }
 
     return BudgetDto.builder()

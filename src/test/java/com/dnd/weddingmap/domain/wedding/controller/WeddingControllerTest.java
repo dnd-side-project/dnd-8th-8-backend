@@ -20,13 +20,16 @@ import com.dnd.weddingmap.domain.wedding.dto.BudgetDto;
 import com.dnd.weddingmap.domain.wedding.dto.WeddingDayDto;
 import com.dnd.weddingmap.domain.wedding.service.WeddingService;
 import com.dnd.weddingmap.global.WithMockOAuth2User;
+import com.dnd.weddingmap.global.util.MessageUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
@@ -44,6 +47,14 @@ class WeddingControllerTest extends AbstractRestDocsTests {
 
   @Autowired
   ObjectMapper objectMapper;
+
+  @Autowired
+  MessageSource messageSource;
+
+  @BeforeEach
+  void init() {
+    MessageUtil.setMessageSource(messageSource);
+  }
 
   @Test
   @DisplayName("결혼 등록 테스트")

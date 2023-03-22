@@ -28,6 +28,7 @@ import com.dnd.weddingmap.domain.member.Role;
 import com.dnd.weddingmap.domain.member.service.MemberService;
 import com.dnd.weddingmap.domain.oauth.OAuth2Provider;
 import com.dnd.weddingmap.global.WithMockOAuth2User;
+import com.dnd.weddingmap.global.util.MessageUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.LocalDate;
@@ -35,8 +36,10 @@ import java.time.LocalTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -58,6 +61,8 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
   @MockBean
   JwtTokenProvider jwtTokenProvider;
 
+  @Autowired
+  MessageSource messageSource;
   private ObjectMapper objectMapper;
 
   private final Member member = Member.builder()
@@ -90,6 +95,7 @@ class ChecklistSubItemControllerTest extends AbstractRestDocsTests {
   void init() {
     objectMapper = new ObjectMapper();
     objectMapper.registerModule(new JavaTimeModule());
+    MessageUtil.setMessageSource(messageSource);
   }
 
   @Test

@@ -9,6 +9,7 @@ import com.dnd.weddingmap.domain.member.service.MemberService;
 import com.dnd.weddingmap.domain.oauth.CustomUserDetails;
 import com.dnd.weddingmap.global.exception.NotFoundException;
 import com.dnd.weddingmap.global.response.SuccessResponse;
+import com.dnd.weddingmap.global.util.MessageUtil;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,8 @@ public class ChecklistController {
   public ResponseEntity<SuccessResponse> getChecklist(
       @AuthenticationPrincipal CustomUserDetails user) {
     Member member = memberService.findMember(user.getId())
-        .orElseThrow(() -> new NotFoundException("존재하지 않는 사용자입니다."));
+        .orElseThrow(
+            () -> new NotFoundException(MessageUtil.getMessage("member.notFound.exception")));
 
     List<ChecklistItemApiDto> result = checklistService.findChecklist(member.getId());
     return ResponseEntity.ok().body(SuccessResponse.builder().data(result).build());
@@ -44,13 +46,15 @@ public class ChecklistController {
       @AuthenticationPrincipal CustomUserDetails user,
       @RequestBody @Valid PreChecklistItemListDto preChecklistItemListDto) {
     Member member = memberService.findMember(user.getId())
-        .orElseThrow(() -> new NotFoundException("존재하지 않는 사용자입니다."));
+        .orElseThrow(
+            () -> new NotFoundException(MessageUtil.getMessage("member.notFound.exception")));
 
     List<ChecklistItemDto> result = checklistService.savePreChecklistItemList(member,
         preChecklistItemListDto);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(
-        SuccessResponse.builder().httpStatus(HttpStatus.CREATED).message("체크리스트 사전 등록 성공")
+        SuccessResponse.builder().httpStatus(HttpStatus.CREATED)
+            .message(MessageUtil.getMessage("checklist.onboarding.register.success"))
             .data(result).build());
   }
 }

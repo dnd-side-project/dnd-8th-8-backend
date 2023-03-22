@@ -15,6 +15,7 @@ import com.dnd.weddingmap.domain.transaction.repository.TransactionRepository;
 import com.dnd.weddingmap.domain.wedding.Wedding;
 import com.dnd.weddingmap.domain.wedding.dto.BudgetDto;
 import com.dnd.weddingmap.global.exception.NotFoundException;
+import com.dnd.weddingmap.global.util.MessageUtil;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 
 @ExtendWith(MockitoExtension.class)
 class BudgetServiceTest {
@@ -35,6 +37,8 @@ class BudgetServiceTest {
   MemberRepository memberRepository;
   @Mock
   TransactionRepository transactionRepository;
+  @Mock
+  MessageSource messageSource;
 
   Long memberId = 1L;
   Long budget = 1000000L;
@@ -55,6 +59,7 @@ class BudgetServiceTest {
         .id(memberId)
         .wedding(wedding)
         .build();
+    MessageUtil.setMessageSource(messageSource);
   }
 
   @Test
