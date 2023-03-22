@@ -40,7 +40,7 @@ public class MemberController {
 
     memberService.modifyName(user.getId(), nameDto);
     return ResponseEntity.ok(
-        SuccessResponse.builder().message(MessageUtil.getMessage("success.modifyUserName.msg"))
+        SuccessResponse.builder().message(MessageUtil.getMessage("member.modifyName.success"))
             .build());
   }
 
@@ -50,7 +50,7 @@ public class MemberController {
 
     Gender gender = memberService.getGender(user.getId())
         .orElseThrow(
-            () -> new NotFoundException(MessageUtil.getMessage("notFound.gender.exception.msg")));
+            () -> new NotFoundException(MessageUtil.getMessage("member.notFoundGender.exception")));
 
     return ResponseEntity.ok(SuccessResponse.builder()
         .data(new GenderDto(gender))
@@ -64,7 +64,7 @@ public class MemberController {
 
     memberService.postGender(user.getId(), dto.getGender());
     return ResponseEntity.ok(
-        SuccessResponse.builder().message(MessageUtil.getMessage("success.postGender.msg"))
+        SuccessResponse.builder().message(MessageUtil.getMessage("member.registerGender.success"))
             .build());
   }
 
@@ -74,7 +74,7 @@ public class MemberController {
 
     String profileImage = memberService.getProfileImage(user.getId())
         .orElseThrow(() -> new NotFoundException(
-            MessageUtil.getMessage("notFound.profileImage.exception.msg")));
+            MessageUtil.getMessage("member.notFoundProfileImage.exception")));
 
     return ResponseEntity.ok(SuccessResponse.builder()
         .data(new ProfileImageDto(profileImage))
@@ -92,7 +92,7 @@ public class MemberController {
       imageUrl = s3Service.upload(imageFile, "profile");
     } catch (Exception e) {
       throw new RequestTimeoutException(
-          MessageUtil.getMessage("failure.uploadProfileImage.exception.msg"));
+          MessageUtil.getMessage("member.uploadProfileImage.failure"));
     }
     memberService.putProfileImage(user.getId(), imageUrl);
 
@@ -108,10 +108,10 @@ public class MemberController {
     boolean result = memberService.withdraw(user.getId());
 
     if (!result) {
-      throw new NotFoundException(MessageUtil.getMessage("notFound.userInfo.exception.msg"));
+      throw new NotFoundException(MessageUtil.getMessage("member.notFoundUserInfo.exception"));
     }
     return ResponseEntity.ok(
-        SuccessResponse.builder().message(MessageUtil.getMessage("success.withdrawUser.msg"))
+        SuccessResponse.builder().message(MessageUtil.getMessage("member.withdraw.success"))
             .build());
   }
 }

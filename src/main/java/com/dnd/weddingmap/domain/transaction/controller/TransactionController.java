@@ -40,17 +40,17 @@ public class TransactionController {
       @RequestBody @Valid TransactionDto requestDto) {
     Member member = memberService.findMember(user.getId())
         .orElseThrow(
-            () -> new NotFoundException(MessageUtil.getMessage("notFound.user.exception.msg")));
+            () -> new NotFoundException(MessageUtil.getMessage("member.notFound.exception")));
     TransactionDto savedTransaction = transactionService.createTransaction(
         requestDto, member);
 
     if (savedTransaction == null) {
       throw new InternalServerErrorException(
-          MessageUtil.getMessage("failure.createTransaction.exception.msg"));
+          MessageUtil.getMessage("transaction.register.failure"));
     }
     return ResponseEntity.status(HttpStatus.CREATED).body(
         SuccessResponse.builder().httpStatus(HttpStatus.CREATED)
-            .message(MessageUtil.getMessage("success.createTransaction.msg"))
+            .message(MessageUtil.getMessage("transaction.register.success"))
             .data(savedTransaction).build());
   }
 
@@ -84,10 +84,10 @@ public class TransactionController {
 
     boolean result = transactionService.withdrawTransaction(transaction.getId());
     if (!result) {
-      throw new NotFoundException(MessageUtil.getMessage("notFound.transaction.exception.msg"));
+      throw new NotFoundException(MessageUtil.getMessage("transaction.notFound.exception"));
     }
     return ResponseEntity.ok(
-        SuccessResponse.builder().message(MessageUtil.getMessage("success.withdrawTransaction.msg")
+        SuccessResponse.builder().message(MessageUtil.getMessage("transaction.withdraw.success")
         ).build());
   }
 
@@ -96,7 +96,7 @@ public class TransactionController {
       @AuthenticationPrincipal CustomUserDetails user) {
     Member member = memberService.findMember(user.getId())
         .orElseThrow(
-            () -> new NotFoundException(MessageUtil.getMessage("notFound.user.exception.msg")));
+            () -> new NotFoundException(MessageUtil.getMessage("member.notFound.exception")));
     List<TransactionListResponseDto> transactionList = transactionService.findTransactionList(
         member.getId());
 

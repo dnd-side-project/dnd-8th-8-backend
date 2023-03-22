@@ -74,7 +74,7 @@ public class ContractServiceImpl implements ContractService {
   @Transactional(rollbackFor = Exception.class)
   public ContractDto modifyContractFile(Long contractId, String fileUrl) {
     Contract contract = contractRepository.findById(contractId).orElseThrow(
-        () -> new NotFoundException(MessageUtil.getMessage("notFound.contract.exception.msg"))
+        () -> new NotFoundException(MessageUtil.getMessage("contract.notFound.exception"))
     );
     return new ContractDto(contract.updateFile(fileUrl));
   }
@@ -83,7 +83,7 @@ public class ContractServiceImpl implements ContractService {
   @Transactional(rollbackFor = Exception.class)
   public ContractDto modifyContract(Long contractId, ContractDto contractDto) {
     Contract contract = contractRepository.findById(contractId).orElseThrow(
-        () -> new NotFoundException(MessageUtil.getMessage("notFound.contract.exception.msg"))
+        () -> new NotFoundException(MessageUtil.getMessage("contract.notFound.exception"))
     );
     return new ContractDto(contract.update(contractDto));
   }

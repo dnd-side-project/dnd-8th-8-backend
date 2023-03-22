@@ -34,14 +34,14 @@ public class TransactionServiceImpl implements TransactionService {
   @Transactional(readOnly = true)
   public Transaction findTransaction(Long transactionId, Long memberId) {
     Transaction transaction = transactionRepository.findById(transactionId).orElseThrow(
-        () -> new NotFoundException(MessageUtil.getMessage("notFound.transaction.exception.msg"))
+        () -> new NotFoundException(MessageUtil.getMessage("transaction.notFound.exception"))
     );
 
     if (Objects.equals(transaction.getMember().getId(), memberId)) {
       return transaction;
     } else {
       throw new ForbiddenException(
-          MessageUtil.getMessage("inaccessible.transaction.exception.msg"));
+          MessageUtil.getMessage("transaction.forbidden.exception"));
     }
   }
 
@@ -50,7 +50,7 @@ public class TransactionServiceImpl implements TransactionService {
   public TransactionDto modifyTransaction(Long id, TransactionDto transactionDto) {
     Transaction transaction = transactionRepository.findById(id).orElseThrow(
         () -> new BadRequestException(
-            MessageUtil.getMessage("notFound.transaction.exception.msg")));
+            MessageUtil.getMessage("transaction.notFound.exception")));
 
     return new TransactionDto(transaction.update(transactionDto));
   }

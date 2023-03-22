@@ -25,11 +25,11 @@ public class BudgetServiceImpl implements BudgetService {
   public BudgetDto getCurrentBudget(Long memberId) {
     Member member = memberRepository.findById(memberId)
         .orElseThrow(
-            () -> new NotFoundException(MessageUtil.getMessage("notFound.user.exception.msg")));
+            () -> new NotFoundException(MessageUtil.getMessage("member.notFound.exception")));
 
     if (member.getWedding() == null) {
       throw new IllegalStateException(
-          MessageUtil.getMessage("notRegistered.wedding.exception.msg"));
+          MessageUtil.getMessage("wedding.notRegistered.exception"));
     }
 
     Long budget = member.getWedding().getBudget();

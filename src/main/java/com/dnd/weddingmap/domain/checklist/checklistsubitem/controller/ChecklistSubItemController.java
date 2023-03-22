@@ -46,11 +46,11 @@ public class ChecklistSubItemController {
         checklistSubItemDto, checklistItem);
     if (checklistSubItem == null) {
       throw new InternalServerErrorException(
-          MessageUtil.getMessage("failure.createChecklistSubItem.exception.msg"));
+          MessageUtil.getMessage("checklistSubItem.register.failure"));
     }
     return ResponseEntity.status(HttpStatus.CREATED)
         .body(SuccessResponse.builder().httpStatus(HttpStatus.CREATED)
-            .message(MessageUtil.getMessage("success.createChecklistSubItem.msg"))
+            .message(MessageUtil.getMessage("checklistSubItem.register.success"))
             .data(new ChecklistSubItemDto(checklistSubItem)).build());
   }
 
@@ -66,10 +66,10 @@ public class ChecklistSubItemController {
         checklistItem.getId());
     if (!result) {
       throw new NotFoundException(
-          MessageUtil.getMessage("failure.withdrawChecklistSubItem.exception.msg"));
+          MessageUtil.getMessage("checklistSubItem.withdraw.failure"));
     }
     return ResponseEntity.ok(SuccessResponse.builder()
-        .message(MessageUtil.getMessage("success.withdrawChecklistSubItem.msg")).build());
+        .message(MessageUtil.getMessage("checklistSubItem.withdraw.success")).build());
   }
 
   @PutMapping("/{sub-item-id}")
@@ -85,11 +85,11 @@ public class ChecklistSubItemController {
         checklistSubItemId, checklistItem.getId(), checklistSubItemStateDto);
     if (modifiedChecklistSubItem == null) {
       throw new BadRequestException(
-          MessageUtil.getMessage("notMatching.checklistItem.exception.msg"));
+          MessageUtil.getMessage("checklistSubItem.notMatching.exception"));
     }
     return ResponseEntity.ok(
         SuccessResponse.builder()
-            .message(MessageUtil.getMessage("success.modifyChecklistSubItem.msg"))
+            .message(MessageUtil.getMessage("checklistSubItem.modify.success"))
             .data(new ChecklistSubItemDto(modifiedChecklistSubItem)).build());
   }
 }

@@ -31,7 +31,7 @@ public class WeddingController {
       @RequestBody @Valid WeddingDayDto weddingDayDto) {
     weddingService.registerWedding(user.getId(), weddingDayDto);
     return ResponseEntity.status(HttpStatus.CREATED).body(
-        SuccessResponse.builder().message(MessageUtil.getMessage("success.registerWedding.msg"))
+        SuccessResponse.builder().message(MessageUtil.getMessage("wedding.register.success"))
             .httpStatus(HttpStatus.CREATED).build());
   }
 
@@ -40,7 +40,8 @@ public class WeddingController {
       @AuthenticationPrincipal CustomUserDetails user) {
     WeddingDayDto weddingDayDto = weddingService.getWeddingDay(user.getId());
     return ResponseEntity.ok()
-        .body(SuccessResponse.builder().message(MessageUtil.getMessage("success.getWeddingDay.msg"))
+        .body(SuccessResponse.builder()
+            .message(MessageUtil.getMessage("wedding.getWeddingDay.success"))
             .data(weddingDayDto).build());
   }
 
@@ -50,7 +51,8 @@ public class WeddingController {
       @RequestBody @Valid WeddingDayDto weddingDayDto) {
     weddingService.modifyWeddingDay(user.getId(), weddingDayDto);
     return ResponseEntity.ok().body(
-        SuccessResponse.builder().message(MessageUtil.getMessage("success.modifyWeddingDay.msg"))
+        SuccessResponse.builder()
+            .message(MessageUtil.getMessage("wedding.modifyWeddingDay.success"))
             .build());
   }
 
@@ -59,7 +61,7 @@ public class WeddingController {
       @AuthenticationPrincipal CustomUserDetails user) {
     BudgetDto budgetDto = weddingService.getBudget(user.getId());
     return ResponseEntity.ok()
-        .body(SuccessResponse.builder().message(MessageUtil.getMessage("success.getBudget.msg"))
+        .body(SuccessResponse.builder().message(MessageUtil.getMessage("wedding.getBudget.success"))
             .data(budgetDto).build());
   }
 
@@ -69,7 +71,7 @@ public class WeddingController {
       @RequestBody @Valid BudgetDto budgetDto) {
     weddingService.modifyBudget(user.getId(), budgetDto);
     return ResponseEntity.ok().body(
-        SuccessResponse.builder().message(MessageUtil.getMessage("success.modifyBudget.msg"))
+        SuccessResponse.builder().message(MessageUtil.getMessage("wedding.modifyBudget.success"))
             .build());
   }
 }

@@ -35,7 +35,7 @@ public class ChecklistController {
       @AuthenticationPrincipal CustomUserDetails user) {
     Member member = memberService.findMember(user.getId())
         .orElseThrow(
-            () -> new NotFoundException(MessageUtil.getMessage("notFound.user.exception.msg")));
+            () -> new NotFoundException(MessageUtil.getMessage("member.notFound.exception")));
 
     List<ChecklistItemApiDto> result = checklistService.findChecklist(member.getId());
     return ResponseEntity.ok().body(SuccessResponse.builder().data(result).build());
@@ -47,14 +47,14 @@ public class ChecklistController {
       @RequestBody @Valid PreChecklistItemListDto preChecklistItemListDto) {
     Member member = memberService.findMember(user.getId())
         .orElseThrow(
-            () -> new NotFoundException(MessageUtil.getMessage("notFound.user.exception.msg")));
+            () -> new NotFoundException(MessageUtil.getMessage("member.notFound.exception")));
 
     List<ChecklistItemDto> result = checklistService.savePreChecklistItemList(member,
         preChecklistItemListDto);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(
         SuccessResponse.builder().httpStatus(HttpStatus.CREATED)
-            .message(MessageUtil.getMessage("success.createPreChecklist.msg"))
+            .message(MessageUtil.getMessage("preChecklistItem.register.success"))
             .data(result).build());
   }
 }

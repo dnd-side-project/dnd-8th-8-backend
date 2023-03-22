@@ -50,21 +50,21 @@ public class ContractController {
       @RequestPart("file") MultipartFile file) {
     Member member = memberService.findMember(user.getId())
         .orElseThrow(
-            () -> new NotFoundException(MessageUtil.getMessage("notFound.user.exception.msg")));
+            () -> new NotFoundException(MessageUtil.getMessage("member.notFound.exception")));
 
     String fileUrl;
     try {
       fileUrl = s3Service.upload(file, CONTRACT_DIRECTORY);
     } catch (Exception e) {
       throw new RequestTimeoutException(
-          MessageUtil.getMessage("failure.uploadContractFile.exception.msg"));
+          MessageUtil.getMessage("contract.uploadFile.failure"));
     }
     requestDto.setFile(fileUrl);
     ContractDto savedContract = contractService.createContract(requestDto, member);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(
         SuccessResponse.builder().httpStatus(HttpStatus.CREATED)
-            .message(MessageUtil.getMessage("success.createContract.msg"))
+            .message(MessageUtil.getMessage("contract.register.success"))
             .data(savedContract).build());
   }
 
@@ -88,15 +88,15 @@ public class ContractController {
       s3Service.delete(contract.getFile(), CONTRACT_DIRECTORY);
     } catch (Exception e) {
       throw new AmazonS3Exception(
-          MessageUtil.getMessage("failure.withdrawContractFile.exception.msg"));
+          MessageUtil.getMessage("contract.withdrawFile.failure"));
     }
 
     boolean result = contractService.withdrawContract(contractId);
     if (!result) {
-      throw new NotFoundException(MessageUtil.getMessage("notFound.contract.exception.msg"));
+      throw new NotFoundException(MessageUtil.getMessage("contract.notFound.exception"));
     }
     return ResponseEntity.ok(
-        SuccessResponse.builder().message(MessageUtil.getMessage("success.withdrawContract.msg"))
+        SuccessResponse.builder().message(MessageUtil.getMessage("contract.withdraw.success"))
             .build());
   }
 
@@ -105,7 +105,7 @@ public class ContractController {
       @AuthenticationPrincipal CustomUserDetails user) {
     Member member = memberService.findMember(user.getId())
         .orElseThrow(
-            () -> new NotFoundException(MessageUtil.getMessage("notFound.user.exception.msg")));
+            () -> new NotFoundException(MessageUtil.getMessage("member.notFound.exception")));
 
     List<ContractListResponseDto> contractList = contractService.findContractList(member.getId());
 
@@ -124,7 +124,7 @@ public class ContractController {
       s3Service.delete(contract.getFile(), CONTRACT_DIRECTORY);
     } catch (Exception e) {
       throw new AmazonS3Exception(
-          MessageUtil.getMessage("failure.withdrawContractFile.exception.msg"));
+          MessageUtil.getMessage("contract.withdrawFile.failure"));
     }
 
     String fileUrl;
@@ -132,14 +132,14 @@ public class ContractController {
       fileUrl = s3Service.upload(file, CONTRACT_DIRECTORY);
     } catch (Exception e) {
       throw new RequestTimeoutException(
-          MessageUtil.getMessage("failure.modifyContractFile.exception.msg"));
+          MessageUtil.getMessage("contract.modifyFile.exception"));
     }
 
     ContractDto result = contractService.modifyContractFile(contractId, fileUrl);
     return ResponseEntity.ok()
         .body(
             SuccessResponse.builder()
-                .message(MessageUtil.getMessage("success.modifyContractFile.msg"))
+                .message(MessageUtil.getMessage("contract.modifyFile.success"))
                 .data(result).build());
   }
 
@@ -153,19 +153,19 @@ public class ContractController {
     ContractDto result = contractService.modifyContract(contract.getId(), requestDto);
     return ResponseEntity.ok()
         .body(
-            SuccessResponse.builder().message(MessageUtil.getMessage("success.modifyContract.msg"))
+            SuccessResponse.builder().message(MessageUtil.getMessage("contract.modify.success"))
                 .data(result).build());
   }
 
   private Contract checkPermission(Long contractId, Long memberId) {
     Contract contract = contractService.findContractById(contractId)
         .orElseThrow(
-            () -> new NotFoundException(MessageUtil.getMessage("notFound.contract.exception.msg")));
+            () -> new NotFoundException(MessageUtil.getMessage("contract.notFound.exception")));
 
     if (Objects.equals(contract.getMember().getId(), memberId)) {
       return contract;
     } else {
-      throw new ForbiddenException(MessageUtil.getMessage("inaccessible.contract.exception.msg"));
+      throw new ForbiddenException(MessageUtil.getMessage("contract.forbidden.exception"));
     }
   }
 }

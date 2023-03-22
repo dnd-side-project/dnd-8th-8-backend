@@ -59,17 +59,17 @@ public class ChecklistItemController {
       @RequestBody @Valid ChecklistItemApiDto requestDto) {
     Member member = memberService.findMember(user.getId())
         .orElseThrow(
-            () -> new NotFoundException(MessageUtil.getMessage("notFound.user.exception.msg")));
+            () -> new NotFoundException(MessageUtil.getMessage("member.notFound.exception")));
     ChecklistItemApiDto savedChecklistItem = checklistItemService.createChecklistItem(
         requestDto, member);
 
     if (savedChecklistItem == null) {
       throw new InternalServerErrorException(
-          MessageUtil.getMessage("failure.createChecklistItem.exception.msg"));
+          MessageUtil.getMessage("checklistItem.register.failure"));
     }
     return ResponseEntity.status(HttpStatus.CREATED).body(
         SuccessResponse.builder().httpStatus(HttpStatus.CREATED)
-            .message(MessageUtil.getMessage("success.createChecklistItem.msg"))
+            .message(MessageUtil.getMessage("checklistItem.register.success"))
             .data(savedChecklistItem).build());
   }
 
@@ -84,7 +84,7 @@ public class ChecklistItemController {
     ChecklistItemApiDto modifiedChecklistItem =
         checklistItemService.modifyChecklistItem(checklistItem.getId(), requestDto);
     return ResponseEntity.ok().body(
-        SuccessResponse.builder().message(MessageUtil.getMessage("success.modifyChecklistItem.msg"))
+        SuccessResponse.builder().message(MessageUtil.getMessage("checklistItem.modify.success"))
             .data(modifiedChecklistItem).build());
   }
 
@@ -97,9 +97,9 @@ public class ChecklistItemController {
 
     boolean result = checklistItemService.withdrawChecklistItem(checklistItem.getId());
     if (!result) {
-      throw new NotFoundException(MessageUtil.getMessage("notFound.checklistItem.exception.msg"));
+      throw new NotFoundException(MessageUtil.getMessage("checklistItem.notFound.exception"));
     }
     return ResponseEntity.ok(SuccessResponse.builder()
-        .message(MessageUtil.getMessage("success.withdrawChecklistItem.msg")).build());
+        .message(MessageUtil.getMessage("checklistItem.withdraw.success")).build());
   }
 }

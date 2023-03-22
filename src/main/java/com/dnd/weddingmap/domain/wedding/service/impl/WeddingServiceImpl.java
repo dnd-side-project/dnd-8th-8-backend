@@ -25,11 +25,11 @@ public class WeddingServiceImpl implements WeddingService {
 
     Member member = memberRepository.findById(memberId)
         .orElseThrow(() -> new IllegalArgumentException(
-            MessageUtil.getMessage("notFound.user.exception.msg")));
+            MessageUtil.getMessage("member.notFound.exception")));
 
     if (member.getWedding() != null) {
       throw new IllegalStateException(
-          MessageUtil.getMessage("alreadyRegistered.wedding.exception.msg"));
+          MessageUtil.getMessage("wedding.alreadyRegistered.exception"));
     }
 
     Wedding wedding = weddingRepository.save(
@@ -46,11 +46,11 @@ public class WeddingServiceImpl implements WeddingService {
 
     Member member = memberRepository.findById(memberId)
         .orElseThrow(() -> new IllegalArgumentException(
-            MessageUtil.getMessage("notFound.user.exception.msg")));
+            MessageUtil.getMessage("member.notFound.exception")));
 
     if (member.getWedding() == null) {
       throw new IllegalStateException(
-          MessageUtil.getMessage("notRegistered.wedding.exception.msg"));
+          MessageUtil.getMessage("wedding.notRegistered.exception"));
     }
 
     Wedding wedding = member.getWedding();
@@ -65,11 +65,11 @@ public class WeddingServiceImpl implements WeddingService {
 
     Member member = memberRepository.findById(memberId)
         .orElseThrow(() -> new IllegalArgumentException(
-            MessageUtil.getMessage("notFound.user.exception.msg")));
+            MessageUtil.getMessage("member.notFound.exception")));
 
     if (member.getWedding() == null) {
       throw new IllegalStateException(
-          MessageUtil.getMessage("notRegistered.wedding.exception.msg"));
+          MessageUtil.getMessage("wedding.notRegistered.exception"));
     }
 
     return WeddingDayDto.builder()
@@ -84,11 +84,11 @@ public class WeddingServiceImpl implements WeddingService {
 
     Member member = memberRepository.findById(memberId)
         .orElseThrow(() -> new IllegalArgumentException(
-            MessageUtil.getMessage("notFound.user.exception.msg")));
+            MessageUtil.getMessage("member.notFound.exception")));
 
     if (member.getWedding() == null) {
       throw new IllegalStateException(
-          MessageUtil.getMessage("notRegistered.wedding.exception.msg"));
+          MessageUtil.getMessage("wedding.notRegistered.exception"));
     }
 
     Wedding wedding = member.getWedding();
@@ -102,11 +102,11 @@ public class WeddingServiceImpl implements WeddingService {
 
     Member member = memberRepository.findById(memberId)
         .orElseThrow(() -> new IllegalArgumentException(
-            MessageUtil.getMessage("notFound.user.exception.msg")));
+            MessageUtil.getMessage("member.notFound.exception")));
 
     if (member.getWedding() == null) {
       throw new IllegalStateException(
-          MessageUtil.getMessage("notRegistered.wedding.exception.msg"));
+          MessageUtil.getMessage("wedding.notRegistered.exception"));
     }
 
     return BudgetDto.builder()
