@@ -54,7 +54,7 @@ public class ChecklistController {
 
     return ResponseEntity.status(HttpStatus.CREATED).body(
         SuccessResponse.builder().httpStatus(HttpStatus.CREATED)
-            .message(MessageUtil.getMessage("preChecklistItem.register.success"))
+            .message(MessageUtil.getMessage("checklist.onboarding.register.success"))
             .data(result).build());
   }
 }

@@ -65,11 +65,11 @@ public class ChecklistItemController {
 
     if (savedChecklistItem == null) {
       throw new InternalServerErrorException(
-          MessageUtil.getMessage("checklistItem.register.failure"));
+          MessageUtil.getMessage("checklist.item.register.failure"));
     }
     return ResponseEntity.status(HttpStatus.CREATED).body(
         SuccessResponse.builder().httpStatus(HttpStatus.CREATED)
-            .message(MessageUtil.getMessage("checklistItem.register.success"))
+            .message(MessageUtil.getMessage("checklist.item.register.success"))
             .data(savedChecklistItem).build());
   }
 
@@ -84,7 +84,7 @@ public class ChecklistItemController {
     ChecklistItemApiDto modifiedChecklistItem =
         checklistItemService.modifyChecklistItem(checklistItem.getId(), requestDto);
     return ResponseEntity.ok().body(
-        SuccessResponse.builder().message(MessageUtil.getMessage("checklistItem.modify.success"))
+        SuccessResponse.builder().message(MessageUtil.getMessage("checklist.item.modify.success"))
             .data(modifiedChecklistItem).build());
   }
 
@@ -97,9 +97,9 @@ public class ChecklistItemController {
 
     boolean result = checklistItemService.withdrawChecklistItem(checklistItem.getId());
     if (!result) {
-      throw new NotFoundException(MessageUtil.getMessage("checklistItem.notFound.exception"));
+      throw new NotFoundException(MessageUtil.getMessage("checklist.item.notFound.exception"));
     }
     return ResponseEntity.ok(SuccessResponse.builder()
-        .message(MessageUtil.getMessage("checklistItem.withdraw.success")).build());
+        .message(MessageUtil.getMessage("checklist.item.withdraw.success")).build());
   }
 }

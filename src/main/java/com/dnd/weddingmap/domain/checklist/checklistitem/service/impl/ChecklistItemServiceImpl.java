@@ -93,7 +93,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
         checklistItemId);
 
     if (checklistItem.isEmpty()) {
-      throw new BadRequestException(MessageUtil.getMessage("checklistItem.notFound.exception"));
+      throw new BadRequestException(MessageUtil.getMessage("checklist.item.notFound.exception"));
     }
     return checklistItem.get().update(checklistItemDto);
   }
@@ -113,7 +113,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
 
     if (checklistSubItem.isEmpty()) {
       throw new BadRequestException(
-          MessageUtil.getMessage("checklistSubItem.notFound.exception"));
+          MessageUtil.getMessage("checklist.subItem.notFound.exception"));
     }
     return checklistSubItem.get().update(checklistSubItemDto);
   }
@@ -134,13 +134,13 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
   public ChecklistItem findChecklistItem(Long checklistItemId, Long memberId) {
     ChecklistItem checklistItem = checklistItemRepository.findById(checklistItemId).orElseThrow(
         () -> new NotFoundException(
-            MessageUtil.getMessage("checklistItem.notFound.exception")));
+            MessageUtil.getMessage("checklist.item.notFound.exception")));
 
     if (Objects.equals(checklistItem.getMember().getId(), memberId)) {
       return checklistItem;
     } else {
       throw new ForbiddenException(
-          MessageUtil.getMessage("checklistItem.forbidden.exception"));
+          MessageUtil.getMessage("checklist.item.forbidden.exception"));
     }
   }
 }

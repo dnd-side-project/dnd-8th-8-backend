@@ -40,7 +40,7 @@ public class ChecklistSubItemServiceImpl implements ChecklistSubItemService {
   public boolean withdrawChecklistSubItem(Long subItemId, Long itemId) {
     ChecklistSubItem checklistSubItem = checklistSubItemRepository.findById(subItemId)
         .orElseThrow(() -> new NotFoundException(
-            MessageUtil.getMessage("checklistSubItem.notFound.exception")));
+            MessageUtil.getMessage("checklist.subItem.notFound.exception")));
 
     if (!Objects.equals(checklistSubItem.getChecklistItem().getId(), itemId)) {
       return false;
@@ -55,7 +55,7 @@ public class ChecklistSubItemServiceImpl implements ChecklistSubItemService {
       ChecklistSubItemStateDto checklistSubItemStateDto) {
     ChecklistSubItem checklistSubItem = checklistSubItemRepository.findById(subItemId)
         .orElseThrow(() -> new NotFoundException(
-            MessageUtil.getMessage("checklistSubItem.notFound.exception")));
+            MessageUtil.getMessage("checklist.subItem.notFound.exception")));
 
     if (!Objects.equals(checklistSubItem.getChecklistItem().getId(), itemId)) {
       return null;
