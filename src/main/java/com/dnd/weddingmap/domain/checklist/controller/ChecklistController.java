@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -32,12 +33,17 @@ public class ChecklistController {
 
   @GetMapping
   public ResponseEntity<SuccessResponse> getChecklist(
-      @AuthenticationPrincipal CustomUserDetails user) {
+      @AuthenticationPrincipal CustomUserDetails user, @RequestParam boolean subitem) {
     Member member = memberService.findMember(user.getId())
         .orElseThrow(
             () -> new NotFoundException(MessageUtil.getMessage("member.notFound.exception")));
 
-    List<ChecklistItemApiDto> result = checklistService.findChecklist(member.getId());
+    if (subitem) {
+      List<ChecklistItemApiDto> result = checklistService.findChecklist(member.getId());
+      return ResponseEntity.ok().body(SuccessResponse.builder().data(result).build());
+    }
+
+    List<ChecklistItemDto> result = checklistService.findChecklistItem(member.getId());
     return ResponseEntity.ok().body(SuccessResponse.builder().data(result).build());
   }
 

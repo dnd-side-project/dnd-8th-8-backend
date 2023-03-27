@@ -10,6 +10,8 @@ public interface ChecklistService {
 
   List<ChecklistItemApiDto> findChecklist(Long memberId);
 
+  List<ChecklistItemDto> findChecklistItem(Long memberId);
+
   List<ChecklistItemDto> savePreChecklistItemList(
       Member member, PreChecklistItemListDto preChecklistItemListDto);
 }

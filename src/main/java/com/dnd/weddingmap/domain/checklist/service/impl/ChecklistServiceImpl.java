@@ -35,6 +35,17 @@ public class ChecklistServiceImpl implements ChecklistService {
   }
 
   @Override
+  @Transactional(readOnly = true)
+  public List<ChecklistItemDto> findChecklistItem(Long memberId) {
+    List<ChecklistItem> checklistItemList = checklistItemRepository.findByMemberIdOrderByCheckDate(
+        memberId);
+    List<ChecklistItemDto> result = new ArrayList<>();
+    checklistItemList.forEach(item -> result.add(new ChecklistItemDto(item)));
+
+    return result;
+  }
+
+  @Override
   @Transactional(rollbackFor = Exception.class)
   public List<ChecklistItemDto> savePreChecklistItemList(Member member,
       PreChecklistItemListDto preChecklistItemListDto) {
