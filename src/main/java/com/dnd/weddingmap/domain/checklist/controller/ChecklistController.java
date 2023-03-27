@@ -39,11 +39,11 @@ public class ChecklistController {
             () -> new NotFoundException(MessageUtil.getMessage("member.notFound.exception")));
 
     if (subitem) {
-      List<ChecklistItemApiDto> result = checklistService.findChecklist(member.getId());
+      List<ChecklistItemApiDto> result = checklistService.findChecklistWithSubitem(member.getId());
       return ResponseEntity.ok().body(SuccessResponse.builder().data(result).build());
     }
 
-    List<ChecklistItemDto> result = checklistService.findChecklistItem(member.getId());
+    List<ChecklistItemDto> result = checklistService.findChecklistWithoutSubitem(member.getId());
     return ResponseEntity.ok().body(SuccessResponse.builder().data(result).build());
   }
 

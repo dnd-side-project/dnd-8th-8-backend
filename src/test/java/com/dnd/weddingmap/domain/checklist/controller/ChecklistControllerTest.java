@@ -112,7 +112,8 @@ class ChecklistControllerTest extends AbstractRestDocsTests {
 
     // given
     given(memberService.findMember(anyLong())).willReturn(Optional.ofNullable(member));
-    given(checklistService.findChecklist(anyLong())).willReturn(List.of(checklistItemApiDto1));
+    given(checklistService.findChecklistWithSubitem(anyLong())).willReturn(
+        List.of(checklistItemApiDto1));
 
     // when
     ResultActions result = mockMvc.perform(get(url)
@@ -165,7 +166,8 @@ class ChecklistControllerTest extends AbstractRestDocsTests {
 
     // given
     given(memberService.findMember(anyLong())).willReturn(Optional.ofNullable(member));
-    given(checklistService.findChecklistItem(anyLong())).willReturn(List.of(checklistItemDto));
+    given(checklistService.findChecklistWithoutSubitem(anyLong())).willReturn(
+        List.of(checklistItemDto));
 
     // when
     ResultActions result = mockMvc.perform(get(url)
