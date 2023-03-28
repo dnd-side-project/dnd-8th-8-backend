@@ -43,7 +43,7 @@ public class ChecklistController {
       return ResponseEntity.ok().body(SuccessResponse.builder().data(result).build());
     }
 
-    List<ChecklistItemDto> result = checklistService.findChecklistWithoutSubitem(member.getId());
+    List<ChecklistItemDto> result = checklistService.findChecklist(member.getId());
     return ResponseEntity.ok().body(SuccessResponse.builder().data(result).build());
   }
 

@@ -166,7 +166,7 @@ class ChecklistControllerTest extends AbstractRestDocsTests {
 
     // given
     given(memberService.findMember(anyLong())).willReturn(Optional.ofNullable(member));
-    given(checklistService.findChecklistWithoutSubitem(anyLong())).willReturn(
+    given(checklistService.findChecklist(anyLong())).willReturn(
         List.of(checklistItemDto));
 
     // when
