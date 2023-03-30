@@ -12,6 +12,7 @@ import com.dnd.weddingmap.global.exception.BadRequestException;
 import com.dnd.weddingmap.global.exception.InternalServerErrorException;
 import com.dnd.weddingmap.global.exception.NotFoundException;
 import com.dnd.weddingmap.global.response.SuccessResponse;
+import com.dnd.weddingmap.global.util.MessageUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -44,10 +45,12 @@ public class ChecklistSubItemController {
     ChecklistSubItem checklistSubItem = checklistSubItemService.saveChecklistSubItem(
         checklistSubItemDto, checklistItem);
     if (checklistSubItem == null) {
-      throw new InternalServerErrorException("체크리스트 서브 아이템 등록에 실패하였습니다.");
+      throw new InternalServerErrorException(
+          MessageUtil.getMessage("checklist.subItem.register.failure"));
     }
     return ResponseEntity.status(HttpStatus.CREATED)
-        .body(SuccessResponse.builder().httpStatus(HttpStatus.CREATED).message("체크리스트 서브 아이템 등록 성공")
+        .body(SuccessResponse.builder().httpStatus(HttpStatus.CREATED)
+            .message(MessageUtil.getMessage("checklist.subItem.register.success"))
             .data(new ChecklistSubItemDto(checklistSubItem)).build());
   }
 
@@ -62,9 +65,11 @@ public class ChecklistSubItemController {
     boolean result = checklistSubItemService.withdrawChecklistSubItem(checklistSubItemId,
         checklistItem.getId());
     if (!result) {
-      throw new NotFoundException("체크리스트 서브 아이템 삭제에 실패하였습니다.");
+      throw new NotFoundException(
+          MessageUtil.getMessage("checklist.subItem.withdraw.failure"));
     }
-    return ResponseEntity.ok(SuccessResponse.builder().message("체크리스트 서브 아이템 삭제 성공").build());
+    return ResponseEntity.ok(SuccessResponse.builder()
+        .message(MessageUtil.getMessage("checklist.subItem.withdraw.success")).build());
   }
 
   @PutMapping("/{sub-item-id}")
@@ -79,10 +84,12 @@ public class ChecklistSubItemController {
     ChecklistSubItem modifiedChecklistSubItem = checklistSubItemService.modifyChecklistSubItem(
         checklistSubItemId, checklistItem.getId(), checklistSubItemStateDto);
     if (modifiedChecklistSubItem == null) {
-      throw new BadRequestException("체크리스트 아이템과 요청한 서브 아이템이 매칭되지 않습니다.");
+      throw new BadRequestException(
+          MessageUtil.getMessage("checklist.subItem.notMatching.exception"));
     }
     return ResponseEntity.ok(
-        SuccessResponse.builder().message("체크리스트 서브 아이템 체크 여부 수정 성공")
+        SuccessResponse.builder()
+            .message(MessageUtil.getMessage("checklist.subItem.modify.success"))
             .data(new ChecklistSubItemDto(modifiedChecklistSubItem)).build());
   }
 }

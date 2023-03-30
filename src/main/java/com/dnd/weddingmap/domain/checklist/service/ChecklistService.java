@@ -8,7 +8,9 @@ import java.util.List;
 
 public interface ChecklistService {
 
-  List<ChecklistItemApiDto> findChecklist(Long memberId);
+  List<ChecklistItemApiDto> findChecklistWithSubitem(Long memberId);
+
+  List<ChecklistItemDto> findChecklist(Long memberId);
 
   List<ChecklistItemDto> savePreChecklistItemList(
       Member member, PreChecklistItemListDto preChecklistItemListDto);

@@ -64,3 +64,6 @@ env.properties
 
 ### API docs ###
 src/main/resources/static/docs
+
+### MacOS ###
+.DS_Store

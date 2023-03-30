@@ -10,6 +10,7 @@ import com.dnd.weddingmap.domain.transaction.service.TransactionService;
 import com.dnd.weddingmap.global.exception.InternalServerErrorException;
 import com.dnd.weddingmap.global.exception.NotFoundException;
 import com.dnd.weddingmap.global.response.SuccessResponse;
+import com.dnd.weddingmap.global.util.MessageUtil;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -38,15 +39,18 @@ public class TransactionController {
       @AuthenticationPrincipal CustomUserDetails user,
       @RequestBody @Valid TransactionDto requestDto) {
     Member member = memberService.findMember(user.getId())
-        .orElseThrow(() -> new NotFoundException("존재하지 않는 사용자입니다."));
+        .orElseThrow(
+            () -> new NotFoundException(MessageUtil.getMessage("member.notFound.exception")));
     TransactionDto savedTransaction = transactionService.createTransaction(
         requestDto, member);
 
     if (savedTransaction == null) {
-      throw new InternalServerErrorException("예산표 등록에 실패하였습니다.");
+      throw new InternalServerErrorException(
+          MessageUtil.getMessage("transaction.register.failure"));
     }
     return ResponseEntity.status(HttpStatus.CREATED).body(
-        SuccessResponse.builder().httpStatus(HttpStatus.CREATED).message("예산표 등록 성공")
+        SuccessResponse.builder().httpStatus(HttpStatus.CREATED)
+            .message(MessageUtil.getMessage("transaction.register.success"))
             .data(savedTransaction).build());
   }
 
@@ -80,16 +84,19 @@ public class TransactionController {
 
     boolean result = transactionService.withdrawTransaction(transaction.getId());
     if (!result) {
-      throw new NotFoundException("존재하지 않는 예산표입니다.");
+      throw new NotFoundException(MessageUtil.getMessage("transaction.notFound.exception"));
     }
-    return ResponseEntity.ok(SuccessResponse.builder().message("예산표 삭제 성공").build());
+    return ResponseEntity.ok(
+        SuccessResponse.builder().message(MessageUtil.getMessage("transaction.withdraw.success")
+        ).build());
   }
 
   @GetMapping
   public ResponseEntity<SuccessResponse> getTransactionList(
       @AuthenticationPrincipal CustomUserDetails user) {
     Member member = memberService.findMember(user.getId())
-        .orElseThrow(() -> new NotFoundException("존재하지 않는 사용자입니다."));
+        .orElseThrow(
+            () -> new NotFoundException(MessageUtil.getMessage("member.notFound.exception")));
     List<TransactionListResponseDto> transactionList = transactionService.findTransactionList(
         member.getId());
 

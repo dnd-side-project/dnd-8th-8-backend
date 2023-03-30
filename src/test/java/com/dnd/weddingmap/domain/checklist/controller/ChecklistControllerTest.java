@@ -10,6 +10,8 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.beneathP
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.dnd.weddingmap.docs.springrestdocs.AbstractRestDocsTests;
@@ -27,15 +29,19 @@ import com.dnd.weddingmap.domain.member.Role;
 import com.dnd.weddingmap.domain.member.service.MemberService;
 import com.dnd.weddingmap.domain.oauth.OAuth2Provider;
 import com.dnd.weddingmap.global.WithMockOAuth2User;
+import com.dnd.weddingmap.global.util.MessageUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -56,7 +62,8 @@ class ChecklistControllerTest extends AbstractRestDocsTests {
   MemberService memberService;
   @MockBean
   JwtTokenProvider jwtTokenProvider;
-
+  @Autowired
+  MessageSource messageSource;
   private final ChecklistItemDto checklistItemDto = ChecklistItemDto.builder()
       .id(1L)
       .title("title")
@@ -92,15 +99,21 @@ class ChecklistControllerTest extends AbstractRestDocsTests {
       .oauth2Provider(OAuth2Provider.GOOGLE)
       .build();
 
+  @BeforeEach
+  void init() {
+    MessageUtil.setMessageSource(messageSource);
+  }
+
   @Test
   @WithMockOAuth2User
-  @DisplayName("사용자 체크리스트 조회")
+  @DisplayName("서브 아이템 포함 사용자 체크리스트 조회 ")
   void getChecklist() throws Exception {
-    String url = "/api/v1/checklist";
+    String url = "/api/v1/checklist?subitem=true";
 
     // given
     given(memberService.findMember(anyLong())).willReturn(Optional.ofNullable(member));
-    given(checklistService.findChecklist(anyLong())).willReturn(List.of(checklistItemApiDto1));
+    given(checklistService.findChecklistWithSubitem(anyLong())).willReturn(
+        List.of(checklistItemApiDto1));
 
     // when
     ResultActions result = mockMvc.perform(get(url)
@@ -109,7 +122,10 @@ class ChecklistControllerTest extends AbstractRestDocsTests {
     // then
     result.andExpect(status().isOk())
         .andDo(
-            document("checklist/checklist",
+            document("checklist/checklist/withSubitem",
+                queryParameters(
+                    parameterWithName("subitem").description("서브아이템 조회 여부")
+                ),
                 responseFields(
                     beneathPath("data").withSubsectionId("data"),
                     fieldWithPath("checklistItem.id").description("체크리스트 아이템 아이디").type(
@@ -138,6 +154,51 @@ class ChecklistControllerTest extends AbstractRestDocsTests {
                     fieldWithPath("checklistSubItems[].isChecked").description(
                         "체크리스트 서브 아이템 체크 여부").type(
                         JsonFieldType.BOOLEAN)
+                )
+            ));
+  }
+
+  @Test
+  @WithMockOAuth2User
+  @DisplayName("서브 아이템 미포함 사용자 체크리스트 조회 ")
+  void getChecklistWithoutSubitem() throws Exception {
+    String url = "/api/v1/checklist?subitem=false";
+
+    // given
+    given(memberService.findMember(anyLong())).willReturn(Optional.ofNullable(member));
+    given(checklistService.findChecklist(anyLong())).willReturn(
+        List.of(checklistItemDto));
+
+    // when
+    ResultActions result = mockMvc.perform(get(url)
+        .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "ACCESS_TOKEN"));
+
+    // then
+    result.andExpect(status().isOk())
+        .andDo(
+            document("checklist/checklist",
+                queryParameters(
+                    parameterWithName("subitem").description("서브아이템 조회 여부")
+                ),
+                responseFields(
+                    beneathPath("data").withSubsectionId("data"),
+                    fieldWithPath("id").description("체크리스트 아이템 아이디").type(
+                        JsonFieldType.NUMBER),
+                    fieldWithPath("title").description("체크리스트 아이템 제목").type(
+                        JsonFieldType.STRING),
+                    fieldWithPath("checkDate").description(
+                        "체크리스트 아이템 일정 날짜").type(
+                        JsonFieldType.STRING),
+                    fieldWithPath("startTime").description(
+                        "체크리스트 아이템 일정 시작 시간").type(
+                        JsonFieldType.STRING),
+                    fieldWithPath("endTime").description(
+                        "체크리스트 아이템 일정 종료 시간").type(
+                        JsonFieldType.STRING),
+                    fieldWithPath("place").description("체크리스트 아이템 일정 장소").type(
+                        JsonFieldType.STRING),
+                    fieldWithPath("memo").description("체크리스트 아이템 메모").type(
+                        JsonFieldType.STRING)
                 )
             ));
   }

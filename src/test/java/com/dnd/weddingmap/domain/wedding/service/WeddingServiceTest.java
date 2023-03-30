@@ -12,6 +12,7 @@ import com.dnd.weddingmap.domain.wedding.dto.BudgetDto;
 import com.dnd.weddingmap.domain.wedding.dto.WeddingDayDto;
 import com.dnd.weddingmap.domain.wedding.repository.WeddingRepository;
 import com.dnd.weddingmap.domain.wedding.service.impl.WeddingServiceImpl;
+import com.dnd.weddingmap.global.util.MessageUtil;
 import java.time.LocalDate;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +22,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 
 @ExtendWith(MockitoExtension.class)
 class WeddingServiceTest {
@@ -33,6 +35,8 @@ class WeddingServiceTest {
 
   @Mock
   MemberRepository memberRepository;
+  @Mock
+  MessageSource messageSource;
 
   Long memberId = 1L;
   Member member;
@@ -58,6 +62,7 @@ class WeddingServiceTest {
         .id(1L)
         .wedding(wedding)
         .build();
+    MessageUtil.setMessageSource(messageSource);
   }
 
   @Test
