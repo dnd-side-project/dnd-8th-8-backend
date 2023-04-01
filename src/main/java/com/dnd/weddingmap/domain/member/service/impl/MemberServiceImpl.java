@@ -17,7 +17,7 @@ public class MemberServiceImpl implements MemberService {
   private final MemberRepository memberRepository;
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public void modifyName(Long id, NameDto nameDto) {
     Optional<Member> member = memberRepository.findById(id);
 
@@ -34,7 +34,7 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public void postGender(Long id, Gender gender) {
     Optional<Member> member = memberRepository.findById(id);
 
@@ -51,7 +51,7 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public void putProfileImage(Long id, String url) {
     Optional<Member> member = memberRepository.findById(id);
 
@@ -62,7 +62,7 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public boolean withdraw(Long id) {
     return memberRepository.findById(id)
         .map(member -> {

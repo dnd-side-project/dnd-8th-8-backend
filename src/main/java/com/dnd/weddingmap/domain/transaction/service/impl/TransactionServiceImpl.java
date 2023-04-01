@@ -24,7 +24,7 @@ public class TransactionServiceImpl implements TransactionService {
   private final TransactionRepository transactionRepository;
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public TransactionDto createTransaction(TransactionDto dto, Member member) {
     Transaction savedTransaction = transactionRepository.save(dto.toEntity(member));
     return new TransactionDto(savedTransaction);
@@ -46,7 +46,7 @@ public class TransactionServiceImpl implements TransactionService {
   }
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public TransactionDto modifyTransaction(Long id, TransactionDto transactionDto) {
     Transaction transaction = transactionRepository.findById(id).orElseThrow(
         () -> new BadRequestException(
@@ -56,7 +56,7 @@ public class TransactionServiceImpl implements TransactionService {
   }
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public boolean withdrawTransaction(Long id) {
     return transactionRepository.findById(id)
         .map(transaction -> {
