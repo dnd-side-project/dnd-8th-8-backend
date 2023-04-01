@@ -22,7 +22,7 @@ public class ContractServiceImpl implements ContractService {
   private final ContractRepository contractRepository;
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public ContractDto createContract(ContractDto contractDto, Member member) {
     Contract contract = Contract.builder()
         .title(contractDto.getTitle())
@@ -44,7 +44,7 @@ public class ContractServiceImpl implements ContractService {
   }
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public boolean withdrawContract(Long contractId) {
     return contractRepository.findById(contractId)
         .map(contract -> {
@@ -71,7 +71,7 @@ public class ContractServiceImpl implements ContractService {
   }
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public ContractDto modifyContractFile(Long contractId, String fileUrl) {
     Contract contract = contractRepository.findById(contractId).orElseThrow(
         () -> new NotFoundException(MessageUtil.getMessage("contract.notFound.exception"))
@@ -80,7 +80,7 @@ public class ContractServiceImpl implements ContractService {
   }
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public ContractDto modifyContract(Long contractId, ContractDto contractDto) {
     Contract contract = contractRepository.findById(contractId).orElseThrow(
         () -> new NotFoundException(MessageUtil.getMessage("contract.notFound.exception"))

@@ -20,7 +20,7 @@ public class WeddingServiceImpl implements WeddingService {
   private final MemberRepository memberRepository;
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public Long registerWedding(Long memberId, WeddingDayDto weddingDayDto) {
 
     Member member = memberRepository.findById(memberId)
@@ -41,7 +41,7 @@ public class WeddingServiceImpl implements WeddingService {
   }
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public void modifyWeddingDay(Long memberId, WeddingDayDto weddingDayDto) {
 
     Member member = memberRepository.findById(memberId)
@@ -79,7 +79,7 @@ public class WeddingServiceImpl implements WeddingService {
   }
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public void modifyBudget(Long memberId, BudgetDto budgetDto) {
 
     Member member = memberRepository.findById(memberId)

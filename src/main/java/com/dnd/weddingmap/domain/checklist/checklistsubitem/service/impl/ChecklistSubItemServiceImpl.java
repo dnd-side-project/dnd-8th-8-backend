@@ -29,14 +29,14 @@ public class ChecklistSubItemServiceImpl implements ChecklistSubItemService {
   }
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public ChecklistSubItem saveChecklistSubItem(ChecklistSubItemDto checklistSubItemDto,
       ChecklistItem checklistItem) {
     return checklistSubItemRepository.save(checklistSubItemDto.toEntity(checklistItem));
   }
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public boolean withdrawChecklistSubItem(Long subItemId, Long itemId) {
     ChecklistSubItem checklistSubItem = checklistSubItemRepository.findById(subItemId)
         .orElseThrow(() -> new NotFoundException(
@@ -50,7 +50,7 @@ public class ChecklistSubItemServiceImpl implements ChecklistSubItemService {
   }
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public ChecklistSubItem modifyChecklistSubItem(Long subItemId, Long itemId,
       ChecklistSubItemStateDto checklistSubItemStateDto) {
     ChecklistSubItem checklistSubItem = checklistSubItemRepository.findById(subItemId)
