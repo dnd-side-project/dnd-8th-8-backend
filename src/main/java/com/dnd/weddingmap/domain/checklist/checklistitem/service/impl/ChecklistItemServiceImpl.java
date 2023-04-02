@@ -28,7 +28,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
   private final ChecklistSubItemRepository checklistSubItemRepository;
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public ChecklistItemApiDto createChecklistItem(ChecklistItemApiDto dto, Member member) {
     ChecklistItem savedChecklistItem = saveChecklistItem(dto.getChecklistItem(), member);
 
@@ -49,12 +49,12 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
   }
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public ChecklistItem saveChecklistItem(ChecklistItemDto checklistItemDto, Member member) {
     return checklistItemRepository.save(checklistItemDto.toEntity(member));
   }
 
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   @Override
   public List<ChecklistSubItem> saveChecklistSubItemList(
       List<ChecklistSubItemDto> checklistSubItemDtoList,
@@ -65,7 +65,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
   }
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public ChecklistItemApiDto modifyChecklistItem(Long checklistItemId,
       ChecklistItemApiDto dto) {
     ChecklistItem modifiedChecklistItem = updateChecklistItem(
@@ -86,7 +86,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
   }
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public ChecklistItem updateChecklistItem(Long checklistItemId,
       ChecklistItemDto checklistItemDto) {
     Optional<ChecklistItem> checklistItem = checklistItemRepository.findById(
@@ -99,14 +99,14 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
   }
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public List<ChecklistSubItem> updateChecklistSubItemList(
       List<ChecklistSubItemDto> checklistSubItemDtoList) {
     return checklistSubItemDtoList.stream().map(this::updateChecklistSubItem).toList();
   }
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public ChecklistSubItem updateChecklistSubItem(ChecklistSubItemDto checklistSubItemDto) {
     Optional<ChecklistSubItem> checklistSubItem = checklistSubItemRepository.findById(
         checklistSubItemDto.getId());
@@ -119,7 +119,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
   }
 
   @Override
-  @Transactional(rollbackFor = Exception.class)
+  @Transactional
   public boolean withdrawChecklistItem(Long id) {
     return checklistItemRepository.findById(id)
         .map(checklistItem -> {
