@@ -82,7 +82,7 @@ public class MemberController {
   }
 
   @PostMapping("/profile")
-  public ResponseEntity<SuccessResponse> putProfileImage(
+  public ResponseEntity<SuccessResponse> postProfileImage(
       @AuthenticationPrincipal CustomUserDetails user,
       @RequestParam("image") MultipartFile imageFile) {
 
