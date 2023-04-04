@@ -53,7 +53,7 @@ class JwtControllerTest extends AbstractRestDocsTests {
             .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN_PREFIX + "OLD_ACCESS_TOKEN"));
 
     // then
-    result.andExpect(status().isOk())
+    result.andExpect(status().isCreated())
         .andDo(document("jwt/refresh",
             requestCookies(cookieWithName(REFRESH_TOKEN_NAME).description("재발급할 리프레시 토큰")),
             requestHeaders(headerWithName(HttpHeaders.AUTHORIZATION).description("재발급할 액세스 토큰")),
