@@ -13,6 +13,7 @@ import com.dnd.weddingmap.global.service.S3Service;
 import com.dnd.weddingmap.global.util.MessageUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -96,9 +97,11 @@ public class MemberController {
     }
     memberService.putProfileImage(user.getId(), imageUrl);
 
-    return ResponseEntity.ok(SuccessResponse.builder()
-        .data(new ProfileImageDto(imageUrl))
-        .build());
+    return ResponseEntity.status(HttpStatus.CREATED).body(
+        SuccessResponse.builder()
+            .httpStatus(HttpStatus.CREATED)
+            .data(new ProfileImageDto(imageUrl))
+            .build());
   }
 
   @DeleteMapping
