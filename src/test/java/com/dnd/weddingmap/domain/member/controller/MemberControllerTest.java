@@ -206,7 +206,7 @@ class MemberControllerTest extends AbstractRestDocsTests {
     );
 
     // then
-    result.andExpect(status().isOk())
+    result.andExpect(status().isCreated())
         .andDo(document("member/put-profile",
             requestHeaders(
                 headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
