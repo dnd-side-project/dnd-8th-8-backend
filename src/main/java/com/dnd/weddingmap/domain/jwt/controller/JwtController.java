@@ -8,6 +8,7 @@ import com.dnd.weddingmap.global.util.HeaderUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,8 +32,9 @@ public class JwtController {
       throw new UnauthorizedException("Failed renew access token");
     }
 
-    return ResponseEntity.ok().body(
-        SuccessResponse.builder().data(new AccessTokenResponse(newToken)).build()
+    return ResponseEntity.status(HttpStatus.CREATED).body(
+        SuccessResponse.builder().httpStatus(HttpStatus.CREATED)
+            .data(new AccessTokenResponse(newToken)).build()
     );
   }
 }
