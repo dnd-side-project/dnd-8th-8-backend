@@ -21,10 +21,7 @@ public class MemberServiceImpl implements MemberService {
   public void modifyName(Long id, NameDto nameDto) {
     Optional<Member> member = memberRepository.findById(id);
 
-    member.ifPresent(m -> {
-      m.setName(nameDto.getName());
-      memberRepository.save(m);
-    });
+    member.ifPresent(m -> m.setName(nameDto.getName()));
   }
 
   @Override
@@ -38,10 +35,7 @@ public class MemberServiceImpl implements MemberService {
   public void postGender(Long id, Gender gender) {
     Optional<Member> member = memberRepository.findById(id);
 
-    member.ifPresent(m -> {
-      m.setGender(gender);
-      memberRepository.save(m);
-    });
+    member.ifPresent(m -> m.setGender(gender));
   }
 
   @Override
@@ -55,10 +49,7 @@ public class MemberServiceImpl implements MemberService {
   public void putProfileImage(Long id, String url) {
     Optional<Member> member = memberRepository.findById(id);
 
-    member.ifPresent(m -> {
-      m.setProfileImage(url);
-      memberRepository.save(m);
-    });
+    member.ifPresent(m -> m.setProfileImage(url));
   }
 
   @Override
