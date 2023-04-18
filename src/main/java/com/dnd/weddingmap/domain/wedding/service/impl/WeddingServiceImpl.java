@@ -56,7 +56,6 @@ public class WeddingServiceImpl implements WeddingService {
     Wedding wedding = member.getWedding();
     wedding.setWeddingDay(weddingDayDto.getWeddingDay());
     wedding.setPreparing(weddingDayDto.isPreparing());
-    weddingRepository.save(wedding);
   }
 
   @Override
@@ -93,7 +92,6 @@ public class WeddingServiceImpl implements WeddingService {
 
     Wedding wedding = member.getWedding();
     wedding.setBudget(budgetDto.getBudget());
-    weddingRepository.save(wedding);
   }
 
   @Override
